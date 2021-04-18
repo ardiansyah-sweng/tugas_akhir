@@ -17,7 +17,7 @@ class CreateMahasiswaTable extends Migration
             $table->id();
             $table->string('nim',11);
             $table->string('status',1);
-            $table->string('avatar')->default('avatar.png');
+            $table->string('avatar')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

@@ -9,7 +9,7 @@
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            {{ Auth::user()->name }}
+                            {{ Auth::user()->name }} 
                             <span class="user-level">
                                 @if (Auth::user()->hasRole('super_admin'))
                                     Super Admin
@@ -140,42 +140,30 @@
                 
                 @if (Auth::user()->hasRole('mahasiswa'))
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#sidebarLayouts">
-                        <i class="fas fa-th-list"></i>
-                        <p>Mahasiswa</p>
+                    <a data-toggle="collapse" href="#base">
+                        <i class="fas fa-layer-group"></i>
+                        <p>Topik Metopen</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="sidebarLayouts">
+                    <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="sidebar-style-1.html">
-                                    <span class="sub-item">Sidebar Style 1</span>
+                                <a href="{{ url('/topik') }}">
+                                    <span class="sub-item">Ajukan judul</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="overlay-sidebar.html">
-                                    <span class="sub-item">Overlay Sidebar</span>
+                                <a href="{{ url('/penawaran') }}">
+                                    <span class="sub-item">Lihat Penawaran</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="compact-sidebar.html">
-                                    <span class="sub-item">Compact Sidebar</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="static-sidebar.html">
-                                    <span class="sub-item">Static Sidebar</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="icon-menu.html">
-                                    <span class="sub-item">Icon Menu</span>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </li>
                 @endif
+
+                
                 
                 @if (Auth::user()->hasRole('super_admin'))
                 <li class="nav-item">
@@ -196,7 +184,7 @@
                 </li>
                 @endif
                 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a data-toggle="collapse" href="#tables">
                         <i class="fas fa-table"></i>
                         <p>Tables</p>
@@ -311,10 +299,10 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-                <li class="mx-4 mt-2">
+                </li> --}}
+                {{-- <li class="mx-4 mt-2">
                     <a href="http://themekita.com/atlantis-bootstrap-dashboard.html" class="btn btn-primary btn-block"><span class="btn-label mr-2"> <i class="fa fa-heart"></i> </span>Buy Pro</a> 
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>
