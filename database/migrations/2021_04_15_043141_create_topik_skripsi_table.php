@@ -24,7 +24,7 @@ class CreateTopikSkripsiTable extends Migration
             $table->string('nipy',20);
             $table->string('option_from');
             $table->string('status')->nullable();
-            $table->dateTime('duedate');
+            $table->dateTime('duedate')->nullable();
             $table->timestamps();
         });
     }

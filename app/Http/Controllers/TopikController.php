@@ -32,10 +32,11 @@ class TopikController extends Controller
         $data = $request->all();
         
         //memanggil id dari tabel user
-        $id=Auth::user()->id;
+        $id=Auth::Id();
 
         //query nim dari relasi tabel dosen dan user
-        $data_mahasiswa=Mahasiswa::where('user_id',$id)->find(1);
+        $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
+
         
         $data['option_from'] = "Mahasiswa";
         $data['nim_submit'] = $data_mahasiswa->nim;

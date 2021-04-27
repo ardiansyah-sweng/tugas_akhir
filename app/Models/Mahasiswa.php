@@ -26,5 +26,9 @@ class Mahasiswa extends Model
         return $this->hasMany(Topikskripsi::class,'nim_terpilih');
     }
 
+    public function getSkripsi(){
+        return $this->hasMany(MahasiswaRegisterTopikDosen::class,'nim');
+    }
+
     
 }

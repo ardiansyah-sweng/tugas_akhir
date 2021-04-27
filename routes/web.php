@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TopikController;
 use App\Http\Controllers\PenawaranController;
+use App\Http\Controllers\Dosen;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,10 @@ Route::middleware(['auth','role:mahasiswa'])->group(function(){
         Route::resource('topik',TopikController::class);
         Route::resource('penawaran',PenawaranController::class);
 });
+
+Route::middleware(['auth','role:dosen|super_admin'])->group(function(){
+        Route::resource('penelitian',Dosen\TopikController::class);
+});
+
 
 //Topik
