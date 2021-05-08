@@ -22,12 +22,25 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        @if ($getAcceptTopikDosen OR $getAcceptTopikMahasiswa)
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title text-center">Anda sudah memiliki Judul!</div>
+                                </div>
+                            </div>
+                        @elseif($getMahasiswaMengajukan)
                         <div class="card">
+                            <div class="card-header">
+                                <div class="card-title text-center">Kamu sedang dalam masa mengajukan judul!</div>
+                            </div>
+                        </div>
+                        @else
+                            <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Penawaran Dosen</div>
                             </div>
                             <div class="card-body">
-                               
+                              
                                 <div class="table-responsive">
                                     <table id="add-row" class="display table table-striped table-hover" >
                                         <thead>
@@ -85,6 +98,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        
                     </div>
                 </div>
             </div>

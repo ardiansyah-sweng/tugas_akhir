@@ -61,6 +61,8 @@
                                                             <span class="badge badge-success">Open</span>
                                                         @elseif($item->status=="Close")
                                                             <span class="badge badge-danger">Close</span>
+                                                        @else
+                                                            <span class="badge badge-info">Terpilih</span>
                                                         @endif
                                                     </td>
                                                     <td>

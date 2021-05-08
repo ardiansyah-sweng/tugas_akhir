@@ -94,8 +94,25 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="components/gridsystem.html">
+                                <a href="{{ url('/mytopik') }}">
                                     <span class="sub-item">Request Mahasiswa</span>
+                                </a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#bimbingan">
+                        <i class="fas fa-user-friends"></i>
+                        <p>Bimbingan</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="bimbingan">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Bimbingan saya</span>
                                 </a>
                             </li>
                            
@@ -116,6 +133,11 @@
                             <li>
                                 <a href="{{ url('/topik') }}">
                                     <span class="sub-item">Ajukan judul</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/penawaran/topiksaya') }}">
+                                    <span class="sub-item">Request Saya</span>
                                 </a>
                             </li>
                             <li>

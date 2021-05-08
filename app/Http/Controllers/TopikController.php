@@ -9,6 +9,7 @@ use App\Models\Topikskripsi;
 use App\Models\Dosen;
 use App\Models\Periode;
 use App\Models\Mahasiswa;
+use App\Models\MahasiswaRegisterTopikDosen;
 
 class TopikController extends Controller
 {
@@ -16,7 +17,28 @@ class TopikController extends Controller
         $topik = TopikBidang::all();
         $dosen = Dosen::with('user')->get();
         $periode = Periode::where('status','1')->get();
-        return view('pages.mahasiswa.addTopik',compact('topik','dosen','periode'));
+
+        //memanggil id dari tabel user
+        $id=Auth::Id();
+
+        //query nim dari relasi tabel dosen dan user
+        $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
+
+        //query untuk mengetahui kalau mahasiswa sudah memiliki topik dari topik mahasiswa
+        $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->where('status','Accept')->first();
+
+         //query untuk mengetahui kalau mahasiswa sedang menunggu dari dosen untuk acc/reject topik mahasiswa yang di ajukan
+        $getMahasiswaMengajukan = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->whereNull('status')->first();
+
+        //query untuk menunggu acc/reject dari topik dosen yang ditawarkan
+        $menungguAcc = MahasiswaRegisterTopikDosen::where('nim',$data_mahasiswa->nim)
+        ->where('status','Waiting')->first();
+
+        //query untuk mengetahui apakah mahasiswa sudah dapat judul, dari topik dosen
+        $sudahDapatJudulDariDosen = Topikskripsi::where('nim_terpilih', $data_mahasiswa->nim)->where('status','Accept')->first();
+
+        // dd($menungguAcc);
+        return view('pages.mahasiswa.addTopik',compact('topik','dosen','periode','getMahasiswaMengajukan','getAcceptTopikMahasiswa','menungguAcc','sudahDapatJudulDariDosen'));
     }
 
     public function store(Request $request)
@@ -54,7 +76,7 @@ class TopikController extends Controller
 
            
         Topikskripsi::create($data);
-        return redirect('/topik');
+        return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');
 
         }
 }

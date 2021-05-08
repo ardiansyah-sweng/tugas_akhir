@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dosen;
 use Illuminate\Support\Facades\Auth;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Periode;
@@ -21,6 +22,7 @@ class TopikController extends Controller
      */
     public function index()
     {
+
         //memanggil id dari tabel user
         $id=Auth::user()->id;
         
@@ -30,7 +32,7 @@ class TopikController extends Controller
         // $data_get_skripsi=MahasiswaRegisterTopikDosen::all();
         // dd($data_get_skripsi);
 
-        $jumlah_pemilih=MahasiswaRegisterTopikDosen::where('id_topikskripsi','');
+        // $jumlah_pemilih=MahasiswaRegisterTopikDosen::where('id_topikskripsi','');
 
         // //query nipy dari relasi tabel skripsi dan topik bidang
         $data= Topikskripsi::with('mahasiswaTerpilih')
@@ -81,7 +83,7 @@ class TopikController extends Controller
         $data['nipy'] = $data_dosen->nipy;
         $data['status'] = "Open";
         Topikskripsi::create($data);
-        return redirect('/penelitian')->with('alert-success','Data Berhasil di tambah');;
+        return redirect('/penelitian')->with('alert-success','Data Berhasil di tambah');
 
     }
 

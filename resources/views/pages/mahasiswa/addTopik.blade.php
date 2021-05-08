@@ -27,6 +27,19 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                         @if ($getMahasiswaMengajukan OR $menungguAcc)
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title text-center">Kamu sedang dalam masa mengajukan judul!</div>
+                                    </div>
+                                </div>
+                        @elseif($getAcceptTopikMahasiswa OR $sudahDapatJudulDariDosen)
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title text-center">Anda sudah memiliki Judul!</div>
+                                </div>
+                            </div>
+                        @else
                         <form action="{{ route('topik.store')}}" method="POST" >
                             @csrf
                         <div class="card">
@@ -107,6 +120,7 @@
                         </div>
                         </form>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

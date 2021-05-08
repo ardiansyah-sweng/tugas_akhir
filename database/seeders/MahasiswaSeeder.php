@@ -29,7 +29,7 @@ class MahasiswaSeeder extends Seeder
         ]);
 
         Mahasiswa::create([
-            'nim' => '1700018117',
+            'nim' => '1700018197',
             'status' => '1',
             'avatar' => '',
             'user_id' => '36',
@@ -40,6 +40,64 @@ class MahasiswaSeeder extends Seeder
             'status' => '1',
             'avatar' => '',
             'user_id' => '37',
+        ]);
+
+        Mahasiswa::create([
+            'nim' => '1700018118',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '38',
+        ]);
+
+        Mahasiswa::create([
+            'nim' => '1700018121',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '39',
+        ]);
+
+        Mahasiswa::create([
+            'nim' => '1700018122',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '40',
+        ]);
+
+         Mahasiswa::create([
+            'nim' => '1700018123',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '41',
+        ]);
+
+        Mahasiswa::create([
+            'nim' => '1700018124',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '42',
+        ]);
+
+
+        Mahasiswa::create([
+            'nim' => '1700018125',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '43',
+        ]);
+
+        Mahasiswa::create([
+            'nim' => '1700018130',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '44',
+        ]);
+
+
+        Mahasiswa::create([
+            'nim' => '1700018131',
+            'status' => '1',
+            'avatar' => '',
+            'user_id' => '45',
         ]);
     }
 }

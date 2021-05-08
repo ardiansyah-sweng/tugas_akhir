@@ -28,11 +28,14 @@ Route::middleware(['auth','role:super_admin|dosen|mahasiswa'])->get('/dashboard'
 
 Route::middleware(['auth','role:mahasiswa'])->group(function(){
         Route::resource('topik',TopikController::class);
+        Route::get('/penawaran/topiksaya', [PenawaranController::class, 'topiksaya'])->name('penawaran.topiksaya');
         Route::resource('penawaran',PenawaranController::class);
 });
 
 Route::middleware(['auth','role:dosen|super_admin'])->group(function(){
         Route::resource('penelitian',Dosen\TopikController::class);
+        Route::resource('mytopik',Dosen\DitawarkanController::class);
+        Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
 });
 
 

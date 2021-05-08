@@ -246,7 +246,7 @@ class User2Seeder extends Seeder
 
         $mahasiswa2 = User::create([
             'name' => 'Abi Abdurahman',
-            'email' => 'abi1700018188@webmail.uad.ac.id',
+            'email' => 'abi1700018197@webmail.uad.ac.id',
             'password' => bcrypt('12345678')
         ]);
 
@@ -259,5 +259,72 @@ class User2Seeder extends Seeder
         ]);
 
         $mahasiswa3->assignRole('mahasiswa');
+
+        $mahasiswa4 = User::create([
+            'name' => 'Adil Baihaqi',
+            'email' => 'adil1700018118@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa4->assignRole('mahasiswa');
+
+
+        $mahasiswa5 = User::create([
+            'name' => 'Amir Fauzi Ansharif',
+            'email' => 'amir1700018121@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa5->assignRole('mahasiswa');
+
+        $mahasiswa6 = User::create([
+            'name' => 'Nur fadhilah alfianty firman',
+            'email' => 'nur1700018122@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa6->assignRole('mahasiswa');
+
+        $mahasiswa7 = User::create([
+            'name' => 'Rafida Kumalasari',
+            'email' => 'rafida1700018123@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa7->assignRole('mahasiswa');
+
+
+        $mahasiswa8 = User::create([
+            'name' => 'Iftitah Dwi Ulumiyah',
+            'email' => 'iftitah1700018124@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa8->assignRole('mahasiswa');
+
+        $mahasiswa9 = User::create([
+            'name' => 'Muhammad Satria Gradienta ',
+            'email' => 'muhammad1700018125@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa9->assignRole('mahasiswa');
+
+        $mahasiswa10 = User::create([
+            'name' => 'Eef Mekelliano',
+            'email' => 'adil1700018130@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa10->assignRole('mahasiswa');
+
+
+        $mahasiswa11 = User::create([
+            'name' => 'Aditya Angga Ramadhan',
+            'email' => 'aditya1700018131@webmail.uad.ac.id',
+            'password' => bcrypt('12345678')
+        ]);
+
+        $mahasiswa11->assignRole('mahasiswa');
     }
 }
