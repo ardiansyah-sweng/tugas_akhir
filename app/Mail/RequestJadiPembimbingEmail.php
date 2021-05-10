@@ -7,21 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TopikDosenEmail extends Mailable
+class RequestJadiPembimbingEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $details;
-    public $type;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($details,$type)
+    public function __construct($details)
     {
         $this->details=$details;
-        $this->type=$type;
     }
 
     /**
@@ -31,6 +29,6 @@ class TopikDosenEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Pengumanan Pengajuan Topik Dosen')->view('emails.topikDosen');
+        return $this->subject('Menginginkan Anda Jadi Dosen Pembimbing')->view('emails.notifDosenRequest');
     }
 }

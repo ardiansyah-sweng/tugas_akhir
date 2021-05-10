@@ -369,7 +369,7 @@
                 </tr><!-- end tr -->
                 <tr>
                     <td valign="middle" class="hero bg_white" style="padding: 3em 0 2em 0;">
-                        <img src="{{ asset('storage/images/'.$type.'.png') }}" alt=""
+                        <img src="{{ asset('storage/images/'.$details['type'].'.png') }}" alt=""
                             style="width: 300px; max-width: 600px; height: auto; margin: auto; display: block;">
                     </td>
                 </tr><!-- end tr -->
@@ -377,13 +377,13 @@
                     <td valign="middle" class="hero bg_white" style="padding: 2em 0 4em 0;">
                         <table>
                             <tr>
-                                @if ($type=='Accept')
+                                @if ($details['type']=='Accept')
 
                                 <td>
                                     <div class="text" style="padding: 0 2.5em; text-align: center;">
                                         <h1>Selamat Anda diterima!!</h1>
                                         <h2>pada judul {{$details['judul']}} dengan topik {{ $details['topik']}}</h2>
-                                        <h3>dengan dosen pembimbing {{ $details['dosen']}}</h3>
+                                        <h3>dari topik dosen {{ $details['dosen']}}</h3>
                                         {{-- <p><a href="#" class="btn btn-primary">Yes! Subscribe Me</a></p> --}}
                                     </div>
                                 </td>
@@ -391,7 +391,8 @@
                                 <td>
                                     <div class="text" style="padding: 0 2.5em; text-align: center;">
                                         <h2>Maaf anda tidak diterima dari judul {{$details['judul']}} dengan topik {{ $details['topik']}}</h2>
-                                        <h3>dari dosen {{ $details['dosen']}}</h3>
+                                        <h3>dari topik dosen {{ $details['dosen']}}</h3>
+                                        <h3>Tetap Semangat Mencari Topik Penelitian!</h3>
                                         {{-- <p><a href="#" class="btn btn-primary">Yes! Subscribe Me</a></p> --}}
                                     </div>
                                 </td>

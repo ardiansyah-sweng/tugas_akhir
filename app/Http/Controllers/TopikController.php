@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\RequestJadiPembimbingEmail;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 use App\Models\TopikBidang;
@@ -73,7 +75,24 @@ class TopikController extends Controller
 
         $data['duedate'] = $tanggal_deadline;
         // dd($data);
+        
+        $topikBidang=TopikBidang::whereid($request->id_topikbidang)->first();
 
+        //query mengetahui email dosen
+        $dataDosen=Dosen::wherenipy($request->nipy)->first();
+        
+    
+        // $details=[
+        //     'judul' =>$request->judul_topik,
+        //     'topik' =>$topikBidang->nama_topik,
+        //     'nama' =>$data_mahasiswa->user->name,
+        //     'nim' =>$data_mahasiswa->nim,
+            
+        // ];
+        // // $dataDosen->user->email;
+        // Mail::to('nashirmuhammad117@gmail.com')->send(new RequestJadiPembimbingEmail($details));
+        // return "email terkirim";
+        // die;
            
         Topikskripsi::create($data);
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');

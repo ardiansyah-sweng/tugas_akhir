@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dosen;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\TopikDosenEmail;
+use App\Mail\TopikMahasiswaEmail;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
@@ -23,10 +24,6 @@ class DitawarkanController extends Controller
         //query nipy dari relasi tabel dosen
         $data_dosen=Dosen::whereuser_id($id)->first();
 
-        // $data_get_skripsi=MahasiswaRegisterTopikDosen::all();
-        // dd($data_get_skripsi);
-
-        // $jumlah_pemilih=MahasiswaRegisterTopikDosen::where('id_topikskripsi','');
 
         // //query nipy dari relasi tabel skripsi dan topik bidang
         $data= Topikskripsi::where('nipy',$data_dosen['nipy'])
@@ -38,24 +35,44 @@ class DitawarkanController extends Controller
     }
 
     public function update(Request $request, $id){
-        // $data = $request->all();
-        // dd($id);
-        // dd($request->nim);
         $accept['status'] = 'Accept';
         $reject['status'] = 'Reject';
         $mahasiswa['nim_terpilih'] = $request->nim;
-        
-        
 
-        //query status tb_getTOpikSkiripsi all
+        
+        //query where id
+        $data = MahasiswaRegisterTopikDosen::whereid($id)->first();
+        $details=[
+            'judul' =>$data->getTopikSkripsi->judul_topik,
+            'topik' =>$data->getTopikSkripsi->topik->nama_topik,
+            'dosen' =>$data->getTopikSkripsi->dosen->user->name,
+        ];
+        // Mail::to('nashirmuhammad117@gmail.com')->send(new TopikDosenEmail($details,$accept['status']));
+        // // dd($data->getTopikSkripsi->dosen->user->name); jangan dipakai
+        // die;
+        
+        $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
+        ->whereid_topikskripsi($request->id_topikskripsi)->get();
+        
+        // if($item){
+        //     foreach($item as $val){
+        //     // dd($val->mahasiswa->user->email); jangan di pakai
+        //     Mail::to('nashirmuhammad117@gmail.com')->send(new TopikDosenEmail($details,$reject['status']));
+        //     }
+        // }
+        
+        // die;
+
+        //query status Accept
         $data = MahasiswaRegisterTopikDosen::whereid($id)->update($accept);
 
-        //reject
+        //query status rejct
         $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
         ->whereid_topikskripsi($request->id_topikskripsi)
         ->update($reject);
 
         
+
 
         //query pindah nim tb_getTopikSkripsi -> skripsi
         $row=Topikskripsi::whereid($request->id_topikskripsi)->update(
@@ -64,10 +81,6 @@ class DitawarkanController extends Controller
                 'status' => 'Accept'
                 ]
         );
-
-
-        //query status tb skripsi terpilih
-
 
 
         //redirect topiksaya
@@ -96,7 +109,7 @@ class DitawarkanController extends Controller
         //     'dosen' =>$dataMhs->dosen->user->name,
         //     'type' =>$request->type,
         // ];
-        // Mail::to('nashirmuhammad117@gmail.com')->send(new TopikDosenEmail($details));
+        // Mail::to('nashirmuhammad117@gmail.com')->send(new TopikMahasiswaEmail($details));
         // return "email terkirim";
         // die;
 

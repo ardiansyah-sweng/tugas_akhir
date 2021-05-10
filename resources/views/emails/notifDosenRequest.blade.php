@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Simple Transactional Email</title>
+    <title>SIMTAKHIR</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -351,7 +351,7 @@
                       <td>
                         <b>Pemberitahuan!</b>
                         <br>
-                        <p>Bahwa topik anda yang berjudul <b>{{ $details['judul'] }}</b> dengan topik <b>{{ $details['topik'] }}</b> di pilih oleh</p>
+                        <p>Bahwa Mahasiswa dengan nama <b>{{ $details['nama'] }}</b> nim <b>{{ $details['nim'] }}</b> Menginginkan anda menjadi pembimbingnya, dengan </p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
@@ -360,8 +360,8 @@
                                   <tbody>
                                     <tr>
                                       <td> <a href="#">
-                                      {{ $details['nama']}} - 
-                                      {{ $details['nim'] }}</a> </td>
+                                      Judul : {{ $details['judul']}} - 
+                                      Topik : {{ $details['topik'] }}</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
