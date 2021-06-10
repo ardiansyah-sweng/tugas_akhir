@@ -19,11 +19,11 @@ class Mahasiswa extends Model
     }
 
     public function skripsiSubmit(){
-        return $this->hasMany(Topikskripsi::class,'nim_submit');
+        return $this->hasMany(Topikskripsi::class,'nim_submit','nim');
     }
 
     public function skripsiPilih(){
-        return $this->hasMany(Topikskripsi::class,'nim_terpilih');
+        return $this->hasMany(Topikskripsi::class,'nim_terpilih','nim');
     }
 
     public function getSkripsi(){

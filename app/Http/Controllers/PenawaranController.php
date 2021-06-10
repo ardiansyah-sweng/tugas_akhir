@@ -55,9 +55,12 @@ class PenawaranController extends Controller
         //memanggil id dari tabel user
         $id=Auth::user()->id;
         $email=Auth::user()->email;
+        // dd($email);
 
         //query topik skripsi
         $getJudul = Topikskripsi::whereid($request->id_topikskripsi)->first();
+
+        
 
         //query nim dari relasi tabel dosen dan user
         $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
@@ -67,9 +70,12 @@ class PenawaranController extends Controller
         $data['status'] = 'Waiting';
 
 
-
+        
         // dd($data);
 
+        //email dosen
+        // dd($getJudul->dosen->user->email);
+        
         // $details=[
         //     'judul' =>$getJudul->judul_topik,
         //     'topik' =>$getJudul->topik->nama_topik,

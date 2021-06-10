@@ -22,8 +22,8 @@ class Dosen extends Model
 
 
     //atribut nipy adalah kepunyaan dari tabel topikSkripsi (FK)
-    public function Skripsi(){
-        return $this->hasMany(Topikskripsi::class,'nipy');
+    public function skripsi(){
+        return $this->hasMany(Topikskripsi::class,'nipy', 'nipy');
     }
 
     public function getAvatarAttribute($value){

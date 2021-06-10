@@ -46,4 +46,8 @@ class Topikskripsi extends Model
     public function periode(){
         return $this->belongsTo(Periode::class,'id_periode','id');
     }
+
+    public function logbooks(){
+        return $this->hasMany(Logbook::class,'id_topikskripsi');
+    }
 }

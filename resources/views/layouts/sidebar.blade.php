@@ -74,7 +74,7 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                @if (Auth::user()->hasRole('dosen'))
+                @if (Auth::user()->hasRole('dosen|super_admin'))
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-layer-group"></i>
@@ -149,6 +149,29 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#log">
+                        <i class="fas fa-book"></i>
+                        <p>Logbook</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="log">
+                        <ul class="nav nav-collapse">
+                            
+                            <li>
+                                <a href="{{ url('/logbook') }}">
+                                    <span class="sub-item">Lihat Logbook</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/logbook/create') }}">
+                                    <span class="sub-item">Tambah Logbook</span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
                 @endif
 
                 
@@ -156,15 +179,15 @@
                 @if (Auth::user()->hasRole('super_admin'))
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#forms">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Super Admin</p>
+                        <i class="fas fa-users"></i>
+                        <p>Dosen</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="forms">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="forms/forms.html">
-                                    <span class="sub-item">Basic Form</span>
+                                <a href="{{ url('/dosen') }}">
+                                    <span class="sub-item">Daftar dosen</span>
                                 </a>
                             </li>
                         </ul>

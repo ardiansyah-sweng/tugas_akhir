@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TopikController;
 use App\Http\Controllers\PenawaranController;
+use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\Dosen;
+use App\Http\Controllers\Superadmin;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,12 +32,17 @@ Route::middleware(['auth','role:mahasiswa'])->group(function(){
         Route::resource('topik',TopikController::class);
         Route::get('/penawaran/topiksaya', [PenawaranController::class, 'topiksaya'])->name('penawaran.topiksaya');
         Route::resource('penawaran',PenawaranController::class);
+        Route::resource('logbook',LogbookController::class);
 });
 
 Route::middleware(['auth','role:dosen|super_admin'])->group(function(){
         Route::resource('penelitian',Dosen\TopikController::class);
         Route::resource('mytopik',Dosen\DitawarkanController::class);
         Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
+});
+
+Route::middleware(['auth','role:super_admin'])->group(function(){
+        Route::resource('dosen',Superadmin\DosenController::class);
 });
 
 

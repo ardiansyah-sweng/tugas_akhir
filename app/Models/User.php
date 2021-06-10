@@ -43,11 +43,11 @@ class User extends Authenticatable
     ];
 
     public function dosen(){
-        return $this->hasOne(Dosen::class,'user_id');
+        return $this->hasOne(Dosen::class,'user_id','id');
     }
 
     public function mahasiswa(){
-        return $this->hasOne(Mahasiswa::class,'user_id');
+        return $this->hasOne(Mahasiswa::class,'user_id','id');
     }
 
     public function dosen_skripsi() {
