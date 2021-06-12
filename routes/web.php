@@ -43,6 +43,7 @@ Route::middleware(['auth','role:dosen|super_admin'])->group(function(){
 
 Route::middleware(['auth','role:super_admin'])->group(function(){
         Route::resource('dosen',Superadmin\DosenController::class);
+        Route::resource('setup',Superadmin\SetupController::class);
 });
 
 

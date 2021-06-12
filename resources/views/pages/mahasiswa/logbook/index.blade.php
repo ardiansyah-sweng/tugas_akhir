@@ -13,7 +13,7 @@
                     </div>
                     @if ($data)
                     <div class="ml-md-auto py-2 py-md-0">
-                        <a href="#" class="btn btn-secondary btn-round"> <i class="fas fa-download"></i> Download</a>
+                        <a href="{{ url('/logbook/'.$data->id) }}" target="_blank" class="btn btn-secondary btn-round"> <i class="fas fa-download"></i> Download</a>
                         <a href="{{ url('/logbook/create') }}" class="btn btn-white btn-border btn-round mr-2"><i
                                 class="fas fa-plus"></i> Tambah Logbook</a>
                     </div>
@@ -88,7 +88,7 @@
                                         @forelse ($logbook as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->kegiatan }}</td>
+                                            <td>    </td>
                                             <td>{{ $item->catatan_kemajuan }}</td>
                                             <td>
                                                 @php

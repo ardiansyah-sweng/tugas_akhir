@@ -193,6 +193,22 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#setting">
+                        <i class="fas fa-cogs"></i>
+                        <p>Setting</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="setting">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/setup') }}">
+                                    <span class="sub-item">Setting</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 
                 {{-- <li class="nav-item">

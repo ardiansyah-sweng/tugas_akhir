@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Topikskripsi;
 use App\Models\Mahasiswa;
 use App\Models\Logbook;
+use PDF;
 
 class LogbookController extends Controller
 {
@@ -65,6 +66,25 @@ class LogbookController extends Controller
 
         Logbook::create($data);
         return redirect('/logbook')->with('alert-success','Data Berhasil di tambah');
+    }
+
+    public function show($id){
+       $logbook = Logbook::where('id_topikskripsi',$id)
+        ->get();
+        $biodata = Topikskripsi::where('id',$id)
+        ->first();
+        // dd($biodata);
+        // dd($logbook);
+
+        // share data to view
+        // view()->share('employee',$data);
+        // return view('pages.mahasiswa.logbook.pdf-logbook');
+        // die;
+        $pdf = PDF::loadView('pages.mahasiswa.logbook.pdf-logbook', [
+            'logbook'=>$logbook,
+            'biodata'=>$biodata,
+            ])->setPaper('a4','landscape')->setWarnings(false);
+                return $pdf->download('logbook.pdf');
     }
 
     

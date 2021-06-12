@@ -52,7 +52,7 @@
 
                                             <td>
                                                 @if ($item->status==NULL)
-                                                    <span class="badge badge-info">Waiting</span>
+                                                    <span class="badge badge-info">Waieef1700018130@webmail.uad.ac.idting</span>
                                                 @elseif($item->status=="Accept")
                                                     <span class="badge badge-success">Accept</span>
                                                 @elseif($item->status=="Reject")
