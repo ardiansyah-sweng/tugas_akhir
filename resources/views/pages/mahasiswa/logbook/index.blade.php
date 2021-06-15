@@ -80,6 +80,7 @@
                                             <th width="25%">Kegiatan</th>
                                             <th width="45%">Catatan Kemajuan</th>
                                             <th width="15%">Tanggal</th>
+                                            <th width="15%">File tambahan</th>
                                             <th width="10%">Paraf</th>
 
                                         </tr>
@@ -88,13 +89,19 @@
                                         @forelse ($logbook as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>    </td>
+                                            <td>{{ $item->kegiatan }}</td>
                                             <td>{{ $item->catatan_kemajuan }}</td>
                                             <td>
                                                 @php
                                                     $date= $item->created_at->format('d-m-Y');
                                                     echo $date;
                                                 @endphp
+                                            </td>
+                                            <td>
+                                                @if ($item->file)
+                                                    <a href="{{ url('/view/'.$item->id) }}" target="_blank" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i> View</a>
+                                                    {{-- <a href="{{ url('/download/'.$item->file) }}" class="btn btn-primary btn-sm"> <i class="fas fa-download"></i> Download</a> --}}
+                                                @endif
                                             </td>
                                             <td>
                                                 @if ($item->status==0)

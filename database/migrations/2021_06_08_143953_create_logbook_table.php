@@ -17,6 +17,7 @@ class CreateLogbookTable extends Migration
             $table->id();
             $table->string('kegiatan');
             $table->string('catatan_kemajuan');
+            $table->string('file')->nullable();
             $table->boolean('status');
             $table->integer('id_topikskripsi');
             $table->timestamps();

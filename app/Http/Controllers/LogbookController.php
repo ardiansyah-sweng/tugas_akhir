@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
+use App\Upload;
 
 use App\Models\Topikskripsi;
 use App\Models\Mahasiswa;
@@ -23,15 +25,11 @@ class LogbookController extends Controller
         ->where('status','Accept')
         ->first();
         if($data){
-            $logbook = Logbook::where('id_topikskripsi',$data->id)
-        ->get();
-        return view('pages.mahasiswa.logbook.index',compact('data','logbook'));
-    }
-    return view('pages.mahasiswa.logbook.index',compact('data'));
-        // dd($data);
-        
-
-        // dd($logbook);
+                $logbook = Logbook::where('id_topikskripsi',$data->id)
+            ->get();
+            return view('pages.mahasiswa.logbook.index',compact('data','logbook'));
+        }
+        return view('pages.mahasiswa.logbook.index',compact('data'));
     }
 
     public function create(){
@@ -47,8 +45,21 @@ class LogbookController extends Controller
         return view('pages.mahasiswa.logbook.create',compact('data'));
     }
 
+    public function view($id){
+        
+      $data=Logbook::find($id);
+
+      
+      return view('pages.mahasiswa.logbook.view',compact('data'));
+    }
+
+    // public function download($file){
+    //     return response()->download('storage/', $file);
+        
+    // }
+
     public function store(Request $request){
-        // dd($request);
+        // dd($request->file);
         $id=Auth::Id();
         $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
 
@@ -63,6 +74,12 @@ class LogbookController extends Controller
         $data = $request->all();
         $data['status'] = 0;
         $data['id_topikskripsi'] = $topik->id;
+
+
+        $data['file']=$request->file('file')->store(
+            'files','public'
+        );
+
 
         Logbook::create($data);
         return redirect('/logbook')->with('alert-success','Data Berhasil di tambah');
