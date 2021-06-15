@@ -75,12 +75,12 @@ class LogbookController extends Controller
         $data['status'] = 0;
         $data['id_topikskripsi'] = $topik->id;
 
-
-        $data['file']=$request->file('file')->store(
+        if($request->file){
+            $data['file']=$request->file('file')->store(
             'files','public'
         );
-
-
+        }
+        
         Logbook::create($data);
         return redirect('/logbook')->with('alert-success','Data Berhasil di tambah');
     }

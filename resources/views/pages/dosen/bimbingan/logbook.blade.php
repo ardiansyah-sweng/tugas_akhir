@@ -11,15 +11,6 @@
                         <h2 class="text-white pb-2 fw-bold"><i class="fas fa-layer-group"></i> Logbook</h2>
 
                     </div>
-                    @if ($data)
-                    <div class="ml-md-auto py-2 py-md-0">
-                        <a href="{{ url('/logbook/'.$data->id) }}" target="_blank" class="btn btn-secondary btn-round"> <i class="fas fa-download"></i> Download</a>
-                        <a href="{{ url('/logbook/create') }}" class="btn btn-white btn-border btn-round mr-2"><i
-                                class="fas fa-plus"></i> Tambah Logbook</a>
-                    </div>
-                    @endif
-
-
                 </div>
             </div>
         </div>
@@ -36,7 +27,13 @@
                                         <td width="5%">
                                             <span class="h4">Nama</span>
                                         </td>
-                                        <td><span class="h4">: {{ Auth::user()->name }} </span></td>
+                                        <td><span class="h4">:
+                                                @if ($data->nim_submit)
+                                                {{ $data->mahasiswaSubmit->user->name}}
+                                                @elseif($data->nim_terpilih)
+                                                {{ $data->mahasiswaTerpilih->user->name}}
+                                                @endif
+                                            </span></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -81,7 +78,8 @@
                                             <th width="45%">Catatan Kemajuan</th>
                                             <th width="15%">Tanggal</th>
                                             <th width="15%">File tambahan</th>
-                                            <th width="10%">Paraf</th>
+                                            <th width="10%">Status</th>
+                                            <th width="10%">Action</th>
 
                                         </tr>
                                     </thead>
@@ -93,15 +91,17 @@
                                             <td>{{ $item->catatan_kemajuan }}</td>
                                             <td>
                                                 @php
-                                                    $date= $item->created_at->format('d-m-Y');
-                                                    echo $date;
+                                                $date= $item->created_at->format('d-m-Y');
+                                                echo $date;
                                                 @endphp
                                             </td>
                                             <td>
                                                 @if ($item->file)
-                                                    <a href="{{ url('/view/'.$item->id) }}" target="_blank" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i> View</a>
-                                                @else
-                                                     <span class="badge badge-default">Tidak ada</span>
+                                                <a href="{{ url('/view/'.$item->id) }}" target="_blank"
+                                                    class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i>
+                                                    View</a>
+                                                {{-- <a href="{{ url('/download/'.$item->file) }}" class="btn
+                                                btn-primary btn-sm"> <i class="fas fa-download"></i> Download</a> --}}
                                                 @endif
                                             </td>
                                             <td>
@@ -111,6 +111,13 @@
                                                 <span class="badge badge-success">verified</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if ($item->status==0)
+                                                <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#acceptModal{{$item->id}}"> <i class="fas fa-edit"></i>
+                                                    Update</a>
+                                                @endif
+                                            </td>
+
                                         </tr>
                                         @empty
                                         <tr>
@@ -168,4 +175,36 @@
             </div>
         </footer>
     </div>
+
+    <!-- Modal -->
+    @foreach ($logbook as $item)
+    <div class="modal fade" id="acceptModal{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header no-bd">
+                    <h5 class="modal-title">
+                        <span class="fw-mediumbold">
+                            Logbook</span>
+                       
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{url('bimbingan/'.$item->id)}}" method="POST">
+                    @method('PUT')
+                    @csrf
+                    <div class="modal-body">
+                        <p class="small">Konfirmasi untuk <b>{{$item->kegiatan}}</b> ?</p>                  
+                                    
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>          
+    @endforeach
     @endsection

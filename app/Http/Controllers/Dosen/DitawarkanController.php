@@ -29,8 +29,18 @@ class DitawarkanController extends Controller
         $data= Topikskripsi::where('nipy',$data_dosen['nipy'])
         ->where('option_from','Mahasiswa')
         ->get();
-        // dd($data);
+        
+        $wait= Topikskripsi::where('nipy',$data_dosen['nipy'])
+        ->where('option_from','Mahasiswa')
+        ->whereNull('status')
+        ->get();
 
+        if($wait){
+            foreach($wait as $item){
+                echo $item->created_at;
+            }
+        }
+        die;
         return view('pages.dosen.requestMahasiswa',compact('data'));
     }
 
