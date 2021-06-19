@@ -24,7 +24,7 @@ class TopikController extends Controller
     {
         $userID = Auth::user()->id;
         //query nipy dari relasi tabel dosen
-        $lecturerNIPY = Dosen::whereuser_id($userID)->first();
+        $recordOfLecturer = Dosen::whereuser_id($userID)->first();
 
         // $data_get_skripsi=MahasiswaRegisterTopikDosen::all();
         // dd($data_get_skripsi);
@@ -33,7 +33,7 @@ class TopikController extends Controller
 
         //query nipy dari relasi tabel skripsi dan topik bidang
         $collectionOfMyProjectTopics = Topikskripsi::with('mahasiswaTerpilih')
-        ->where('nipy', $lecturerNIPY['nipy'])
+        ->where('nipy', $recordOfLecturer['nipy'])
         ->where('option_from','Dosen')
         ->get();
 
