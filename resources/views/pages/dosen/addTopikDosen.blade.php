@@ -60,8 +60,8 @@
                                             <label for="exampleFormControlSelect1">Pilih Topik</label>
                                             <select class="form-control @error('id_topikbidang') is-invalid @enderror" id="exampleFormControlSelect1" name="id_topikbidang">
                                                 <option value="" selected="selected">---- Pilih Topik ----</option>
-                                                @foreach ($topik as $item)                             
-                                                    <option value="{{ $item->id}}" {{ (old("id_topikbidang") == $item->id ? "selected":" ") }}>{{ $item->nama_topik}}</option>
+                                                @foreach ($collectionOfTopicFields as $recordOfTopicField)                             
+                                                    <option value="{{ $recordOfTopicField->id}}" {{ (old("id_topikbidang") == $recordOfTopicField->id ? "selected":" ") }}>{{ $recordOfTopicField->nama_topik}}</option>
                                                 @endforeach
                                             </select>
                                             @error('id_topikbidang')
@@ -75,8 +75,8 @@
                                             <label for="exampleFormControlSelect1">Pilih Periode</label>
                                             <select class="form-control @error('id_periode') is-invalid @enderror" id="exampleFormControlSelect1" name="id_periode">
                                                 <option value="" selected="selected">---- Pilih periode ----</option>
-                                                @foreach ($periode as $item)                             
-                                                    <option value="{{ $item->id}}" {{ (old("id_periode") == $item->id ? "selected":" ") }}>{{ $item->tahun_periode}}</option>
+                                                @foreach ($collectionOfFinalProjectPeriods as $recordOfFinalProjecPeriod)                             
+                                                    <option value="{{ $recordOfFinalProjecPeriod->id}}" {{ (old("id_periode") == $recordOfFinalProjecPeriod->id ? "selected":" ") }}>{{ $recordOfFinalProjecPeriod->tahun_periode}}</option>
                                                 @endforeach
                                             </select>
                                             @error('id_periode')
