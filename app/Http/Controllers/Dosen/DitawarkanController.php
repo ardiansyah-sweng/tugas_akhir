@@ -15,23 +15,23 @@ use App\Models\Dosen;
 
 class DitawarkanController extends Controller
 {
-
-
     public function index(){
         //memanggil id dari tabel user
-        $id=Auth::user()->id;
+        #$id
+        $userID = Auth::user()->id;
         
         //query nipy dari relasi tabel dosen
-        $data_dosen=Dosen::whereuser_id($id)->first();
+        #$data_dosen
+        $recordOfLecturers = Dosen::whereuser_id($userID)->first();
 
-
-        // //query nipy dari relasi tabel skripsi dan topik bidang
-        $data= Topikskripsi::where('nipy',$data_dosen['nipy'])
+        // query nipy dari relasi tabel skripsi dan topik bidang
+        #$data 
+        $collectionOfProposedProjects = Topikskripsi::where('nipy', $recordOfLecturers['nipy'])
         ->where('option_from','Mahasiswa')
         ->get();
         // dd($data);
 
-        return view('pages.dosen.requestMahasiswa',compact('data'));
+        return view('pages.dosen.requestMahasiswa',compact('collectionOfProposedProjects'));
     }
 
     public function update(Request $request, $id){
@@ -42,7 +42,7 @@ class DitawarkanController extends Controller
         
         //query where id
         $data = MahasiswaRegisterTopikDosen::whereid($id)->first();
-        $details=[
+        $details = [
             'judul' =>$data->getTopikSkripsi->judul_topik,
             'topik' =>$data->getTopikSkripsi->topik->nama_topik,
             'dosen' =>$data->getTopikSkripsi->dosen->user->name,
@@ -51,7 +51,7 @@ class DitawarkanController extends Controller
         // // dd($data->getTopikSkripsi->dosen->user->name); jangan dipakai
         // die;
         
-        $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
+        $item = MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
         ->whereid_topikskripsi($request->id_topikskripsi)->get();
         
         // if($item){
@@ -70,9 +70,6 @@ class DitawarkanController extends Controller
         $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
         ->whereid_topikskripsi($request->id_topikskripsi)
         ->update($reject);
-
-        
-
 
         //query pindah nim tb_getTopikSkripsi -> skripsi
         $row=Topikskripsi::whereid($request->id_topikskripsi)->update(
