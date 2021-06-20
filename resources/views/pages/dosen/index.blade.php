@@ -44,22 +44,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($data as $item)
+                                            @forelse ($collectionOfMyProjectTopics as $recordOfMyprojectTopic)
                                                 <tr>
                                                     <th>{{$loop->iteration}}</th>
-                                                    <td>{{ $item->judul_topik}}</td>
-                                                    <td>{{ $item->topik->nama_topik}}</td>
+                                                    <td>{{ $recordOfMyprojectTopic->judul_topik}}</td>
+                                                    <td>{{ $recordOfMyprojectTopic->topik->nama_topik}}</td>
                                                     <td>
-                                                        @if ($item->mahasiswaGetSkripsi->count()==0)
+                                                        @if ($recordOfMyprojectTopic->mahasiswaGetSkripsi->count()==0)
                                                             <span class="badge badge-danger">Tidak ada</span>
                                                         @else
-                                                            <span class="badge badge-success">{{ $item->mahasiswaGetSkripsi->count()}}</span>
+                                                            <span class="badge badge-success">{{ $recordOfMyprojectTopic->mahasiswaGetSkripsi->count()}}</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($item->status=="Open")                                                          
+                                                        @if ($recordOfMyprojectTopic->status=="Open")                                                          
                                                             <span class="badge badge-success">Open</span>
-                                                        @elseif($item->status=="Close")
+                                                        @elseif($recordOfMyprojectTopic->status=="Close")
                                                             <span class="badge badge-danger">Close</span>
                                                         @else
                                                             <span class="badge badge-info">Terpilih</span>
@@ -67,7 +67,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <a href="{{ route('penelitian.show', $item->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-default" data-original-title="Info">
+                                                            <a href="{{ route('penelitian.show', $recordOfMyprojectTopic->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-default" data-original-title="Info">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                             <a href="#" type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">

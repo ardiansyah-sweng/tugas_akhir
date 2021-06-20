@@ -44,29 +44,29 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($data as $item)
+                                            @forelse ($collectionOfProposedProjects as $recordOfProposedProjects)
                                                 <tr>
                                                     <th>{{$loop->iteration}}</th>
-                                                    <td>{{ $item->judul_topik}}</td>
-                                                    <td>{{ $item->topik->nama_topik}}</td>
+                                                    <td>{{ $recordOfProposedProjects->judul_topik}}</td>
+                                                    <td>{{ $recordOfProposedProjects->topik->nama_topik}}</td>
                                                     <td>
-                                                        {{ $item->mahasiswaSubmit->user->name }} || {{ $item->mahasiswaSubmit->nim }}
+                                                        {{ $recordOfProposedProjects->mahasiswaSubmit->user->name }} || {{ $recordOfProposedProjects->mahasiswaSubmit->nim }}
                                                     </td>
                                                     <td>
-                                                        @if ($item->status=="Accept")                                                          
+                                                        @if ($recordOfProposedProjects->status=="Accept")                                                          
                                                             <span class="badge badge-success">Accept</span>
-                                                        @elseif($item->status=="Reject")
+                                                        @elseif($recordOfProposedProjects->status=="Reject")
                                                             <span class="badge badge-danger">Reject</span>
                                                         @else
                                                             <span class="badge badge-warning">Waiting</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($item->status=="Accept")
+                                                        @if ($recordOfProposedProjects->status=="Accept")
                                                             <a href="#" type="button" class="btn btn-danger" aria-disabled="disabled">
                                                                 <i class="fa fa-lock"> Terkunci</i>
                                                             </a>
-                                                        @elseif ($item->status=="Reject")
+                                                        @elseif ($recordOfProposedProjects->status=="Reject")
                                                             <a href="#" type="button" class="btn btn-danger" aria-disabled="disabled">
                                                                 <i class="fa fa-lock"> Terkunci</i>
                                                             </a>
@@ -105,7 +105,7 @@
 </div> 
 
      <!-- Modal accept -->
-     @foreach ($data as $item)
+     @foreach ($collectionOfProposedProjects as $item)
      <div class="modal fade" id="acceptModal{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -134,7 +134,7 @@
 @endforeach
 
  <!-- Modal Reject -->
- @foreach ($data as $item)
+ @foreach ($collectionOfProposedProjects as $item)
  <div class="modal fade" id="rejectModal{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

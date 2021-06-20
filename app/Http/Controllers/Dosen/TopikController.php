@@ -22,26 +22,22 @@ class TopikController extends Controller
      */
     public function index()
     {
-
-        //memanggil id dari tabel user
-        $id=Auth::user()->id;
-        
+        $userID = Auth::user()->id;
         //query nipy dari relasi tabel dosen
-        $data_dosen=Dosen::whereuser_id($id)->first();
+        $recordOfLecturers = Dosen::whereuser_id($userID)->first();
 
         // $data_get_skripsi=MahasiswaRegisterTopikDosen::all();
         // dd($data_get_skripsi);
 
         // $jumlah_pemilih=MahasiswaRegisterTopikDosen::where('id_topikskripsi','');
 
-        // //query nipy dari relasi tabel skripsi dan topik bidang
-        $data= Topikskripsi::with('mahasiswaTerpilih')
-        ->where('nipy',$data_dosen['nipy'])
+        //query nipy dari relasi tabel skripsi dan topik bidang
+        $collectionOfMyProjectTopics = Topikskripsi::with('mahasiswaTerpilih')
+        ->where('nipy', $recordOfLecturers['nipy'])
         ->where('option_from','Dosen')
         ->get();
-        // dd($data);
 
-        return view('pages.dosen.index',compact('data'));
+        return view('pages.dosen.index',compact('collectionOfMyProjectTopics'));
     }
 
     /**
@@ -51,9 +47,9 @@ class TopikController extends Controller
      */
     public function create()
     {
-        $topik = TopikBidang::all();
-        $periode = Periode::where('status','1')->get();
-        return view('pages.dosen.addTopikDosen',compact('topik','periode'));
+        $collectionOfTopicFields = TopikBidang::all();
+        $collectionOfFinalProjectPeriods = Periode::where('status','1')->get();
+        return view('pages.dosen.addTopikDosen',compact('collectionOfTopicFields','collectionOfFinalProjectPeriods'));
     }
 
     /**
@@ -70,21 +66,14 @@ class TopikController extends Controller
             'id_topikbidang' => 'required',
             'id_periode' => 'required',
             ]);
-        $data = $request->all();
-
-        //memanggil id dari tabel user
-        $id=Auth::Id();
-
-
-        //query nipy dari relasi tabel dosen
-        $data_dosen=Dosen::whereuser_id($id)->first();
-        // dd($data_dosen->user->name);
-        $data['option_from'] = "Dosen";
-        $data['nipy'] = $data_dosen->nipy;
-        $data['status'] = "Open";
-        Topikskripsi::create($data);
+        $recordOfMyNewProjectTopic = $request->all();
+        $userID = Auth::Id();
+        $recordOfLecturer = Dosen::whereuser_id($userID)->first();
+        $recordOfMyNewProjectTopic['option_from'] = "Dosen";
+        $recordOfMyNewProjectTopic['nipy'] = $recordOfLecturer->nipy;
+        $recordOfMyNewProjectTopic['status'] = "Open";
+        Topikskripsi::create($recordOfMyNewProjectTopic);
         return redirect('/penelitian')->with('alert-success','Data Berhasil di tambah');
-
     }
 
     /**
@@ -95,9 +84,8 @@ class TopikController extends Controller
      */
     public function show($id)
     {
-        $getTopik = MahasiswaRegisterTopikDosen::whereid_topikskripsi($id)->get();
-        // dd($getTopik);
-        return view('pages.dosen.showGetTopik',compact('getTopik'));
+        $collectionOfRegisteredSudents = MahasiswaRegisterTopikDosen::whereid_topikskripsi($id)->get();
+        return view('pages.dosen.showGetTopik',compact('collectionOfRegisteredSudents'));
     }
 
     /**

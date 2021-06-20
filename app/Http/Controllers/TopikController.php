@@ -16,31 +16,37 @@ use App\Models\MahasiswaRegisterTopikDosen;
 class TopikController extends Controller
 {
     public function index(){
-        $topik = TopikBidang::all();
-        $dosen = Dosen::with('user')->get();
-        $periode = Periode::where('status','1')->get();
+        $collectionOfProjectTopics = TopikBidang::all();
+        $collectionOfLecturers = Dosen::with('user')->get();
+        $collectionOfProjectPeriods = Periode::where('status','1')->get();
 
-        //memanggil id dari tabel user
-        $id=Auth::Id();
-
+        $userID = Auth::Id();
         //query nim dari relasi tabel dosen dan user
-        $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
+        $recordOfStudent = Mahasiswa::whereuser_id($userID)->first();
 
         //query untuk mengetahui kalau mahasiswa sudah memiliki topik dari topik mahasiswa
-        $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->where('status','Accept')->first();
+        $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $recordOfStudent->nim)->where('status','Accept')->first();
 
          //query untuk mengetahui kalau mahasiswa sedang menunggu dari dosen untuk acc/reject topik mahasiswa yang di ajukan
-        $getMahasiswaMengajukan = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->whereNull('status')->first();
+        $getMahasiswaMengajukan = Topikskripsi::where('nim_submit', $recordOfStudent->nim)->whereNull('status')->first();
 
         //query untuk menunggu acc/reject dari topik dosen yang ditawarkan
-        $menungguAcc = MahasiswaRegisterTopikDosen::where('nim',$data_mahasiswa->nim)
+        $menungguAcc = MahasiswaRegisterTopikDosen::where('nim',$recordOfStudent->nim)
         ->where('status','Waiting')->first();
 
         //query untuk mengetahui apakah mahasiswa sudah dapat judul, dari topik dosen
-        $sudahDapatJudulDariDosen = Topikskripsi::where('nim_terpilih', $data_mahasiswa->nim)->where('status','Accept')->first();
+        $sudahDapatJudulDariDosen = Topikskripsi::where('nim_terpilih', $recordOfStudent->nim)->where('status','Accept')->first();
 
         // dd($menungguAcc);
-        return view('pages.mahasiswa.addTopik',compact('topik','dosen','periode','getMahasiswaMengajukan','getAcceptTopikMahasiswa','menungguAcc','sudahDapatJudulDariDosen'));
+        return view('pages.mahasiswa.addTopik',compact(
+            'collectionOfProjectTopics',
+            'collectionOfLecturers',
+            'collectionOfProjectPeriods',
+            'getMahasiswaMengajukan',
+            'getAcceptTopikMahasiswa',
+            'menungguAcc',
+            'sudahDapatJudulDariDosen')
+        );
     }
 
     public function store(Request $request)
