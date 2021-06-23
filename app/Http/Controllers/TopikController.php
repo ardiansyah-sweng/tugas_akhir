@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\RequestJadiPembimbingEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\TolakJob;
 
 use Illuminate\Http\Request;
 use App\Models\TopikBidang;
@@ -16,37 +17,31 @@ use App\Models\MahasiswaRegisterTopikDosen;
 class TopikController extends Controller
 {
     public function index(){
-        $collectionOfProjectTopics = TopikBidang::all();
-        $collectionOfLecturers = Dosen::with('user')->get();
-        $collectionOfProjectPeriods = Periode::where('status','1')->get();
+        $topik = TopikBidang::all();
+        $dosen = Dosen::with('user')->get();
+        $periode = Periode::where('status','1')->get();
 
-        $userID = Auth::Id();
+        //memanggil id dari tabel user
+        $id=Auth::Id();
+
         //query nim dari relasi tabel dosen dan user
-        $recordOfStudent = Mahasiswa::whereuser_id($userID)->first();
+        $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
 
         //query untuk mengetahui kalau mahasiswa sudah memiliki topik dari topik mahasiswa
-        $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $recordOfStudent->nim)->where('status','Accept')->first();
+        $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->where('status','Accept')->first();
 
          //query untuk mengetahui kalau mahasiswa sedang menunggu dari dosen untuk acc/reject topik mahasiswa yang di ajukan
-        $getMahasiswaMengajukan = Topikskripsi::where('nim_submit', $recordOfStudent->nim)->whereNull('status')->first();
+        $getMahasiswaMengajukan = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->whereNull('status')->first();
 
         //query untuk menunggu acc/reject dari topik dosen yang ditawarkan
-        $menungguAcc = MahasiswaRegisterTopikDosen::where('nim',$recordOfStudent->nim)
+        $menungguAcc = MahasiswaRegisterTopikDosen::where('nim',$data_mahasiswa->nim)
         ->where('status','Waiting')->first();
 
         //query untuk mengetahui apakah mahasiswa sudah dapat judul, dari topik dosen
-        $sudahDapatJudulDariDosen = Topikskripsi::where('nim_terpilih', $recordOfStudent->nim)->where('status','Accept')->first();
+        $sudahDapatJudulDariDosen = Topikskripsi::where('nim_terpilih', $data_mahasiswa->nim)->where('status','Accept')->first();
 
         // dd($menungguAcc);
-        return view('pages.mahasiswa.addTopik',compact(
-            'collectionOfProjectTopics',
-            'collectionOfLecturers',
-            'collectionOfProjectPeriods',
-            'getMahasiswaMengajukan',
-            'getAcceptTopikMahasiswa',
-            'menungguAcc',
-            'sudahDapatJudulDariDosen')
-        );
+        return view('pages.mahasiswa.addTopik',compact('topik','dosen','periode','getMahasiswaMengajukan','getAcceptTopikMahasiswa','menungguAcc','sudahDapatJudulDariDosen'));
     }
 
     public function store(Request $request)
@@ -100,7 +95,11 @@ class TopikController extends Controller
         // return "email terkirim";
         // die;
            
-        Topikskripsi::create($data);
+        $topik=Topikskripsi::create($data);
+
+        TolakJob::dispatch($topik)
+        ->delay(now()->addseconds(40));
+        // dd($topik);
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');
 
         }

@@ -312,7 +312,7 @@ class User2Seeder extends Seeder
 
         $mahasiswa10 = User::create([
             'name' => 'Eef Mekelliano',
-            'email' => 'adil1700018130@webmail.uad.ac.id',
+            'email' => 'eef1700018130@webmail.uad.ac.id',
             'password' => bcrypt('12345678')
         ]);
 

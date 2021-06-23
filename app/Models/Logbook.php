@@ -11,7 +11,7 @@ class Logbook extends Model
 
     use HasFactory;
     protected $fillable = [
-        'kegiatan', 'catatan_kemajuan','status','id_topikskripsi','created_at'
+        'kegiatan', 'catatan_kemajuan','status','file','id_topikskripsi','created_at'
     ];
 
     public function skripsi(){

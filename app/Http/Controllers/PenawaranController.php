@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\SimtakhirEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\TopikDosenJob;
 
 use Illuminate\Http\Request;
 use App\Models\Topikskripsi;
@@ -85,7 +86,24 @@ class PenawaranController extends Controller
         // Mail::to('muhammadnashir9@gmail.com')->send(new SimtakhirEmail($details));
         // return "email terkirim";
         // die;
-        MahasiswaRegisterTopikDosen::create($data);
+        
+        $mhs=MahasiswaRegisterTopikDosen::create($data);
+        $mahasiswa=MahasiswaRegisterTopikDosen::where('id_topikskripsi',$mhs->id_topikskripsi)->first();
+        //  $status=MahasiswaRegisterTopikDosen::where('id_topikskripsi',$mhs->id_topikskripsi)
+        // ->pluck('status')
+        // ->all();
+        // if(in_array("Accept",$status)){
+        //     echo "ada";
+        // }else{
+        //     echo "tidak ada";
+        // }
+        // die;
+        // dd($mhs, $mahasiswa);
+
+        
+        TopikDosenJob::dispatch($mhs)
+        ->delay($mahasiswa->created_at->addseconds(6));
+        
  
         return redirect('/penawaran')->with('alert-success','Berhasil di ajukan');
 

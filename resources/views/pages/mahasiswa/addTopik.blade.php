@@ -73,8 +73,8 @@
                                             <label for="exampleFormControlSelect1">Pilih Topik</label>
                                             <select class="form-control @error('id_topikbidang') is-invalid @enderror" id="exampleFormControlSelect1" name="id_topikbidang">
                                                 <option value="" selected="selected">---- Pilih Topik ----</option>
-                                                @foreach ($collectionOfProjectTopics as $recordOfTopic)                             
-                                                    <option value="{{ $recordOfTopic->id}}" {{ (old("id_topikbidang") == $recordOfTopic->id ? "selected":" ") }}>{{ $recordOfTopic->nama_topik}}</option>
+                                                @foreach ($topik as $item)                             
+                                                    <option value="{{ $item->id}}" {{ (old("id_topikbidang") == $item->id ? "selected":" ") }}>{{ $item->nama_topik}}</option>
                                                 @endforeach
                                             </select>
                                             @error('id_topikbidang')
@@ -87,8 +87,8 @@
                                             <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
                                             <select class="form-control @error('nipy') is-invalid @enderror" id="exampleFormControlSelect1" name="nipy">
                                                 <option value="" selected="selected">---- Pilih Dosen ----</option>
-                                                @foreach ($collectionOfLecturers as $recordOfLecturer)                             
-                                                    <option value="{{ $recordOfLecturer->nipy}}" {{ (old("nipy") == $recordOfLecturer->nipy ? "selected":" ") }}>{{ $recordOfLecturer->user->name}}</option>
+                                                @foreach ($dosen as $item)                             
+                                                    <option value="{{ $item->nipy}}" {{ (old("nipy") == $item->nipy ? "selected":" ") }}>{{ $item->user->name}}</option>
                                                 @endforeach
                                             </select>
                                             @error('nipy')
@@ -102,8 +102,8 @@
                                             <label for="exampleFormControlSelect1">Pilih Periode</label>
                                             <select class="form-control @error('id_periode') is-invalid @enderror" id="exampleFormControlSelect1" name="id_periode">
                                                 <option value="" selected="selected">---- Pilih periode ----</option>
-                                                @foreach ($collectionOfProjectPeriods as $recordOfProjectPeriod)                             
-                                                    <option value="{{ $recordOfProjectPeriod->id}}" {{ (old("id_periode") == $recordOfProjectPeriod->id ? "selected":" ") }}>{{ $recordOfProjectPeriod->tahun_periode}}</option>
+                                                @foreach ($periode as $item)                             
+                                                    <option value="{{ $item->id}}" {{ (old("id_periode") == $item->id ? "selected":" ") }}>{{ $item->tahun_periode}}</option>
                                                 @endforeach
                                             </select>
                                             @error('id_periode')

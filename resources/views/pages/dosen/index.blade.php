@@ -44,22 +44,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($collectionOfMyProjectTopics as $recordOfMyprojectTopic)
+                                            @forelse ($data as $item)
                                                 <tr>
                                                     <th>{{$loop->iteration}}</th>
-                                                    <td>{{ $recordOfMyprojectTopic->judul_topik}}</td>
-                                                    <td>{{ $recordOfMyprojectTopic->topik->nama_topik}}</td>
+                                                    <td>{{ $item->judul_topik}}</td>
+                                                    <td>{{ $item->topik->nama_topik}}</td>
                                                     <td>
-                                                        @if ($recordOfMyprojectTopic->mahasiswaGetSkripsi->count()==0)
+                                                        @if ($item->mahasiswaGetSkripsi->count()==0)
                                                             <span class="badge badge-danger">Tidak ada</span>
                                                         @else
-                                                            <span class="badge badge-success">{{ $recordOfMyprojectTopic->mahasiswaGetSkripsi->count()}}</span>
+                                                            <span class="badge badge-success">{{ $item->mahasiswaGetSkripsi->count()}}</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($recordOfMyprojectTopic->status=="Open")                                                          
+                                                        @if ($item->status=="Open")                                                          
                                                             <span class="badge badge-success">Open</span>
-                                                        @elseif($recordOfMyprojectTopic->status=="Close")
+                                                        @elseif($item->status=="Close")
                                                             <span class="badge badge-danger">Close</span>
                                                         @else
                                                             <span class="badge badge-info">Terpilih</span>
@@ -67,7 +67,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <a href="{{ route('penelitian.show', $recordOfMyprojectTopic->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-default" data-original-title="Info">
+                                                            <a href="{{ route('penelitian.show', $item->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-default" data-original-title="Info">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                             <a href="#" type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
@@ -90,60 +90,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
-
-
-                                 <!-- Modal -->
-                                 <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header no-bd">
-                                                <h5 class="modal-title">
-                                                    <span class="fw-mediumbold">
-                                                    New</span> 
-                                                    <span class="fw-light">
-                                                        Row
-                                                    </span>
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p class="small">Create a new row using this form, make sure you fill them all</p>
-                                                <form>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Name</label>
-                                                                <input id="addName" type="text" class="form-control" placeholder="fill name">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 pr-0">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Position</label>
-                                                                <input id="addPosition" type="text" class="form-control" placeholder="fill position">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Office</label>
-                                                                <input id="addOffice" type="text" class="form-control" placeholder="fill office">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer no-bd">
-                                                <button type="button" id="addRowButton" class="btn btn-primary">Add</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
 
                             </div>
                         </div>

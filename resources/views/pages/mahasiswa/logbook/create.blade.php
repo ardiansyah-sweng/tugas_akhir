@@ -36,7 +36,7 @@
                     
                     <div class="col-md-12">
                         
-                        <form action="{{ route('logbook.store')}}" method="POST" >
+                        <form action="{{ route('logbook.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                         <div class="card full-height">
                             <div class="card-header">
@@ -63,6 +63,12 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror 
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+												<label for="exampleFormControlFile1">File tambahan</label>
+												<input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+											</div>
                                     </div>
                                     
                                     

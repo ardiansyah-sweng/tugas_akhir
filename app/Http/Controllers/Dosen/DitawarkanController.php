@@ -15,23 +15,33 @@ use App\Models\Dosen;
 
 class DitawarkanController extends Controller
 {
+
+
     public function index(){
         //memanggil id dari tabel user
-        #$id
-        $userID = Auth::user()->id;
+        $id=Auth::user()->id;
         
         //query nipy dari relasi tabel dosen
-        #$data_dosen
-        $recordOfLecturers = Dosen::whereuser_id($userID)->first();
+        $data_dosen=Dosen::whereuser_id($id)->first();
 
-        // query nipy dari relasi tabel skripsi dan topik bidang
-        #$data 
-        $collectionOfProposedProjects = Topikskripsi::where('nipy', $recordOfLecturers['nipy'])
+
+        // //query nipy dari relasi tabel skripsi dan topik bidang
+        $data= Topikskripsi::where('nipy',$data_dosen['nipy'])
         ->where('option_from','Mahasiswa')
         ->get();
-        // dd($data);
+        
+        // $wait= Topikskripsi::where('nipy',$data_dosen['nipy'])
+        // ->where('option_from','Mahasiswa')
+        // ->whereNull('status')
+        // ->get();
 
-        return view('pages.dosen.requestMahasiswa',compact('collectionOfProposedProjects'));
+        // if($wait){
+        //     foreach($wait as $item){
+        //         echo $item->created_at;
+        //     }
+        // }
+        // die;
+        return view('pages.dosen.requestMahasiswa',compact('data'));
     }
 
     public function update(Request $request, $id){
@@ -42,7 +52,7 @@ class DitawarkanController extends Controller
         
         //query where id
         $data = MahasiswaRegisterTopikDosen::whereid($id)->first();
-        $details = [
+        $details=[
             'judul' =>$data->getTopikSkripsi->judul_topik,
             'topik' =>$data->getTopikSkripsi->topik->nama_topik,
             'dosen' =>$data->getTopikSkripsi->dosen->user->name,
@@ -51,7 +61,7 @@ class DitawarkanController extends Controller
         // // dd($data->getTopikSkripsi->dosen->user->name); jangan dipakai
         // die;
         
-        $item = MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
+        $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
         ->whereid_topikskripsi($request->id_topikskripsi)->get();
         
         // if($item){
@@ -70,6 +80,9 @@ class DitawarkanController extends Controller
         $item=MahasiswaRegisterTopikDosen::whereNotIn('id',[$id])
         ->whereid_topikskripsi($request->id_topikskripsi)
         ->update($reject);
+
+        
+
 
         //query pindah nim tb_getTopikSkripsi -> skripsi
         $row=Topikskripsi::whereid($request->id_topikskripsi)->update(
