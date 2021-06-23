@@ -20,7 +20,8 @@ class Topikskripsi extends Model
         'nipy',
         'option_from',
         'status',
-        'duedate',
+        'dosen_penguji_1',
+        'dosen_penguji_2',
     ];
 
     public function dosen(){

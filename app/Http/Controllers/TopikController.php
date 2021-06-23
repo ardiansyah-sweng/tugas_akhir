@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\RequestJadiPembimbingEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\TolakJob;
 
 use Illuminate\Http\Request;
 use App\Models\TopikBidang;
@@ -94,7 +95,11 @@ class TopikController extends Controller
         // return "email terkirim";
         // die;
            
-        Topikskripsi::create($data);
+        $topik=Topikskripsi::create($data);
+
+        TolakJob::dispatch($topik)
+        ->delay(now()->addseconds(40));
+        // dd($topik);
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');
 
         }
