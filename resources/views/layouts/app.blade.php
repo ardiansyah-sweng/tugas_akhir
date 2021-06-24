@@ -105,6 +105,7 @@
             </div>
             <div id="alertModal"></div>
             <div class="modal-footer">
+                <button id="buttonLogin" type="button" class="btn btn-primary" style="display:none;">Login</button>
                 <button id="buttonRequestAnOTP" type="button" class="btn btn-primary">Request an OTP</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -131,26 +132,42 @@
             var email = $("#inputEmail").val();
             var alertIsEmailNotExist = 'You are not a member!'
             var alertCheckEmail = 'Check your email for an OTP'
-            $.ajax({
-                url: "{{ url('/') }}/emailcheck/" + email,
-                method: "get",
-                dataType: 'JSON',
-                success: function(response) {
-                    if (response.length === 0) {
-                        $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
-                        alertIsEmailNotExist +"</div>");
-                    }
+            var alertEmailValidation = 'Enter your valid email'
 
-                    if (response.length > 0) {
-                        $("#formInputOTP").show();
-                        $("#greetingForUser").html("<label id='greetingForUser' for='exampleFormControlInput1'>"+"Hi <b>"+response[0].name+"</b>, enter your OTP</label>");
-                        $("#alertModal").html("<div class='alert alert-success' role='alert'>" +
-                        alertCheckEmail +"</div>");
-                        $("#inputOTP").focus();
-                        $("#inputEmail").prop('disabled', true);
+            function isEmail(email) {
+                var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                return regex.test(email);
+            }
+
+            if (email === '' || !isEmail(email)) {
+                $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
+                    alertEmailValidation + "</div>");
+            }
+
+            if (isEmail(email)) {
+                $.ajax({
+                    url: "{{ url('/') }}/emailcheck/" + email,
+                    method: "get",
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response.length === 0) {
+                            $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
+                                alertIsEmailNotExist + "</div>");
+                        }
+
+                        if (response.length > 0) {
+                            $("#formInputOTP").show();
+                            $("#buttonLogin").show();
+                            $("#buttonRequestAnOTP").hide();
+                            $("#greetingForUser").html("<label id='greetingForUser' for='exampleFormControlInput1'>" + "Hi <b>" + response[0].name + "</b>, enter your OTP</label>");
+                            $("#alertModal").html("<div class='alert alert-success' role='alert'>" +
+                                alertCheckEmail + "</div>");
+                            $("#inputOTP").focus();
+                            $("#inputEmail").prop('disabled', true);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     });
 </script>
