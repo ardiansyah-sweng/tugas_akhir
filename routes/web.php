@@ -7,6 +7,7 @@ use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\Dosen;
 use App\Http\Controllers\Superadmin;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ use App\Http\Controllers\Superadmin;
 Auth::routes(['register' => false]);
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/emailcheck/{email}', [App\Http\Controllers\Controller::class, 'isEmailExist']);
 
 Route::middleware(['auth','role:super_admin|dosen|mahasiswa'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
