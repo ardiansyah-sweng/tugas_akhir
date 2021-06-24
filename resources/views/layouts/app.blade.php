@@ -132,7 +132,7 @@
             var alertIsEmailNotExist = 'You are not a member!'
             var alertCheckEmail = 'Check your email for an OTP'
             $.ajax({
-                url: "/emailcheck/" + email,
+                url: "{{ url('/') }}/emailcheck/" + email,
                 method: "get",
                 dataType: 'JSON',
                 success: function(response) {
