@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailOneTimePassword;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,9 +17,10 @@ class Controller extends BaseController
 
     public function isEmailExist($email)
     {
+        $otpNumber = $this->generateOTP();
         $recordUsers = User::where('email', $email)->get();
         if (count($recordUsers) > 0) {
-            $this->saveNewOTP($recordUsers[0]['email']);
+            $this->saveNewOTP($recordUsers[0]['email'], $otpNumber);
         }
         return response()->json($recordUsers);
     }
@@ -28,17 +31,26 @@ class Controller extends BaseController
         return response()->json($recordOTPs);
     }
 
-    public function saveNewOTP($email)
+    public function saveNewOTP($email, $otpNumber)
     {
         OTP::create([
             'email' => $email,
-            'otp' => $this->generateOTP(),
+            'otp' => $otpNumber,
             'status' => 'active'
         ]);
+        $this->sendEmails($email, $otpNumber);
     }
 
     public function generateOTP()
     {
         return mt_rand(0, 10000);
+    }
+
+    public function sendEmails($email, $otpCode){
+        $data = [
+            'otpCode' => $otpCode,
+            'email' => $email,
+        ];
+        Mail::to($email)->send(new EmailOneTimePassword($data));   
     }
 }
