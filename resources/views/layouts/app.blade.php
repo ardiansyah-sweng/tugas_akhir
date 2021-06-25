@@ -131,7 +131,7 @@
         $('#buttonRequestAnOTP').click(function() {
             var email = $("#inputEmail").val();
             var alertIsEmailNotExist = 'You are not a member!'
-            var alertCheckEmail = 'Check your email for an OTP'
+            var alertCheckEmail = 'Please check your email for an OTP'
             var alertEmailValidation = 'Enter your valid email'
 
             function isValidEmail(email) {
