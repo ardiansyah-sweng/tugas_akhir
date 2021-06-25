@@ -209,6 +209,22 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#skripsi">
+                        <i class="fas fa-book"></i>
+                        <p>Skripsi</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="skripsi">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/skripsi') }}">
+                                    <span class="sub-item">Skripsi Mahasiswa</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 
                 {{-- <li class="nav-item">
