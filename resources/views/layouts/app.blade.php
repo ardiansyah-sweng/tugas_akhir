@@ -106,6 +106,7 @@
             <div id="alertModal"></div>
             <div class="modal-footer">
                 <button id="buttonLogin" type="button" class="btn btn-primary" style="display:none;">Login</button>
+                <div id="loadingProgress"></div>
                 <button id="buttonRequestAnOTP" type="button" class="btn btn-primary">Request an OTP</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -136,7 +137,7 @@
 
             function isValidEmail(email) {
                 var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                
+
                 var trimmedDomain = email.substr(email.length - 9, email.length);
                 var uadDomain = 'uad.ac.id';
 
@@ -144,7 +145,7 @@
                     return true
                 }
 
-                if ( (regex.test(email) && trimmedDomain !== uadDomain) || !regex.test(email)) {
+                if ((regex.test(email) && trimmedDomain !== uadDomain) || !regex.test(email)) {
                     if (trimmedDomain !== uadDomain) {
                         return false
                     }
@@ -157,28 +158,38 @@
             }
 
             if (isValidEmail(email)) {
-            $.ajax({
-                url: "{{ url('/') }}/emailcheck/" + email,
-                method: "get",
-                dataType: 'JSON',
-                success: function(response) {
-                    if (response.length === 0) {
-                        $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
-                            alertIsEmailNotExist + "</div>");
-                    }
-
-                    if (response.length > 0) {
-                        $("#formInputOTP").show();
-                        $("#buttonLogin").show();
+                $.ajax({
+                    url: "{{ url('/') }}/emailcheck/" + email,
+                    method: "get",
+                    dataType: 'JSON',
+                    beforeSend: function() {
+                        $("#loadingProgress").html("<div class='spinner-border text-info' role='status'><span class='sr-only'>Loading...</span></div>");
                         $("#buttonRequestAnOTP").hide();
-                        $("#greetingForUser").html("<label id='greetingForUser' for='exampleFormControlInput1'>" + "Hi <b>" + response[0].name + "</b>, enter your OTP</label>");
-                        $("#alertModal").html("<div class='alert alert-success' role='alert'>" +
-                            alertCheckEmail + "</div>");
-                        $("#inputOTP").focus();
-                        $("#inputEmail").prop('disabled', true);
+                    },
+                    success: function(response) {
+
+                        //TODO fixed loading progress when email valid uad.ac.id but not exist.
+                        if (response.length === 0) {
+                            $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
+                                alertIsEmailNotExist + "</div>");
+                            $("#loadingProgress").hide();
+                            $("#buttonRequestAnOTP").show();
+                        }
+
+                        if (response.length > 0) {
+                            $("#formInputOTP").show();
+                            $("#buttonLogin").show();
+                            $("#buttonRequestAnOTP").hide();
+                            $("#greetingForUser").html("<label id='greetingForUser' for='exampleFormControlInput1'>" + "Hi <b>" + response[0].name + "</b>, enter your OTP</label>");
+                            $("#alertModal").html("<div class='alert alert-success' role='alert'>" +
+                                alertCheckEmail + "</div>");
+                            $("#inputOTP").focus();
+                            $("#inputEmail").prop('disabled', true);
+                            $("#loadingProgress").hide();
+                            $("#alertModal").hide();
+                        }
                     }
-                }
-            });
+                });
             }
         });
     });
@@ -203,6 +214,7 @@
             }
 
             if (isOTPEmpty(otp)) {
+                $("#alertModal").show();
                 $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +
                     alertOTPIsEmpty + "</div>");
                 $("#inputOTP").focus();

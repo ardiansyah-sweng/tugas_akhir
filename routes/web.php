@@ -29,6 +29,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 
 Route::get('/emailcheck/{email}', [App\Http\Controllers\Controller::class, 'isEmailExist']);
 Route::get('/otpcheck/{otp}/{email}', [App\Http\Controllers\Controller::class, 'isOTPExist']);
+Route::get('/kirimemail', [App\Http\Controllers\Controller::class, 'sendEmails']);
 
 Route::middleware(['auth','role:super_admin|dosen|mahasiswa'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
