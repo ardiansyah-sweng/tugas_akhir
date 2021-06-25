@@ -163,7 +163,7 @@
                     method: "get",
                     dataType: 'JSON',
                     beforeSend: function() {
-                        $("#loadingProgress").html("<div class='spinner-border text-info' role='status'><span class='sr-only'>Loading...</span></div>");
+                        $("#loadingProgress").html("Wait...<div class='spinner-border text-info' role='status'><span class='sr-only'></span></div>");
                         $("#buttonRequestAnOTP").hide();
                     },
                     success: function(response) {
@@ -186,7 +186,6 @@
                             $("#inputOTP").focus();
                             $("#inputEmail").prop('disabled', true);
                             $("#loadingProgress").hide();
-                            $("#alertModal").hide();
                         }
                     }
                 });
@@ -225,10 +224,17 @@
                     url: "{{ url('/') }}/otpcheck/" + email + '/' + otp,
                     method: "get",
                     dataType: 'JSON',
+                    beforeSend: function() {
+                        $("#loadingProgress").show();
+                        $("#loadingProgress").html("Wait...<div class='spinner-border text-info' role='status'><span class='sr-only'></span></div>");
+                        $("#buttonLogin").hide();
+                    },
                     success: function(response) {
                         if (response.length === 0) {
                             $("#alertModal").html("<div class='alert alert-warning' role='alert'>" +
                                 alertUnknownOTP + "</div>");
+                            $("#loadingProgress").hide();
+                            $("#buttonLogin").show();
                         }
 
                         if (response.length > 0 && (response[0].email === email)) {
