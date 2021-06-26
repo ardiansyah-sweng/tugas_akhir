@@ -32,7 +32,6 @@ class Controller extends BaseController
         $recordOTPs = OTP::where('otp', $otp)->where('email', $email)->where('status', 'active')->get();
         if (count($recordOTPs) > 0) {
             $this->updateOTPStatusFromActiveToExpired($otp);
-
         }
         return response()->json($recordOTPs);
     }
