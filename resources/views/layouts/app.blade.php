@@ -238,13 +238,12 @@
                         }
 
                         if (response.length > 0 && (response[0].email === email)) {
-                            alert('welcome ' + email);
-                            //redirect to dashboard
+                            //alert('welcome ' + email);
+                            location.href = "{{ url('/') }}"
                         }
                     }
                 });
             }
-
         });
     });
 </script>
