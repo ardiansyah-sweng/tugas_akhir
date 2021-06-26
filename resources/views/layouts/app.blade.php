@@ -238,7 +238,7 @@
                         }
 
                         if (response.length > 0 && (response[0].email === email)) {
-                            //alert('welcome ' + email);
+                            alert('welcome ' + email);
                             location.href = "{{ url('/') }}"
                         }
                     }
