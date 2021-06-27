@@ -34,7 +34,7 @@
                                                 <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#addRowModal">
                                                     <i class="fa fa-fw fa-upload"></i> Import Jadwal Dosen    
                                                 </button>
-                                                <a href="" class="btn mr-2 btn-sm btn-primary pull-right">
+                                                <a href="{{route('tambahJadwalDosen')}}" class="btn mr-2 btn-sm btn-primary pull-right">
                                                     <i class="fa fa-fw fa-plus"></i> Tambah Jadwal Dosen
                                                 </a>
                                             </div>
@@ -52,40 +52,39 @@
                                                 <th>Rabu</th>
                                                 <th>Kamis</th>
                                                 <th>Jum'at</th>
-                                                <th>Saptu</th>                                    
+                                                <th>Sabtu</th>                                    
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @forelse ($dosen as $item)
-                                                <tr>
-                                                    <th>{{$loop->iteration}}</th>
-                                                    <td>{{ $item->nipy}}</td>
-                                                    <td>{{ $item->user->name}}</td>
-                                                    <td>
-                                                        @if ($item->skripsi->count()==0)
-                                                            <span class="badge badge-danger">Tidak ada</span>
-                                                        @else
-                                                            <span class="badge badge-success">{{ $item->skripsi->count()}}</span>
-                                                        @endif
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <div class="form-button-action">
-                                                            <a href="{{ route('dosen.show', $item->nipy) }}" data-toggle="tooltip" title="" class="btn btn-link btn-default" data-original-title="Info">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="6" class="text-center p-5">
-                                                        Data tidak tersedia
-                                                    </td>
-                                                </tr>
-                                            @endforelse --}}
-                                            
+                                            <?php
+                                        $no =1;
+                                        ?>
+                                        <?php use App\Models\JadwalDosen; ?>
+                                        @foreach ($data as $item)
+                                            <?php
+                                            $getJadwal = JadwalDosen::where('nipy', $item->nipy)->first();
+                                            // dd($getJadwal);
+                                            if ($getJadwal != null) { ?>
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $getJadwal->dosen->user->name }}</td>
+                                                <td>{{ $getJadwal->senin }}</td>
+                                                <td>{{ $getJadwal->selasa }}</td>
+                                                <td>{{ $getJadwal->rabu }}</td>
+                                                <td>{{ $getJadwal->kamis }}</td>
+                                                <td>{{ $getJadwal->jumat }}</td>
+                                                <td>{{ $getJadwal->sabtu }}</td>
+                                                <td>
+                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Ubah Jadwal Dosen"
+                                                        href="{{route('updateJadwalDosen', $getJadwal->dosen->id)}}">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <?php }
+                                            ?>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -97,7 +96,7 @@
     </div>
 </div>           
 
-
+{{-- Modal Import Jadwal Dosen --}}
 <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

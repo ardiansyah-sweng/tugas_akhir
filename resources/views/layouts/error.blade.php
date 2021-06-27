@@ -12,7 +12,20 @@
         });
 
     </script>
-    
+@endif
+
+@if (Session::has('alert-gagal'))
+    <script>
+        swal("Something Wrong!","{!! Session::get('alert-gagal') !!}",{
+            icon : "warning",
+            buttons:{        			
+				confirm: {
+			        className : 'btn btn-success'
+				}
+			},
+        });
+
+    </script>
 @endif
 
 

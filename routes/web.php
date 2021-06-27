@@ -55,8 +55,11 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
 
-        Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen']);
+        Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen'])->name('jadwalDosen');
         Route::post('importJadwalDosen', [Superadmin\DosenController::class, 'importJadwalDosenExcel'])->name('importJadwalDosen');
+        Route::get('tambahJadwalDosen', [Superadmin\DosenController::class, 'addJadwalDosen'])->name('tambahJadwalDosen');
+        Route::post('store/{any}', [Superadmin\DosenController::class, 'storeJadwalDosen'])->name('storeJadwalDosen');
+        route::get('update/{id}', [Superadmin\DosenController::class, 'updateJadwalDosen'])->name('updateJadwalDosen');
 });
 
 

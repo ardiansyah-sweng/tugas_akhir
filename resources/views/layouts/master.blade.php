@@ -22,8 +22,11 @@
 	<link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css')}}">
 	<link rel="stylesheet" href="{{ url('assets/css/atlantis.min.css')}}">
 
+	
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link rel="stylesheet" href="{{ url('assets/css/demo.css')}}">
+	{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"> --}}
+	@yield('style')
 </head>
 <body>
 	<div class="wrapper">
@@ -175,6 +178,7 @@
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	<script src="{{ url('assets/js/setting-demo.js')}}"></script>
 	<script src="{{ url('assets/js/demo.js')}}"></script>
+	@yield('script')
 	<script>
 		Circles.create({
 			id:'circles-1',
