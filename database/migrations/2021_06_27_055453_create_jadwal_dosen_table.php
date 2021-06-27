@@ -23,7 +23,6 @@ class CreateJadwalDosenTable extends Migration
             $table->string('jumat');
             $table->string('sabtu');
             $table->string('jam_ke');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Dosen;
+use App\Models\JadwalDosen;
 use App\Models\Topikskripsi;
-
-// use App\Imports\ImportJadwalDosen;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImpotrJadwalDosen;
+use Illuminate\Support\Arr;
 
 class DosenController extends Controller
 {
@@ -106,18 +106,82 @@ class DosenController extends Controller
         //
     }
 
+    // Function list Dosen yang sudah memiliki jadwal 
     public function jadwalDosen()
     {
-        // return view('pages.superadmin.jadwalDosen')
-        return view('pages.superadmin.JadwalDosen.listJadwalDosen');
+        $data = Dosen::orderBy('nipy', 'desc')->get();
+        return view('pages.superadmin.JadwalDosen.listJadwalDosen', compact('data'));
     }
 
+    // Function import jadwal dosen dari file excel ke database program simtakhir
     public function importJadwalDosenExcel(Request $request)
     {
         $file = $request->file('file');
         $namaFile = $file->getClientOriginalName();
         $file->move('DataJadwalDosen', $namaFile);
         Excel::import(new ImpotrJadwalDosen, public_path('/DataJadwalDosen/' . $namaFile));
-        return redirect()->action([DosenController::class, 'jadwalDosen']);
+        return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Berhasil DIimport');
+    }
+
+    // Function add jadwal dosen secara satu persatu where not dosen terjadwal
+    public function addJadwalDosen()
+    {
+        $dosenTerjadwal = JadwalDosen::select('nipy')
+            ->groupBy('nipy')->get();
+
+        foreach ($dosenTerjadwal as $item) {
+            $data[] = $item->nipy;
+        }
+        $collection = Dosen::whereNotIn('nipy', $data)->get();
+        return view('pages.superadmin.JadwalDosen.tambahJadwalDosen', ['page' => 'Tambah Jadwal Dosen'], compact('collection'));
+    }
+
+    // Function untuk menyimpan dan mengupdate data dosen yang di input pada page tambah jadwal dosen
+    public function storeJadwalDosen(Request $request, $condition)
+    {
+        $this->validate($request, [
+            'nipy'      => 'required',
+            'senin'         => 'required',
+            'selasa'        => 'required',
+            'rabu'          => 'required',
+            'kamis'         => 'required',
+            'jumat'         => 'required',
+            'sabtu'         => 'required',
+        ]);
+
+        $dosenTerjadwal = JadwalDosen::where('nipy', $request->nipy)->first();
+
+        if ($condition == 'create') {
+            if ($dosenTerjadwal != null) {
+                return back()->with('alert-gagal', 'Jadwal Dosen Telah Ada');
+            }
+        }
+        $num = count($request->jam_ke);
+        for ($x = 0; $x < $num; $x++) {
+            $condition == 'create' ? $data = new JadwalDosen : $data = JadwalDosen::findOrFail($request->id[$x]);
+            $data->nipy = $request->nipy;
+            $data->senin    = $request->senin[$x];
+            $data->selasa   = $request->selasa[$x];
+            $data->rabu     = $request->rabu[$x];
+            $data->kamis    = $request->kamis[$x];
+            $data->jumat    = $request->jumat[$x];
+            $data->sabtu    = $request->sabtu[$x];
+            $data->jam_ke   = $request->jam_ke[$x];
+            $data->save();
+        }
+        if ($condition == 'create') {
+            return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Dosen Berhasil Ditambahkan');
+        } else {
+            return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Dosen Berhasil Diubah');
+        }
+    }
+
+    // Function update jadwal dosen
+    public function updateJadwalDosen($id)
+    {
+        $dataDosen = Dosen::findOrFail($id);
+        $nipyDosen = $dataDosen->nipy;
+        $collection = JadwalDosen::where('nipy', $nipyDosen)->get();
+        return view('pages.superadmin.JadwalDosen.updateJadwalDosen', ['page' => 'Update Jadwal '], compact('dataDosen', 'collection'));
     }
 }
