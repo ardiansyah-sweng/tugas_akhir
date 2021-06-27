@@ -88,7 +88,9 @@
                                         </div>
                                         <div class="modal-body">
                                             <p class="small">Dosen Pembimbing dan Dosen Penguji</p>
-                                            <form>
+                                            <form action="{{ route('skripsi.update',$item->id)}}" method="POST" >
+                                                @csrf
+                                                @method('PUT')
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="form-group form-group-default">
@@ -100,14 +102,14 @@
                                                         <div class="form-group form-group-default">
                                                             <label>Dosen Penguji 1</label>
                                                             <select
-                                                                class="form-control @error('id_topikbidang') is-invalid @enderror"
+                                                                class="form-control @error('dosen_penguji_1') is-invalid @enderror"
                                                                 id="exampleFormControlSelect1" name="dosen_penguji_1">
-                                                                <option value="" selected="selected">---- Pilih Dosen Penguji 1
-                                                                    ----</option>
+                                                                    @if (!$item->dosen_penguji_1)                                                                    
+                                                                        <option value="" selected="selected">---- Pilih Dosen Penguji 1 ----</option>
+                                                                    @endif
                                                                 @foreach ($dosen as $lecture)
                                                                     @if ($lecture->nipy!=$item->nipy)
-                                                                        <option value="{{ $lecture->id}}">
-                                                                        {{ $lecture->user->name}}</option>
+                                                                        <option value="{{ $lecture->nipy}}" {{ ($lecture->nipy == $item->dosen_penguji_1 ? "selected":" ") }}> {{ $lecture->user->name}}</option>
                                                                     @endif
                                                                 
                                                                 @endforeach
@@ -121,14 +123,14 @@
                                                         <div class="form-group form-group-default">
                                                             <label>Dosen Penguji 2</label>
                                                             <select
-                                                                class="form-control @error('id_topikbidang') is-invalid @enderror"
+                                                                class="form-control @error('dosen_penguji_2') is-invalid @enderror"
                                                                 id="exampleFormControlSelect1" name="dosen_penguji_2">
-                                                                <option value="" selected="selected">---- Pilih Dosen Penguji 2
-                                                                    ----</option>
+                                                                    @if (!$item->dosen_penguji_2)                                                          
+                                                                        <option value="" selected="selected">---- Pilih Dosen Penguji 2 ----</option>
+                                                                    @endif
                                                                 @foreach ($dosen as $lecture)
                                                                     @if ($lecture->nipy!=$item->nipy)
-                                                                        <option value="{{ $lecture->id}}">
-                                                                        {{ $lecture->user->name}}</option>
+                                                                        <option value="{{ $lecture->nipy}}" {{ ($lecture->nipy == $item->dosen_penguji_2 ? "selected":" ") }}> {{ $lecture->user->name}}</option>
                                                                     @endif
                                                                 
                                                                 @endforeach
@@ -139,13 +141,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </form>
+                                            
                                         </div>
                                         <div class="modal-footer no-bd">
-                                            <button type="button" id="addRowButton" class="btn btn-primary">Add</button>
+                                            <button type="submit" class="btn btn-primary">Add</button>
                                             <button type="button" class="btn btn-danger"
                                                 data-dismiss="modal">Close</button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

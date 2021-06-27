@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Dosen;
 use App\Models\Topikskripsi;
 
+// use App\Imports\ImportJadwalDosen;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImpotrJadwalDosen;
+
 class DosenController extends Controller
 {
     /**
@@ -16,18 +20,17 @@ class DosenController extends Controller
      */
     public function index()
     {
-        $dosen=Dosen::with(
+        $dosen = Dosen::with(
             ['skripsi' => function ($query) {
-    $query->where('status', 'Accept');
-
-}]
+                $query->where('status', 'Accept');
+            }]
         )
-        // ->where('status','Accept')
-        ->get();
+            // ->where('status','Accept')
+            ->get();
         // dd($dosen);
-        $jumlah_bimbingan = Topikskripsi::where('status','Accept');
+        $jumlah_bimbingan = Topikskripsi::where('status', 'Accept');
         // dd($dosen);
-        return view('pages.superadmin.index',compact('dosen'));
+        return view('pages.superadmin.index', compact('dosen'));
     }
 
     /**
@@ -59,14 +62,14 @@ class DosenController extends Controller
      */
     public function show($id)
     {
-        $data = Topikskripsi::where('nipy',$id)
-        ->where('status','Accept')
-        ->get();
+        $data = Topikskripsi::where('nipy', $id)
+            ->where('status', 'Accept')
+            ->get();
 
-        $dosen=Dosen::where('nipy',$id)->first();
+        $dosen = Dosen::where('nipy', $id)->first();
         // dd($dosen->user->name);
-        
-        return view('pages.superadmin.viewMahasiswa',compact('data','dosen'));
+
+        return view('pages.superadmin.viewMahasiswa', compact('data', 'dosen'));
     }
 
     /**
@@ -101,5 +104,20 @@ class DosenController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function jadwalDosen()
+    {
+        // return view('pages.superadmin.jadwalDosen')
+        return view('pages.superadmin.JadwalDosen.listJadwalDosen');
+    }
+
+    public function importJadwalDosenExcel(Request $request)
+    {
+        $file = $request->file('file');
+        $namaFile = $file->getClientOriginalName();
+        $file->move('DataJadwalDosen', $namaFile);
+        Excel::import(new ImpotrJadwalDosen, public_path('/DataJadwalDosen/' . $namaFile));
+        return redirect()->action([DosenController::class, 'jadwalDosen']);
     }
 }
