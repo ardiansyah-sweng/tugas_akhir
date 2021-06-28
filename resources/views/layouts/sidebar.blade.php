@@ -190,6 +190,11 @@
                                     <span class="sub-item">Daftar dosen</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('/jadwalDosen') }}">
+                                    <span class="sub-item">Jadwal dosen</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

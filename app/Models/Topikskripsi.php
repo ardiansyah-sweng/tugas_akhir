@@ -28,6 +28,14 @@ class Topikskripsi extends Model
         return $this->belongsTo(Dosen::class,'nipy','nipy');
     }
 
+    public function dosenPenguji1(){
+        return $this->belongsTo(Dosen::class,'dosen_penguji_1','nipy');
+    }
+
+    public function dosenPenguji2(){
+        return $this->belongsTo(Dosen::class,'dosen_penguji_2','nipy');
+    }
+
     public function mahasiswaSubmit(){
         return $this->belongsTo(Mahasiswa::class,'nim_submit','nim');
     }
