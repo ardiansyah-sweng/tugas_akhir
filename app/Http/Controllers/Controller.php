@@ -64,4 +64,16 @@ class Controller extends BaseController
     {
         OTP::where('otp', '=', $otpCode)->update(array('status' => 'expired'));
     }
+
+    public function simpanData($data)
+    {
+        return  $data->save() ? back()->with(['flash' => 'Data Telah Dijadwalkan']) :
+            back()->with(['gagal' => 'Terjadi kesalahan']);
+    }
+
+    public function deleteData($data, $id)
+    {
+        return $data->delete($id) ? back()->with(['flash' => 'Berhasil dihapus']) :
+            back()->with(['gagal' => 'Terjadi kesalahan']);
+    }
 }

@@ -26,6 +26,14 @@ class Dosen extends Model
         return $this->hasMany(Topikskripsi::class,'nipy', 'nipy');
     }
 
+    public function skripsiPenguji1(){
+        return $this->hasMany(Topikskripsi::class,'dosen_penguji_1', 'nipy');
+    }
+
+    public function skripsiPenguji2(){
+        return $this->hasMany(Topikskripsi::class,'dosen_penguji_2', 'nipy');
+    }
+
     public function getAvatarAttribute($value){
         return url('storage/' . $value);
     }
