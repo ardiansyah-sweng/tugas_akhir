@@ -210,6 +210,9 @@
                                 <a href="{{ url('/setup') }}">
                                     <span class="sub-item">Setting</span>
                                 </a>
+                                <a href="{{ url('/data-mahasiswa') }}">
+                                    <span class="sub-item">Data Mahasiswa</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
