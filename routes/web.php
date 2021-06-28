@@ -31,30 +31,29 @@ Route::get('/emailcheck/{email}', [App\Http\Controllers\Controller::class, 'isEm
 Route::get('/otpcheck/{otp}/{email}', [App\Http\Controllers\Controller::class, 'isOTPExist']);
 Route::get('/kirimemail', [App\Http\Controllers\Controller::class, 'sendEmails']);
 
-Route::middleware(['auth','role:super_admin|dosen|mahasiswa'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'role:super_admin|dosen|mahasiswa'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::middleware(['auth','role:mahasiswa'])->group(function(){
-        Route::resource('topik',TopikController::class);
+Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+        Route::resource('topik', TopikController::class);
         Route::get('/penawaran/topiksaya', [PenawaranController::class, 'topiksaya'])->name('penawaran.topiksaya');
-        Route::resource('penawaran',PenawaranController::class);
-        Route::resource('logbook',LogbookController::class);
+        Route::resource('penawaran', PenawaranController::class);
+        Route::resource('logbook', LogbookController::class);
         Route::get('download/{file}', [LogbookController::class, 'download']);
         Route::get('view/{id}', [LogbookController::class, 'view']);
 });
 
-Route::middleware(['auth','role:dosen|super_admin'])->group(function(){
-        Route::resource('penelitian',Dosen\TopikController::class);
-        Route::resource('mytopik',Dosen\DitawarkanController::class);
-        Route::resource('bimbingan',Dosen\BimbinganController::class);
+Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
+        Route::resource('penelitian', Dosen\TopikController::class);
+        Route::resource('mytopik', Dosen\DitawarkanController::class);
+        Route::resource('bimbingan', Dosen\BimbinganController::class);
         Route::get('view/{id}', [Dosen\BimbinganController::class, 'view']);
         Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
 });
 
-Route::middleware(['auth','role:super_admin'])->group(function(){
-        Route::resource('dosen',Superadmin\DosenController::class);
-        Route::resource('setup',Superadmin\SetupController::class);
-        Route::resource('skripsi',Superadmin\SkripsiMahasiswaController::class);
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
+        Route::resource('dosen', Superadmin\DosenController::class);
+        Route::resource('setup', Superadmin\SetupController::class);
+        Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
+        Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
+        Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
 });
-
-
-//Topik

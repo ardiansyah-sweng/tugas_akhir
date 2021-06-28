@@ -149,8 +149,6 @@ class User2Seeder extends Seeder
         ]);
         $dosen19->assignRole('dosen');
         
-
-
         $dosen20 = User::create([
             'name' => 'Lisna Zahrotun S.T., M.Cs.',
             'email' => 'Lisna.zahrotun@tif.uad.ac.id',

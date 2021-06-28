@@ -91,4 +91,15 @@ class SetupController extends Controller
     {
         //
     }
+
+    public function getDataMahasiswa()
+    {
+        return view('pages.superadmin.setup.importDataMahasiswa');
+    }
+
+    public function importDataMahasiswa(Request $request){
+        $file = $request->file('file');
+        $namaFile = $file->getClientOriginalName();
+        echo $namaFile;
+    }
 }
