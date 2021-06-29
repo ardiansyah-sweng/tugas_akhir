@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setup;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportDataMahasiswa;
 
 class SetupController extends Controller
 {
@@ -100,6 +102,8 @@ class SetupController extends Controller
     public function importDataMahasiswa(Request $request){
         $file = $request->file('file');
         $namaFile = $file->getClientOriginalName();
-        echo $namaFile;
+        $file->move('DataMahasiswa', $namaFile);
+        Excel::import(new ImportDataMahasiswa, public_path('/DataMahasiswa/' . $namaFile));
+        // return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 }
