@@ -109,8 +109,11 @@ class DosenController extends Controller
     // Function list Dosen yang sudah memiliki jadwal 
     public function jadwalDosen()
     {
+        $dosenTerjadwal = JadwalDosen::select('nipy')
+            ->groupBy('nipy')->get();
+
         $data = Dosen::orderBy('nipy', 'desc')->get();
-        return view('pages.superadmin.JadwalDosen.listJadwalDosen', compact('data'));
+        return view('pages.superadmin.JadwalDosen.listJadwalDosen', compact('data', 'dosenTerjadwal'));
     }
 
     // Function import jadwal dosen dari file excel ke database program simtakhir
