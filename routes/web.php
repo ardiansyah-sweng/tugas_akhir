@@ -39,8 +39,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::get('/penawaran/topiksaya', [PenawaranController::class, 'topiksaya'])->name('penawaran.topiksaya');
         Route::resource('penawaran', PenawaranController::class);
         Route::resource('logbook', LogbookController::class);
-        Route::get('download/{file}', [LogbookController::class, 'download']);
-        Route::get('view/{id}', [LogbookController::class, 'view']);
+        Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
 });
 
 Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
