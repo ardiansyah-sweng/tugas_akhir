@@ -8,6 +8,7 @@ use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\Dosen;
 use App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PenjadwalanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,12 +56,15 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
 
+        Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
+        Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
+
+
         Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen'])->name('jadwalDosen');
         Route::post('importJadwalDosen', [Superadmin\DosenController::class, 'importJadwalDosenExcel'])->name('importJadwalDosen');
         Route::get('tambahJadwalDosen', [Superadmin\DosenController::class, 'addJadwalDosen'])->name('tambahJadwalDosen');
         Route::post('store/{any}', [Superadmin\DosenController::class, 'storeJadwalDosen'])->name('storeJadwalDosen');
         route::get('update/{id}', [Superadmin\DosenController::class, 'updateJadwalDosen'])->name('updateJadwalDosen');
+
+        Route::get('dataMahasiswa', [PenjadwalanController::class, 'dataMahasiswa'])->name('dataMahasiswa');
 });
-
-
-//Topik

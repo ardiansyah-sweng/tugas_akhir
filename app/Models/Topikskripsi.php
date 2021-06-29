@@ -11,7 +11,7 @@ class Topikskripsi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'judul_topik', 
+        'judul_topik',
         'deskripsi',
         'id_periode',
         'id_topikbidang',
@@ -20,35 +20,53 @@ class Topikskripsi extends Model
         'nipy',
         'option_from',
         'status',
+        'status_mahasiswa',
         'dosen_penguji_1',
         'dosen_penguji_2',
     ];
 
-    public function dosen(){
-        return $this->belongsTo(Dosen::class,'nipy','nipy');
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'nipy', 'nipy');
     }
 
-    public function mahasiswaSubmit(){
-        return $this->belongsTo(Mahasiswa::class,'nim_submit','nim');
+    public function dosenPenguji1()
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_penguji_1', 'nipy');
     }
 
-    public function mahasiswaTerpilih(){
-        return $this->belongsTo(Mahasiswa::class,'nim_terpilih','nim');
+    public function dosenPenguji2()
+    {
+        return $this->belongsTo(Dosen::class, 'dosen_penguji_2', 'nipy');
     }
 
-    public function topik(){
-        return $this->belongsTo(TopikBidang::class,'id_topikbidang','id');
+    public function mahasiswaSubmit()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'nim_submit', 'nim');
     }
 
-    public function mahasiswaGetSkripsi(){
-        return $this->hasMany(MahasiswaRegisterTopikDosen::class,'id_topikskripsi');
+    public function mahasiswaTerpilih()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'nim_terpilih', 'nim');
     }
 
-    public function periode(){
-        return $this->belongsTo(Periode::class,'id_periode','id');
+    public function topik()
+    {
+        return $this->belongsTo(TopikBidang::class, 'id_topikbidang', 'id');
     }
 
-    public function logbooks(){
-        return $this->hasMany(Logbook::class,'id_topikskripsi');
+    public function mahasiswaGetSkripsi()
+    {
+        return $this->hasMany(MahasiswaRegisterTopikDosen::class, 'id_topikskripsi');
+    }
+
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'id_periode', 'id');
+    }
+
+    public function logbooks()
+    {
+        return $this->hasMany(Logbook::class, 'id_topikskripsi');
     }
 }
