@@ -189,8 +189,8 @@
 	<script src="{{ url('assets/js/plugin/datatables/datatables.min.js')}}"></script>
 
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="{{ url('assets/js/setting-demo.js')}}"></script>
-	<script src="{{ url('assets/js/demo.js')}}"></script>
+	{{-- <script src="{{ url('assets/js/setting-demo.js')}}"></script>
+	<script src="{{ url('assets/js/demo.js')}}"></script> --}}
 	@yield('script')
 	<script>
 		Circles.create({

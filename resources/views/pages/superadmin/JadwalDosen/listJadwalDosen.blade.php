@@ -33,14 +33,16 @@
                                             <div class="col">
                                                 <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#addRowModal">
                                                     <i class="fa fa-fw fa-upload"></i> Import Jadwal Dosen    
-                                                </button>
+                                                </button>                                               
+                                            @if (count($dosenTerjadwal) > 0)    
                                                 <a href="{{route('tambahJadwalDosen')}}" class="btn mr-2 btn-sm btn-primary pull-right">
                                                     <i class="fa fa-fw fa-plus"></i> Tambah Jadwal Dosen
-                                                </a>
-                                            </div>
+                                                </a>                                        
+                                            @endif
+                                        </div>
                                     </div>
-                            </div>
-                            <div class="card-body">
+                                </div>
+                                <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="add-row" class="display table table-striped table-hover" >
                                         <thead>
@@ -114,14 +116,25 @@
                     <div class="mb-3">  
                         {{ csrf_field() }}
                         <h5>Pilih file</h5>
-                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="file">
+                        <input id="inputFile" class="form-control form-control-sm" id="formFileSm" type="file" name="file">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm pull-right">Import Jadwal</button>
+                    <button id="buttonImportFile" type="submit" class="btn btn-primary btn-sm pull-right" disabled>Import Jadwal</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#inputFile').change(function() {
+            // var teks = $(this).val();
+            $("#buttonImportFile").prop('disabled', false);
+            // alert(teks);
+        });
+    });
+</script>
 @endsection

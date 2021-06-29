@@ -190,11 +190,6 @@
                                     <span class="sub-item">Daftar dosen</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ url('/jadwalDosen') }}">
-                                    <span class="sub-item">Jadwal dosen</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
@@ -213,6 +208,9 @@
                                 <a href="{{ url('/data-mahasiswa') }}">
                                     <span class="sub-item">Data Mahasiswa</span>
                                 </a>
+                                <a href="{{ url('/jadwalDosen') }}">
+                                    <span class="sub-item">Jadwal dosen</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -228,6 +226,9 @@
                             <li>
                                 <a href="{{ url('/skripsi') }}">
                                     <span class="sub-item">Skripsi Mahasiswa</span>
+                                </a>
+                                <a href="{{ url('/dataMahasiswa') }}">
+                                    <span class="sub-item">Penjadwalan</span>
                                 </a>
                             </li>
                         </ul>
