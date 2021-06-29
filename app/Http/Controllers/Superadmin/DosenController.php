@@ -123,7 +123,7 @@ class DosenController extends Controller
         $namaFile = $file->getClientOriginalName();
         $file->move('DataJadwalDosen', $namaFile);
         Excel::import(new ImpotrJadwalDosen, public_path('/DataJadwalDosen/' . $namaFile));
-        return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Berhasil DIimport');
+        return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 
     // Function add jadwal dosen secara satu persatu where not dosen terjadwal
