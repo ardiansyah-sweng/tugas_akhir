@@ -2,13 +2,14 @@
 @section('style')
     <link href='{{ url('js/plugins/calendar/main.css') }}' rel='stylesheet' />
     <script src='{{ url('js/plugins/calendar/main.js') }}'></script>
-    <script src='{{ url('js/plugins/calendar/calendar.js') }}'></script>
+    <script src='{{ url('js/plugins/calendar/calendarSemprop.js') }}'></script>
 @endsection
 
 @section('content')
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
+            <input type="hidden" id="idTopik" value="{{ $data->id }}">
                 @include('layouts/error')
                 <div class="page-header">                   
                     <ul class="breadcrumbs">

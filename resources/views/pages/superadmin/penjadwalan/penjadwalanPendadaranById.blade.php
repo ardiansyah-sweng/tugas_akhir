@@ -2,14 +2,15 @@
 @section('style')
     <link href='{{ url('js/plugins/calendar/main.css') }}' rel='stylesheet' />
     <script src='{{ url('js/plugins/calendar/main.js') }}'></script>
-    {{-- <script src='{{ url('js/plugins/calendar/calendarPendadaran.js') }}'></script> --}}
-    <script src='{{ url('js/plugins/calendar/calendar.js') }}'></script>
+    <script src='{{ url('js/plugins/calendar/calendarPendadaran.js') }}'></script>
+    {{-- <script src='{{ url('js/plugins/calendar/calendar.js') }}'></script> --}}
 @endsection
 
 @section('content')
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
+            <input type="hidden" id="idTopik" value="{{ $data->id }}">
                 @include('layouts/error')
                 <div class="page-header">                   
                     <ul class="breadcrumbs">
@@ -81,7 +82,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Topik Skripsi</label>
-                                        {{-- <input type="hidden" name="topik_skripsi_id" value="{{ $data->id }}"> --}}
+                                        <input type="hidden" name="topik_skripsi_id" value="{{ $data->id }}">
                                         <textarea class="form-control" readonly>{{ $data->judul_topik  }}</textarea>
                                         <input type="hidden" name="hari" id="hari">
                                     </div>
