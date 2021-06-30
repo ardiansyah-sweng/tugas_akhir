@@ -1,4 +1,4 @@
- const domain = document.location.origin;
+const domain = document.location.origin;
 
 // function api() {
 //     $.get(domain + "/api/jadwal/calendar").done((getdata))
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         selectable: true,
-        select: function (arg) {
+        select: async function (arg) {
             
             // Proses cek hari libur
             // const hariLibur = await cekHariLibur(arg.startStr);
@@ -61,26 +61,25 @@ document.addEventListener('DOMContentLoaded', function () {
             //     return false;
             // }
 
-            // $("#hari").val(arg.start);
-            // var idTopik = $("#idTopik").val();
-            // var hari = $("#hari").val();
-            // var url = "/penjadwalan/jadwal-dosen/jadwal-kosong?id=" + idTopik + "&date=" + arg.startStr +  "&hari=" + hari.substr(0, 3);
+            $("#hari").val(arg.start);
+            var idTopik = $("#idTopik").val();
+            var hari = $("#hari").val();
+            var url = "/jadwal-kosong-pendadaran?id=" + idTopik + "&date=" + arg.startStr +  "&hari=" + hari.substr(0, 3);
      
             // // Proses cek jam kosong untuk ujian
-            // const jamTersedia = await cekJamKosong(url);
-            // if(!jamTersedia){
-            //     Swal.fire({
-            //         icon    : 'error',
-            //         title   : 'Tidak Dapat Menjadwalkan',
-            //         text    : 'Jadwal penuh pada tanggal yang dipilih',
-            //         showConfirmButton: true,
-            //         // timer: 3200
-            //     });
-            //     return false;
-            // }
-            // $("select[name='start']").load(url);
-            $("#addPendadaran").modal();
-            // $("#add").modal();
+            const jamTersedia = await cekJamKosong(url);
+            if(!jamTersedia){
+                Swal.fire({
+                    icon    : 'error',
+                    title   : 'Tidak Dapat Menjadwalkan',
+                    text    : 'Jadwal penuh pada tanggal yang dipilih',
+                    showConfirmButton: true,
+                    // timer: 3200
+                });
+                return false;
+            }
+            $("select[name='start']").load(url);
+            $("#add").modal();
             $("#dijadwalkan").val(arg.startStr);
         },
         nowIndicator: true,
