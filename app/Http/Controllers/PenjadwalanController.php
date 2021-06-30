@@ -30,4 +30,22 @@ class PenjadwalanController extends Controller
         $data = $topikSkripsi->get();
         return view('pages.superadmin.penjadwalan.dataMahasiswa', ['page' => 'Data Mahasiswa Metopen & Skripsi'], compact('data', 'filter', 'statusMahasiswa'));
     }
+
+    public function detailMahasiswa($id)
+    {
+        $data = Topikskripsi::findOrFail($id);
+        return view('pages.superadmin.penjadwalan.detailMahasiswa', ['page' => 'Detail Mahasiswa Metopen & Skripsi'], compact('data'));
+    }
+
+    public function jadwalSempropById($id)
+    {
+        $data = Topikskripsi::findOrFail($id);
+        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data'));
+    }
+
+    public function jadwalPendadaranById($id)
+    {
+        $data = Topikskripsi::findOrFail($id);
+        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data'));
+    }
 }
