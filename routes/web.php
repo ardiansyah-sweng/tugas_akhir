@@ -71,4 +71,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('detailMahasiswa/{id}', [PenjadwalanController::class, 'detailMahasiswa'])->name('detailMahasiswa');
         Route::get('jadwalSempropByid/{id}', [PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwalSempropByid');
         Route::get('jadwalPendadaranByid/{id}', [PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwalPendadaranByid');
+
+        Route::get('jadwal-kosong-pendadaran', [PenjadwalanController::class, 'generateJadwalPendadaran']);
+        Route::get('jadwal-kosong-semprop', [PenjadwalanController::class, 'generateJadwalSemprop']);
 });

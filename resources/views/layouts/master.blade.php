@@ -191,6 +191,10 @@
 	<!-- Atlantis DEMO methods, don't include it in your project! -->
 	{{-- <script src="{{ url('assets/js/setting-demo.js')}}"></script>
 	<script src="{{ url('assets/js/demo.js')}}"></script> --}}
+
+	   {{-- SWEET ALERT --}}
+	<script src="{{ url('js/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
+	<script src="{{ url('js/plugins/sweetalert/sweet.js') }}"></script>
 	@yield('script')
 	<script>
 		Circles.create({
