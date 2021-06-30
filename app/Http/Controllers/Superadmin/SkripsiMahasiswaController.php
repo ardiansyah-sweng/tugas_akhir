@@ -40,7 +40,7 @@ class SkripsiMahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         
     }
 
     /**
@@ -74,7 +74,15 @@ class SkripsiMahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'dosen_penguji_1' => 'required',
+            'dosen_penguji_2' => 'required',           
+            ]);
+        $data = $request->all();
+        $updateDosen = Topikskripsi::findOrFail($id);
+        $updateDosen->update($data);
+     
+        return redirect('/skripsi')->with('alert-success','Data Berhasil di ubah, silahkan anda cek');
     }
 
     /**

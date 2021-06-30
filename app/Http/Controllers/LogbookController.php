@@ -45,7 +45,7 @@ class LogbookController extends Controller
         return view('pages.mahasiswa.logbook.create',compact('data'));
     }
 
-    public function view($id){
+    public function log($id){
         
       $data=Logbook::find($id);
 
@@ -53,10 +53,6 @@ class LogbookController extends Controller
       return view('pages.mahasiswa.logbook.view',compact('data'));
     }
 
-    // public function download($file){
-    //     return response()->download('storage/', $file);
-        
-    // }
 
     public function store(Request $request){
         // dd($request->file);
