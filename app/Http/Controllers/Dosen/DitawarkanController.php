@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MahasiswaRegisterTopikDosen;
 use App\Models\Topikskripsi;
 use App\Models\Dosen;
+use App\Models\SyaratUjian;
 
 class DitawarkanController extends Controller
 {
@@ -92,6 +93,11 @@ class DitawarkanController extends Controller
                 ]
         );
 
+        SyaratUjian::create([
+            'id_Skripsimahasiswa' => $id,
+            'id_NamaUjian' => 1,
+        ]);
+
 
         //redirect topiksaya
         return redirect('/penelitian')->with('alert-success','Data Berhasil di simpan');;
@@ -104,6 +110,10 @@ class DitawarkanController extends Controller
 
         if ($request->type=='Accept') {
             $data['status'] = 'Accept';
+                $ujian=SyaratUjian::create([
+                    'id_Skripsimahasiswa' => $id,
+                    'id_NamaUjian' => 1,
+                ]);
         }else{
             $data['status'] = 'Reject';
         }
@@ -126,6 +136,8 @@ class DitawarkanController extends Controller
           
         $item=Topikskripsi::where('id',$id)
         ->update($data);
+        
+       
 
         //redirect request mahasiswa
         return redirect('/mytopik')->with('alert-success','Request Berhasil di simpan');;

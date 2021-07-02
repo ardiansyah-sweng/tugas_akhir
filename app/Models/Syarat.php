@@ -13,4 +13,14 @@ class Syarat extends Model
     protected $fillable = [
         'NamaSyaratFile', 'id_SyaratUjian','id_NamaSyarat','status','keterangan'
     ];
+
+    public function syaratUjian()
+    {
+        return $this->belongsTo(SyaratUjian::class, 'id_SyaratUjian', 'id');
+    }
+
+    public function namaSyarat()
+    {
+        return $this->belongsTo(NamaSyarat::class, 'id_NamaSyarat', 'id');
+    }
 }

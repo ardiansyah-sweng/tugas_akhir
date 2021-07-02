@@ -182,7 +182,7 @@
                         <ul class="nav nav-collapse">
                             
                             <li>
-                                <a href="#">
+                                <a href="{{ url('/daftar-semprop') }}">
                                     <span class="sub-item">Seminar Proposal</span>
                                 </a>
                             </li>
