@@ -14,4 +14,8 @@ class NamaUjian extends Model
         'NamaUjian'
     ];
 
+    public function syaratToUjian(){
+        return $this->hasMany(SyaratUjian::class,'id_NamaUjian', 'id');
+    }
+
 }

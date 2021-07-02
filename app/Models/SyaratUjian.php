@@ -11,6 +11,19 @@ class SyaratUjian extends Model
     protected $table = "syarat_ujian";
 
     protected $fillable = [
-        'id_Skripsimahasiswa', 'status','keterangan','id_NamaUjian'
+        'id_Skripsimahasiswa','status','keterangan','id_NamaUjian'
     ];
+
+     public function skripsiTopik(){
+        return $this->belongsTo(Topikskripsi::class,'id_Skripsimahasiswa','id');
+    }
+
+    public function namaujian()
+    {
+        return $this->belongsTo(NamaUjian::class, 'id_NamaUjian', 'id');
+    }
+
+    public function syarat(){
+        return $this->hasMany(Syarat::class,'id_SyaratUjian', 'id');
+    }
 }

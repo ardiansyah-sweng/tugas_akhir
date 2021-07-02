@@ -9,6 +9,7 @@ use App\Http\Controllers\Dosen;
 use App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\DaftarSempropController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::resource('penawaran', PenawaranController::class);
         Route::resource('logbook', LogbookController::class);
         Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
+        Route::resource('daftar-semprop', DaftarSempropController::class);
 });
 
 Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
@@ -59,11 +61,19 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
 
 
+        // Route Fitur Jadwal Dosen
         Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen'])->name('jadwalDosen');
         Route::post('importJadwalDosen', [Superadmin\DosenController::class, 'importJadwalDosenExcel'])->name('importJadwalDosen');
         Route::get('tambahJadwalDosen', [Superadmin\DosenController::class, 'addJadwalDosen'])->name('tambahJadwalDosen');
         Route::post('store/{any}', [Superadmin\DosenController::class, 'storeJadwalDosen'])->name('storeJadwalDosen');
         route::get('update/{id}', [Superadmin\DosenController::class, 'updateJadwalDosen'])->name('updateJadwalDosen');
 
+        // Route Fitur Penjadwalan Semprop & Pendadaran
         Route::get('dataMahasiswa', [PenjadwalanController::class, 'dataMahasiswa'])->name('dataMahasiswa');
+        Route::get('detailMahasiswa/{id}', [PenjadwalanController::class, 'detailMahasiswa'])->name('detailMahasiswa');
+        Route::get('jadwalSempropByid/{id}', [PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwalSempropByid');
+        Route::get('jadwalPendadaranByid/{id}', [PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwalPendadaranByid');
+
+        Route::get('jadwal-kosong-pendadaran', [PenjadwalanController::class, 'generateJadwalPendadaran']);
+        Route::get('jadwal-kosong-semprop', [PenjadwalanController::class, 'generateJadwalSemprop']);
 });

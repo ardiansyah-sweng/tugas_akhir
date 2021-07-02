@@ -69,4 +69,13 @@ class Topikskripsi extends Model
     {
         return $this->hasMany(Logbook::class, 'id_topikskripsi');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function syaratujian(){
+         return $this->hasOne(SyaratUjian::class,'id_Skripsimahasiswa','id');
+    }
 }

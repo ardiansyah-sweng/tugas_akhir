@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-// use App\ImportJadwal;
+//use App\ImportJadwal;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ImportJadwal;
@@ -26,7 +26,6 @@ class ImpotrJadwalDosen implements ToModel
             'jumat'     => $row[6],
             'sabtu'     => $row[7],
             'jam_ke'    => $row[8],
-            //
         ]);
     }
 }
