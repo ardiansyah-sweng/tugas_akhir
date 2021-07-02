@@ -13,5 +13,9 @@ class NamaSyarat extends Model
     protected $fillable = [
         'NamaSyarat'
     ];
+
+    public function syarat(){
+        return $this->hasMany(Syarat::class,'id_NamaSyarat', 'id');
+    }
     
 }
