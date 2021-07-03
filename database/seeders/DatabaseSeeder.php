@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Topikskripsi;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MahasiswaSeeder::class);
         $this->call(DosenSeeder::class);
         $this->call(SetupSeeder::class);
+        $this->call(TopikskripsiSeeder::class);
     }
 }
