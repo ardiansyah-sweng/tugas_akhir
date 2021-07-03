@@ -49,24 +49,24 @@ document.addEventListener('DOMContentLoaded', function () {
         select: async function (arg) {
             
             // Proses cek hari libur
-            // const hariLibur = await cekHariLibur(arg.startStr);
-            // if(hariLibur.is_holiday){
-            //     Swal.fire({
-            //         icon    : 'warning',
-            //         title   : 'Tidak Dapat Menjadwalkan',
-            //         text    : 'Libur ' + hariLibur.name,
-            //         showConfirmButton: true,
-            //         // timer: 3500
-            //     });
-            //     return false;
-            // }
+            const hariLibur = await cekHariLibur(arg.startStr);
+            if(hariLibur.is_holiday){
+                Swal.fire({
+                    icon    : 'warning',
+                    title   : 'Tidak Dapat Menjadwalkan',
+                    text    : 'Libur ' + hariLibur.name,
+                    showConfirmButton: true,
+                    // timer: 3500
+                });
+                return false;
+            }
 
             $("#hari").val(arg.start);
             var idTopik = $("#idTopik").val();
             var hari = $("#hari").val();
             var url = "/jadwal-kosong-pendadaran?id=" + idTopik + "&date=" + arg.startStr +  "&hari=" + hari.substr(0, 3);
      
-            // // Proses cek jam kosong untuk ujian
+            // Proses cek jam kosong untuk ujian
             const jamTersedia = await cekJamKosong(url);
             if(!jamTersedia){
                 Swal.fire({

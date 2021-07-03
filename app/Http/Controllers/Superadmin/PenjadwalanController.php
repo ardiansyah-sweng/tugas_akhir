@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Superadmin;
 
 use Illuminate\Http\Request;
 use App\Models\TopikBidang;
@@ -11,6 +11,7 @@ use App\Models\Mahasiswa;
 use App\Models\JadwalDosen;
 use App\Models\DosenTerjadwal;
 use App\Models\MahasiswaRegisterTopikDosen;
+use App\Http\Controllers\Controller;
 
 class PenjadwalanController extends Controller
 {

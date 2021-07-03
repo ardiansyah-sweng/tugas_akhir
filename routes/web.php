@@ -68,11 +68,11 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         route::get('update/{id}', [Superadmin\DosenController::class, 'updateJadwalDosen'])->name('updateJadwalDosen');
 
         // Route Fitur Penjadwalan Semprop & Pendadaran
-        Route::get('dataMahasiswa', [PenjadwalanController::class, 'dataMahasiswa'])->name('dataMahasiswa');
-        Route::get('detailMahasiswa/{id}', [PenjadwalanController::class, 'detailMahasiswa'])->name('detailMahasiswa');
-        Route::get('jadwalSempropByid/{id}', [PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwalSempropByid');
-        Route::get('jadwalPendadaranByid/{id}', [PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwalPendadaranByid');
+        Route::get('dataMahasiswa', [Superadmin\PenjadwalanController::class, 'dataMahasiswa'])->name('dataMahasiswa');
+        Route::get('detailMahasiswa/{id}', [Superadmin\PenjadwalanController::class, 'detailMahasiswa'])->name('detailMahasiswa');
+        Route::get('jadwalSempropByid/{id}', [Superadmin\PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwalSempropByid');
+        Route::get('jadwalPendadaranByid/{id}', [Superadmin\PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwalPendadaranByid');
 
-        Route::get('jadwal-kosong-pendadaran', [PenjadwalanController::class, 'generateJadwalPendadaran']);
-        Route::get('jadwal-kosong-semprop', [PenjadwalanController::class, 'generateJadwalSemprop']);
+        Route::get('jadwal-kosong-pendadaran', [Superadmin\PenjadwalanController::class, 'generateJadwalPendadaran']);
+        Route::get('jadwal-kosong-semprop', [Superadmin\PenjadwalanController::class, 'generateJadwalSemprop']);
 });
