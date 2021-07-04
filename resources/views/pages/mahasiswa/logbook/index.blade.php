@@ -99,7 +99,7 @@
                                             </td>
                                             <td>
                                                 @if ($item->file)
-                                                    <a href="{{ url('/view/'.$item->id) }}" target="_blank" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i> View</a>
+                                                    <a href="{{ url('log/'.$item->id) }}" target="_blank" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i> View</a>
                                                 @else
                                                      <span class="badge badge-default">Tidak ada</span>
                                                 @endif

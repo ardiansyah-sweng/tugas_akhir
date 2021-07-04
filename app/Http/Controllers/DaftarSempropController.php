@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Topikskripsi;
+use App\Models\Mahasiswa;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Setup;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ImportDataMahasiswa;
 
-class SetupController extends Controller
+class DaftarSempropController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +16,16 @@ class SetupController extends Controller
      */
     public function index()
     {
-        $hari= Setup::all()->first();
-        // dd($hari);
-        return view('pages.superadmin.setup.index',compact('hari'));
+        $id=Auth::Id();
+
+         //query nim dari relasi tabel dosen dan user
+        $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
+
+        $data = Topikskripsi::where('nim_terpilih',$data_mahasiswa->nim)
+        ->orWhere('nim_submit',$data_mahasiswa->nim)
+        ->where('status','Accept')
+        ->first();
+        return view('pages.mahasiswa.semprop.index',compact('data'));
     }
 
     /**
@@ -74,13 +80,7 @@ class SetupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $item = Setup::findOrFail($id);
-        $item->update($data);
-
-        $hari= Setup::all()->first();
-     
-        return redirect('/setup')->with('alert-success','Data Berhasil di ubah');
+        //
     }
 
     /**
@@ -92,18 +92,5 @@ class SetupController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function getDataMahasiswa()
-    {
-        return view('pages.superadmin.setup.importDataMahasiswa');
-    }
-
-    public function importDataMahasiswa(Request $request){
-        $file = $request->file('file');
-        $namaFile = $file->getClientOriginalName();
-        $file->move('DataMahasiswa', $namaFile);
-        Excel::import(new ImportDataMahasiswa, public_path('/DataMahasiswa/' . $namaFile));
-        // return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 }
