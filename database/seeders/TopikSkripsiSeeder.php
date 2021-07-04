@@ -85,7 +85,7 @@ class TopikSkripsiSeeder extends Seeder
                 'nipy'              => '197002062005011001',
                 'option_from'       => 'Testing',
                 'status'            => 'Accept',
-                'status_mahasiswa'  => 3,
+                'status_mahasiswa'  => 0,
                 'dosen_penguji_1'   => '198011152005011002',
                 'dosen_penguji_2'   => '60160863',
 
