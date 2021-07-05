@@ -5,13 +5,12 @@
     <div class="content">
         <div class="panel-header bg-primary-gradient">
             <div class="page-inner py-5">
-
+                @include('layouts/error')
             </div>
         </div>
         <div class="page-inner mt--5">
             <div class="row mt--2">
                 @if (!$data)
-
                 <div class="col-md-12">
                     <div class="card full-height">
                         <div class="card-body">
@@ -22,66 +21,143 @@
                     </div>
                 </div>
                 @else
-
-                <div class="col-md-12">
-
-                    <form action="{{ route('logbook.store')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                <div class="col-md-12">                   
                         <div class="card full-height">
-                            <div class="card-header">
-                                <div class="card-title">Pendaftaran Seminar Proposal</div>
-                                <small>Masukkan yang sudah ada (.pdf)</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlFile1">Bukti Pembayaran</label>
-                                            <input type="file" name="file" class="form-control-file"
-                                                id="exampleFormControlFile1">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12 mt-3">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlFile1">TOEFL</label>
-                                            <input type="file" name="file" class="form-control-file"
-                                                id="exampleFormControlFile1">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12 mt-3">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlFile1">Naskah Bab 1-3</label>
-                                            <input type="file" name="file" class="form-control-file"
-                                                id="exampleFormControlFile1">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-12 mt-3">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlFile1">Cetak Transip Nilai</label>
-                                            <input type="file" name="file" class="form-control-file"
-                                                id="exampleFormControlFile1">
-                                        </div>
-                                    </div>
-
-                                   
-
+                            <form action="{{ route('daftar-semprop.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                                <div class="card-header">
+                                    <div class="card-title">Pendaftaran Seminar Proposal</div>
+                                    <small>Masukkan yang sudah ada (.pdf)</small>
                                 </div>
-                            </div>
-                            <div class="card-action">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlFile1">Bukti Pembayaran</label>
+                                                <input type="file" name="pembayaran" class="form-control-file @error('pembayaran') is-invalid @enderror"
+                                                    id="exampleFormControlFile1" required>
+                                                 @error('pembayaran')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                 @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                    </div>
+                            </form>
+                        </div>                       
                 </div>
                 @endif
-
             </div>
         </div>
+
+        <div class="page-inner mt--5">
+            <div class="row mt--2">
+                @if (!$data)
+                @else
+                <div class="col-md-12">                  
+                        <div class="card full-height">
+                            <form action="{{ route('daftar-semprop.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                                
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlFile1">TOEFL</label>
+                                                <input type="file" name="toefl" class="form-control-file @error('toefl') is-invalid @enderror"
+                                                    id="exampleFormControlFile1" required>
+                                                @error('toefl')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                    </div>
+                            </form>
+                        </div>                      
+                </div>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="page-inner mt--5">
+            <div class="row mt--2">
+                @if (!$data)
+                @else
+                <div class="col-md-12">                  
+                        <div class="card full-height">
+                            <form action="{{ route('daftar-semprop.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                                
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlFile1">Naskah BAB 1-3</label>
+                                                <input type="file" name="naskah" class="form-control-file @error('naskah') is-invalid @enderror"
+                                                    id="exampleFormControlFile1" required>
+                                                @error('naskah')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                 @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                    </div>
+                            </form>
+                        </div>                      
+                </div>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="page-inner mt--5">
+            <div class="row mt--2">
+                @if (!$data)
+                @else
+                <div class="col-md-12">                  
+                        <div class="card full-height">
+                            <form action="{{ route('daftar-semprop.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                                
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlFile1">Transkip Nilai</label>
+                                                <input type="file" name="transkip" class="form-control-file @error('transkip') is-invalid @enderror"
+                                                    id="exampleFormControlFile1" required>
+                                                @error('trasnkip')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                 @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                    </div>
+                            </form>
+                        </div>                      
+                </div>
+                @endif
+            </div>
+        </div>
+
     </div>
 </div>
 
