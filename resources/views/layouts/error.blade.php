@@ -14,13 +14,13 @@
     </script>
 @endif
 
-@if (Session::has('alert-gagal'))
+@if (Session::has('alert-failed'))
     <script>
-        swal("Something Wrong!","{!! Session::get('alert-gagal') !!}",{
+        swal("Something Wrong!","{!! Session::get('alert-failed') !!}",{
             icon : "warning",
             buttons:{        			
 				confirm: {
-			        className : 'btn btn-success'
+			        className : 'btn btn-warning'
 				}
 			},
         });
