@@ -32,7 +32,13 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title"><h3>{{$page}}, <strong>{{$data->mahasiswaTerpilih->user->name}}</strong></h3></div>
+                                                    <div class="card-title"><h3>{{$page}}, <strong>
+                                                        @if ($data->nim_terpilih)
+                                                            {{ $data->mahasiswaTerpilih->user->name}}
+                                                        @elseif ($data->nim_submit)
+                                                            {{$data->mahasiswaSubmit->user->name}}
+                                                        @endif      
+                                                    </strong></h3></div>
                                             </div>
                                             <div>
                                                 <div class="col"><a href="{{ route('dataMahasiswa') }}" class="btn btn-primary float-right btn-sm">
@@ -54,7 +60,7 @@
 
             <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <form action="" method="POST" class="modal-content">
+                    <form action="{{route('store.penjadwalan','create')}}" method="POST" class="modal-content">
                         @csrf
                         <div class="modal-header">
                             <h4 class="modal-title" id="addTitle"><strong>Tambahkan Jadwal Ke Tanggal ini</strong></h4>
@@ -67,13 +73,13 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>NIM Mahasiswa</label>
-                                        <input type="text"   value="{{$data->nim_terpilih}}" class="form-control"   readonly>
+                                        <input type="text"   value="{{$data->nim_terpilih ? $data->nim_terpilih : $data->nim_submit}}" class="form-control float-left"   readonly>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Nama Mahasiswa</label>
-                                        <input type="text"   value="{{$data->mahasiswaTerpilih->user->name}}" class="form-control"   readonly>
+                                        <input type="text"   value="{{$data->nim_terpilih ? $data->mahasiswaTerpilih->user->name : $data->mahasiswaSubmit->user->name}}" class="form-control"   readonly>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +88,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Topik Skripsi</label>
-                                        {{-- <input type="hidden" name="topik_skripsi_id" value="{{ $data->id }}"> --}}
+                                        <input type="hidden" name="topik_skripsi_id" value="{{ $data->id }}">
                                         <textarea class="form-control" readonly>{{ $data->judul_topik  }}</textarea>
                                         <input type="hidden" name="hari" id="hari">
                                     </div>
@@ -93,14 +99,14 @@
                                     <div class="form-group">
                                         <label>Dosen Pembimbing</label>
                                         <input type="text"   value="{{ $data->dosen->user->name  }}" class="form-control"   readonly name="dosen_pembimbing">
-                                        {{-- <input type="hidden"   value="{{ $data->pembimbing->nipy }}" class="form-control"   readonly name="id_dosenPembimbing"> --}}
+                                        <input type="hidden"   value="{{ $data->dosen->nipy }}" class="form-control"   readonly name="nipyDosenPembimbing">
                                         </div>
                                     </div>
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Dosen Penguji</label>
                                         <input type="text"   value="{{ $data->dosenPenguji1->user->name  }}" class="form-control"   readonly name="dosen_penguji1">
-                                        {{-- <input type="hidden"   value="{{ $data->penguji_satu->nipy }}" class="form-control"   readonly name="id_dosenPenguji1"> --}}
+                                        <input type="hidden"   value="{{ $data->dosenPenguji1->nipy }}" class="form-control"   readonly name="nipyDosenPenguji1">
                                         </div>
                                 </div>
                             </div>
@@ -128,15 +134,16 @@
                                             <option value="1">Ruang 1</option>
                                             <option value="2">Ruang 2</option>
                                             <option value="3">Ruang 3</option>
-                                    </select>
+                                        </select>
                                     </div>
+                                    <input type="hidden" name="jenis_ujian"  value="0" class="form-control" readonly>
                                 </div>
                                 <div class="col">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
-                            <button type="submit" class="btn btn-primary" disabled>Simpan Jadwal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
                         </div>
                     </form>
                 </div>
@@ -146,5 +153,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 {{-- @endsection --}}
 @endsection
-
-    

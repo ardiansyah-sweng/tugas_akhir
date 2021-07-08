@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             $("select[name='start']").load(url);
             $("#add").modal();
-            $("#dijadwalkan").val(arg.startStr);
+            $("#Tanggaldijadwalkan").val(arg.startStr);
         },
         nowIndicator: true,
         dayMaxEvents: true, // allow "more" link when too many events
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return (moment().diff(info.start) <= 800000);
         },
         events: {
-            url: domain + "/api/jadwal/calendar",
+            url: domain + "/api/calendarPendadaran",
         },
         eventColor:'#378006',
         loading: function (bool) {

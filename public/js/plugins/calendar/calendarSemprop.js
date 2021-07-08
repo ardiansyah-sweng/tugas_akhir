@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return (moment().diff(info.start) <= 800000);
         },
         events: {
-            url: domain + "/api/jadwal/calendar",
+            url: domain + "/api/calendarSemprop",
         },
         eventColor:'#378006',
         loading: function (bool) {

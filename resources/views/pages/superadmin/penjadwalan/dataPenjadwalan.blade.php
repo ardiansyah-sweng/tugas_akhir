@@ -15,7 +15,7 @@
                             <i class="flaticon-right-arrow"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Penjadwalan</a>
+                            <a href="#">{{$page}}</a>
                         </li>
                     </ul>
                 </div>
@@ -32,10 +32,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-4 mb-4 pb-3">
-                                            <h5><strong>Filter Mahasiswa</strong></h5>
+                                            <h5><strong>Filter Ujian</strong></h5>
                                             <select name="filter" id="filter-penjadwalan" class="form-control">
-                                                    <option value="">Semua Mahasiswa</option>
-                                                    @foreach ($statusMahasiswa as $key => $val)
+                                                    <option value="">Semua Ujian</option>
+                                                    @foreach ($status_ujian as $key => $val)
                                                         <option value="{{ $key }}" @if(strval($key) == strval($filter))selected @endif>{{ $val }}</option>
                                                     @endforeach
                                             </select>
@@ -48,9 +48,10 @@
                                                 <th>No</th>
                                                 <th>Nim</th>
                                                 <th>Mahasiswa</th>
-                                                <th>Judul</th>
-                                                <th>Penguji</th>
-                                                <th>Periode</th>
+                                                <th>Tanggal Ujian</th>
+                                                <th>Waktu</th>
+                                                <th>Ruang</th>
+                                                <th>Ujian</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -62,43 +63,40 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>
-                                                        @if ($item->nim_submit)
-                                                            {{$item->nim_submit}}
-                                                        @elseif ($item->nim_terpilih)
-                                                            {{$item->nim_terpilih}}      
+                                                        @if ($item->topikSkripsi->nim_submit)
+                                                            {{$item->topikSkripsi->nim_submit}}
+                                                        @elseif ($item->topikSkripsi->nim_terpilih)
+                                                            {{$item->topikSkripsi->nim_terpilih}}      
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($item->nim_submit)
-                                                            {{ $item->mahasiswaSubmit->user->name }}
-                                                        @elseif($item->nim_terpilih)
-                                                            {{ $item->mahasiswaTerpilih->user->name }}
+                                                        @if ($item->topikSkripsi->nim_submit)
+                                                            {{$item->topikSkripsi->mahasiswaSubmit->user->name}}
+                                                        @elseif ($item->topikSkripsi->nim_terpilih)
+                                                            {{$item->topikSkripsi->mahasiswaTerpilih->user->name}}      
                                                         @endif
                                                     </td>
-                                                    <td>{{ $item->judul_topik }}</td>
+                                                    <td>{{date('d F Y',strtotime($item->date))}}</td>
+                                                    <td>{{$item->waktu_mulai}}</td>
+                                                    <td>{{'Ruang ' .$item->meet_room}}</td>
                                                     <td>
-                                                        <img width="40px"
-                                                            src="{{ url('uploads/pengguna/' . $item->dosenPenguji1->avatar) }}">
-                                                        <img width="40px"
-                                                            src="{{ url('uploads/pengguna/' . $item->dosenPenguji2->avatar) }}">
-                                                    </td>
-                                                    <td>
-                                                        <strong class="badge badge-primary">{{ $item->periode->tahun_periode }}</strong>
-                                                    </td>
+                                                        @if ($item->jenis_ujian == 0)
+                                                            <strong class="badge badge-warning">Seminar Proposal</strong>
+                                                        @elseif ($item->jenis_ujian == 1)
+                                                            <strong class="badge badge-success">Pendadaran</strong>                                                                                                  
+                                                        @endif 
+                                                        </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Data" href="{{ route('detailMahasiswa', $item->id)  }}">
+                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Jadwal" href="{{Route('detail.penjadwalan',$item->id)}}">
                                                                 <i class="fa fa-eye"></i>
-                                                            </a>
-                                                                @if ($item->status_mahasiswa == 1)
-                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwalSempropByid', $item->id)}}">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </a>
-                                                                @elseif ($item->status_mahasiswa == 3)
-                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwalPendadaranByid', $item->id)}}">
-                                                                        <i class="fa fa-calendar"></i>
-                                                                    </a>
-                                                                @endif                                                    
+                                                            </a>                                                                             
+                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="#">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>                                                                             
+                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-danger tombolhapus" data-original-title="Hapus Jadwal" href="{{Route('hapus.jadwal',$item->id)}}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>                                                                             
                                                         </div>
                                                     </td>
                                                 </tr>
