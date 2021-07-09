@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::resource('logbook', LogbookController::class);
         Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
         Route::resource('daftar-semprop', DaftarSempropController::class);
+        Route::get('view_file/{id}', [DaftarSempropController::class, 'view_file'])->name('view_file');
 });
 
 Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
