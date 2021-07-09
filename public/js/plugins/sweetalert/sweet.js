@@ -3,13 +3,14 @@ $(".tombolhapus").on("click", function(e) {
     e.preventDefault();
     const href = $(this).attr("href");
     Swal.fire({
-        title: "Anda Yakin Menghapus ini ?",
+        title: "Anda Yakin ?",
         text: "Data yang telah dihapus tidak akan kembali lagi !",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Hapus Data !"
+        cancelButtonText: "Batal",
+        confirmButtonText: "Hapus Data"
     }).then(result => {
         if (result.value) {
             document.location.href = href;

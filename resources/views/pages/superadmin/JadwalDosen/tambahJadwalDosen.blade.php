@@ -44,7 +44,7 @@
                         </div>
                         
                     </div>
-                    <form action="{{route('storeJadwalDosen','create')}}" method="POST" class="card-body">
+                    <form action="{{ route('simpanJadwalDosen','create') }}" method="POST" class="card-body">
                         @csrf
                         <div class="table-responsive">
                             <table id="basic-datatables" class="display table">
