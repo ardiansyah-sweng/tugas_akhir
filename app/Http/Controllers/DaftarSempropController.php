@@ -6,6 +6,7 @@ use App\Models\Topikskripsi;
 use App\Models\Mahasiswa;
 use App\Models\SyaratUjian;
 use App\Models\Syarat;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
@@ -38,16 +39,37 @@ class DaftarSempropController extends Controller
         ->where('status','Accept')
         ->first();
 
-        // dd($data);
-        $syaratUjian=SyaratUjian::where('id_Skripsimahasiswa',$data->id)
-        ->pluck('id')
-        ->first();
-        
+        if($data){
+            $syaratUjian=SyaratUjian::where('id_Skripsimahasiswa',$data->id)
+            ->pluck('id')
+            ->first();
+            
 
-        $syarat=Syarat::where('id_SyaratUjian',$syaratUjian)
-        ->get();
-        // dd($syarat);
-        return view('pages.mahasiswa.semprop.add-file',compact('data','syarat'));
+            $syarat_toefl=Syarat::where('id_SyaratUjian',$syaratUjian)
+            ->where('id_NamaSyarat','1')
+            ->first();
+
+            $syarat_pembayaran=Syarat::where('id_SyaratUjian',$syaratUjian)
+            ->where('id_NamaSyarat','3')
+            ->first();
+
+            // dd($syarat_pembayaran);
+
+            $syarat_naskah=Syarat::where('id_SyaratUjian',$syaratUjian)
+            ->where('id_NamaSyarat','2')
+            ->first();
+
+            $syarat_transkip=Syarat::where('id_SyaratUjian',$syaratUjian)
+            ->where('id_NamaSyarat','5')
+            ->first();
+            
+            
+            return view('pages.mahasiswa.semprop.add-file',compact('data','syarat_toefl','syarat_pembayaran','syarat_naskah','syarat_transkip'));
+            die;
+        }
+        return view('pages.mahasiswa.semprop.add-file',compact('data'));
+       
+        
     }
 
     public function view_file($id){
@@ -167,7 +189,72 @@ class DaftarSempropController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        if ($request->pembayaran) {
+            $request->validate([
+            'pembayaran' => 'required|mimes:png,jpg,jpeg,pdf|max:2048'
+            ]);
+
+            $data['NamaSyaratFile']=$request->file('pembayaran')->store(
+            'exam','public'
+            );
+
+            
+            $filepath=Syarat::whereid($id)
+            ->pluck('NamaSyaratFile')
+            ->first();
+           
+            Storage::delete('public/'.$filepath);       
+        }elseif($request->toefl){
+            $request->validate([
+            'toefl' => 'required|mimes:png,jpg,jpeg,pdf|max:2048'
+            ]);
+
+            $data['NamaSyaratFile']=$request->file('toefl')->store(
+            'exam','public'
+            );
+
+            $filepath=Syarat::whereid($id)
+            ->pluck('NamaSyaratFile')
+            ->first();
+           
+            Storage::delete('public/'.$filepath);   
+
+        }elseif($request->naskah){
+            $request->validate([
+            'naskah' => 'required|mimes:docx,doc,pdf|max:2048'
+            ]);
+
+            $data['NamaSyaratFile']=$request->file('naskah')->store(
+            'exam','public'
+            );
+
+            $filepath=Syarat::whereid($id)
+            ->pluck('NamaSyaratFile')
+            ->first();
+           
+            Storage::delete('public/'.$filepath);   
+
+        }elseif($request->transkip){
+            $request->validate([
+            'transkip' => 'required|mimes:docx,doc,pdf|max:2048'
+            ]);
+
+            $data['NamaSyaratFile']=$request->file('transkip')->store(
+            'exam','public'
+            );
+
+            $filepath=Syarat::whereid($id)
+            ->pluck('NamaSyaratFile')
+            ->first();
+           
+            Storage::delete('public/'.$filepath);   
+        }else{
+            return redirect('/daftar-semprop/create')->with('alert-failed','Gagal merubah file');
+            die;
+        }
+        Syarat::whereid($id)
+            ->update($data);
+        return redirect('/daftar-semprop/create')->with('alert-success','File Berhasil di ubah');
     }
 
     /**
