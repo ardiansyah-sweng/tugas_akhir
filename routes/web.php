@@ -9,6 +9,7 @@ use App\Http\Controllers\Dosen;
 use App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\DaftarSempropController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::get('/penawaran/topiksaya', [PenawaranController::class, 'topiksaya'])->name('penawaran.topiksaya');
         Route::resource('penawaran', PenawaranController::class);
         Route::resource('logbook', LogbookController::class);
-        Route::get('download/{file}', [LogbookController::class, 'download']);
-        Route::get('view/{id}', [LogbookController::class, 'view']);
+        Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
+        Route::resource('daftar-semprop', DaftarSempropController::class);
 });
 
 Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {

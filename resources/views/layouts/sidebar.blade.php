@@ -172,6 +172,29 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#ujian">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Daftar Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="ujian">
+                        <ul class="nav nav-collapse">
+                            
+                            <li>
+                                <a href="{{ url('/daftar-semprop') }}">
+                                    <span class="sub-item">Seminar Proposal</span>
+                                </a>
+                            </li>
+                            {{-- <li>
+                                <a href="{{ url('/logbook/create') }}">
+                                    <span class="sub-item">Tambah Logbook</span>
+                                </a>
+                            </li> --}}
+                            
+                        </ul>
+                    </div>
+                </li>
                 @endif
 
                 
