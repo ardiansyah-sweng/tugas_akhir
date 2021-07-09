@@ -66,7 +66,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen'])->name('jadwalDosen');
         Route::post('importJadwalDosen', [Superadmin\DosenController::class, 'importJadwalDosenExcel'])->name('importJadwalDosen');
         Route::get('tambahJadwalDosen', [Superadmin\DosenController::class, 'addJadwalDosen'])->name('tambahJadwalDosen');
-        Route::post('store/{any}', [Superadmin\DosenController::class, 'storeJadwalDosen'])->name('storeJadwalDosen');
+        Route::post('store/{any}', [Superadmin\DosenController::class, 'storeJadwalDosen'])->name('simpanJadwalDosen');
         route::get('update/{id}', [Superadmin\DosenController::class, 'updateJadwalDosen'])->name('updateJadwalDosen');
 
         // Route Fitur Penjadwalan Semprop & Pendadaran
@@ -77,4 +77,8 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
         Route::get('jadwal-kosong-pendadaran', [Superadmin\PenjadwalanController::class, 'generateJadwalPendadaran']);
         Route::get('jadwal-kosong-semprop', [Superadmin\PenjadwalanController::class, 'generateJadwalSemprop']);
+        Route::post('storePenjadwalan/{any}', [Superadmin\PenjadwalanController::class, 'storeJadwalPendadaran'])->name('store.penjadwalan');
+        Route::get('dataPenjadwalan', [Superadmin\PenjadwalanController::class, 'dataPenjadwalan'])->name('dataPenjadwalan');
+        Route::get('detailPenjadwalanById/{id}', [Superadmin\PenjadwalanController::class, 'detailDataPenjadwalan'])->name('detail.penjadwalan');
+        Route::get('delete{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
 });
