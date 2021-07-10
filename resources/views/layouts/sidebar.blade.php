@@ -250,6 +250,9 @@
                                 <a href="{{ url('/skripsi') }}">
                                     <span class="sub-item">Skripsi Mahasiswa</span>
                                 </a>
+                                <a href="{{ route('dataPenjadwalan') }}">
+                                    <span class="sub-item">Data Jadwal Ujian</span>
+                                </a>
                                 <a href="{{ url('/dataMahasiswa') }}">
                                     <span class="sub-item">Penjadwalan</span>
                                 </a>
