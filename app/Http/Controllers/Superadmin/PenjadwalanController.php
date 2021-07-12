@@ -317,8 +317,6 @@ class PenjadwalanController extends Controller
             'start'             => 'required',
         ]);
 
-
-        $hari = $this->GetHari($request);
         $nipyDosenPembimbing = $request->nipyDosenPembimbing;
         $nipyDosenPenguji1 = $request->nipyDosenPenguji1;
         $nipyDosenPenguji2 = $request->nipyDosenPenguji2;
@@ -501,5 +499,131 @@ class PenjadwalanController extends Controller
     {
         Penjadwalan::destroy($id);
         return redirect('/dataPenjadwalan/')->with('alert-success', 'Jadwal Berhasil Dihapus');
+    }
+
+    #Function untuk mengubah jadwal seminar proposal
+    public function updateJadwalSemprop($id)
+    {
+        $data = Penjadwalan::find($id);
+        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data'));
+    }
+
+    #Function untuk mengubah jadwal pendadaran
+    public function updateJadwalPendadaran($id)
+    {
+        $data = Penjadwalan::find($id);
+        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data'));
+    }
+
+    #Function untuk menyimpan jadwal seminar proposal & Pendadaran saat dilakukanya update
+    public function simpanJadwalTerupdate(Request $request, $id)
+    {
+        $this->validate($request, [
+            'date'              => 'required',
+            'topik_skripsi_id'  => 'required',
+            'start'             => 'required',
+        ]);
+
+        $nipyDosenPembimbing = $request->nipyDosenPembimbing;
+        $nipyDosenPenguji1 = $request->nipyDosenPenguji1;
+        $nipyDosenPenguji2 = $request->nipyDosenPenguji2;
+        $jenisUjian = $request->jenis_ujian;
+
+        $jadwalDay  = Penjadwalan::where('date', $request->date)->get();
+        if (count($jadwalDay) >= 4) {
+            return back()->with('alert-gagal', 'Maaf, Jadwal Ujian pada hari tersebut telah terisi penuh');
+        }
+
+        // Set jam mulai berdasarkan inputan di calender
+        if ($request->start == 1) {
+            $waktu_start    = '07:00';
+        } elseif ($request->start == 2) {
+            $waktu_start    = '07:50';
+        } elseif ($request->start == 3) {
+            $waktu_start    = '08:45';
+        } elseif ($request->start == 4) {
+            $waktu_start    = '09:35';
+        } elseif ($request->start == 5) {
+            $waktu_start    = '10:30';
+        } elseif ($request->start == 6) {
+            $waktu_start    = '11:20';
+        } elseif ($request->start == 7) {
+            $waktu_start    = '12:30';
+        } elseif ($request->start == 8) {
+            $waktu_start    = '13:20';
+        } elseif ($request->start == 9) {
+            $waktu_start    = '14:15';
+        } elseif ($request->start == 10) {
+            $waktu_start    = '15:15';
+        }
+
+        // Set 3 jam untuk satu kali penjadwalan
+        if ($request->start == 1) {
+            $selesai   = 3;
+            $waktu_end    = '09:35';
+        }
+
+        if ($request->start == 2) {
+            $selesai   = 4;
+            $waktu_end    = '10:25';
+        }
+
+        if ($request->start == 3) {
+            $selesai   = 5;
+            $waktu_end    = '11:20';
+        }
+
+        if ($request->start == 4) {
+            $selesai   = 6;
+            $waktu_end    = '12:10';
+        }
+
+        if ($request->start == 5) {
+            $selesai   = 7;
+            $waktu_end    = '13:20';
+        }
+
+        if ($request->start == 6) {
+            $selesai   = 8;
+            $waktu_end    = '14:10';
+        }
+
+        if ($request->start == 7) {
+            $selesai   = 9;
+            $waktu_end    = '15:05';
+        }
+
+        if ($request->start == 8) {
+            $selesai   = 10;
+            $waktu_end    = '16:05';
+        }
+
+        if ($request->start == 9) {
+            $selesai   = 11;
+            $waktu_end    = '17:00';
+        }
+
+        if ($request->start == 10) {
+            $selesai   = 12;
+            $waktu_end    = '17:50';
+        }
+
+        $topikSkripsi   = Topikskripsi::find($request->topik_skripsi_id);
+        $penjadwalan    = $topikSkripsi->penjadwalan;
+
+        $penjadwalan->update([
+            'date'              => $request->date,
+            'waktu_mulai'       => $waktu_start,
+            'waktu_selesai'     => $waktu_end,
+            'kode_jam_mulai'    => $request->start,
+            'kode_jam_selesai'  => $selesai,
+            'meet_room'         => $request->ruang,
+            'jenis_ujian'       => $jenisUjian
+        ]);
+
+        DosenTerjadwal::where('penjadwalan_id', $penjadwalan->id)->delete();
+
+        $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $penjadwalan);
+        return redirect('/dataPenjadwalan/')->with('alert-success', 'Jadwal Berhasil Diubah');
     }
 }

@@ -90,10 +90,17 @@
                                                         <div class="form-button-action">
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Jadwal" href="{{Route('detail.penjadwalan',$item->id)}}">
                                                                 <i class="fa fa-eye"></i>
-                                                            </a>                                                                             
-                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="#">
-                                                                <i class="fa fa-edit"></i>
-                                                            </a>                                                                             
+                                                            </a>    
+                                                            @if ($item->jenis_ujian == 0)                                
+                                                                <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="{{ Route('update.semprop',$item->id) }}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </a>
+                                                            @elseif ($item->jenis_ujian == 1)
+                                                                <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="{{ Route('update.pendadaran',$item->id) }}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </a>
+                                                            @endif
+
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-danger tombolhapus" data-original-title="Hapus Jadwal" href="{{Route('hapus.jadwal',$item->id)}}">
                                                                 <i class="fa fa-trash"></i>
                                                             </a>                                                                             
