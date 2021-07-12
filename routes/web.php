@@ -81,4 +81,8 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('dataPenjadwalan', [Superadmin\PenjadwalanController::class, 'dataPenjadwalan'])->name('dataPenjadwalan');
         Route::get('detailPenjadwalanById/{id}', [Superadmin\PenjadwalanController::class, 'detailDataPenjadwalan'])->name('detail.penjadwalan');
         Route::get('delete{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
+
+        Route::get('updateJadwalUjian-semprop/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalSemprop'])->name('update.semprop');
+        Route::get('updateJadwalUjian-pendadaran/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalPendadaran'])->name('update.pendadaran');
+        Route::put('simpanJadwalTerupdate/{id}', [Superadmin\PenjadwalanController::class, 'simpanJadwalTerupdate']);
 });
