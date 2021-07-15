@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 return false;
             }
-            $("select[name='start']").load(url);
+            $("select[name='waktu_mulai']").load(url);
             $("#add").modal();
             $("#dijadwalkan").val(arg.startStr);
         },

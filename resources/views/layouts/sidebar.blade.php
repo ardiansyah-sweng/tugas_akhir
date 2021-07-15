@@ -232,7 +232,7 @@
                                     <span class="sub-item">Data Mahasiswa</span>
                                 </a>
                                 <a href="{{ url('/jadwalDosen') }}">
-                                    <span class="sub-item">Jadwal dosen</span>
+                                    <span class="sub-item">Jadwal Dosen</span>
                                 </a>
                             </li>
                         </ul>
