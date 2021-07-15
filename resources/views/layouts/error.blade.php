@@ -14,7 +14,7 @@
     </script>
 @endif
 
-@if (Session::has('alert-gagal'))
+@if (Session::has('alert-failed'))
     <script>
         swal("Tidak Dapat Menjadwalkan","{!! Session::get('alert-gagal') !!}",{
             icon : "warning",
