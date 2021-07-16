@@ -91,11 +91,11 @@
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                                 @if ($item->status_mahasiswa == 1)
-                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwalSempropByid', $item->id)}}">
+                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.SempropByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
                                                                 @elseif ($item->status_mahasiswa == 3)
-                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwalPendadaranByid', $item->id)}}">
+                                                                    <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.PendadaranByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
                                                                 @endif                                                    

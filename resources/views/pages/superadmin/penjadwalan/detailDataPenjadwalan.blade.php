@@ -25,7 +25,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title">Detail Mahasiswa, <strong>
+                                                    <div class="card-title">Detail Jadwal Ujian, <strong>
                                                         @if ($data->topikSkripsi->mahasiswaTerpilih)
                                                         {{ $data->topikSkripsi->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->topikSkripsi->mahasiswaSubmit)
@@ -102,7 +102,7 @@
                                         <div class="row mt-3">
                                             <div class="col-2">Tanggal Ujian</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div> {{ date('d F Y',strtotime($data->date))}}</div>
+                                            <div> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $data->date)->locale('id_ID')->isoFormat('D MMMM YYYY') }}</div>
                                         </div>
 
                                         <div class="row mt-3">
@@ -124,7 +124,7 @@
                                                 @if ($data->jenis_ujian == 0)
                                                     <strong class="badge badge-warning">Ujian Seminar Proposal</strong>
                                                     @elseif ($data->jenis_ujian == 1)
-                                                    <strong class="badge badge-success">Ujian Pendadaran</strong>                                                                                                  
+                                                    <strong class="badge badge-success">Ujian Pendadaran Tugas Akhir</strong>                                                                                                  
                                                 @endif                                               
                                             </div>
                                         </div>

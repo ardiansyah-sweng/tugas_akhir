@@ -16,15 +16,14 @@
 
 @if (Session::has('alert-failed'))
     <script>
-        swal("Something Wrong!","{!! Session::get('alert-failed') !!}",{
+        swal("Tidak Dapat Menjadwalkan","{!! Session::get('alert-gagal') !!}",{
             icon : "warning",
             buttons:{        			
 				confirm: {
-			        className : 'btn btn-warning'
+			        className : 'btn btn-info'
 				}
 			},
         });
-
     </script>
 @endif
 

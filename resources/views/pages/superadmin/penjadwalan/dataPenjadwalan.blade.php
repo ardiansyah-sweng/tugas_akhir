@@ -76,7 +76,7 @@
                                                             {{$item->topikSkripsi->mahasiswaTerpilih->user->name}}      
                                                         @endif
                                                     </td>
-                                                    <td>{{date('d F Y',strtotime($item->date))}}</td>
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $item->date)->locale('id_ID')->isoFormat('D MMMM YYYY') }}</td>
                                                     <td>{{$item->waktu_mulai}}</td>
                                                     <td>{{'Ruang ' .$item->meet_room}}</td>
                                                     <td>

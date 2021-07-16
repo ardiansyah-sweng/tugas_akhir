@@ -121,7 +121,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Jam Mulai</label>
-                                        <select class="form-control" name="start" id="mulai">
+                                        <select class="form-control" name="waktu_mulai" id="mulai">
                                             <option value="">Pilih Jam Mulai</option>
                                         </select>
                                     </div>
