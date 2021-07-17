@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Superadmin;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Helpers\Calendar;
 use Illuminate\Http\Request;
 use App\Models\TopikBidang;
@@ -17,7 +19,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\Types\Null_;
 use Carbon\Carbon;
-
+// use Mail;
+use App\Mail\EmailJadwalUjian;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 class PenjadwalanController extends Controller
 {
@@ -425,6 +429,7 @@ class PenjadwalanController extends Controller
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
 
         // $this->sendCalendarEvent($data);
+        $this->sendMailNotificationSchedule($data);
 
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Ditetapkan');
     }
@@ -481,7 +486,7 @@ class PenjadwalanController extends Controller
     {
         $status_ujian = [
             '0' => 'Ujian Seminar Proposal',
-            '1' => 'Ujian Pendadaran'
+            '1' => 'Ujian Pendadaran Tugas Akhir'
         ];
         $dataPenjadwalan = Penjadwalan::orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
@@ -633,6 +638,8 @@ class PenjadwalanController extends Controller
 
         // $this->sendCalendarEvent($data);
 
+        $this->sendMailNotificationSchedule($data);
+
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Diubah');
     }
 
@@ -697,5 +704,117 @@ class PenjadwalanController extends Controller
         } elseif ($data->jenis_ujian == 1) {
             $calendar->sendEvent("Ujian Pendadaran Tugas Akhir", $dataPendadaran);
         }
+    }
+
+    // Function untuk mengirim email undangan notifikasi ujian seminar proposal dan ujian pendadaran
+    private function sendMailNotificationSchedule($data)
+    {
+        $dataTopikSkripsi = Topikskripsi::find($data->topik_skripsi_id);
+        if (!$dataTopikSkripsi) {
+            return false;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->email;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->email;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->name;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->name;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $nimMahasiswa = $dataTopikSkripsi->nim_submit;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $nimMahasiswa = $dataTopikSkripsi->nim_terpilih;
+        }
+
+        $emailDosenPembimbing    = $dataTopikSkripsi->dosen->user->email;
+        $emailDosenPenguji1      = $dataTopikSkripsi->dosenPenguji1->user->email;
+        $emailDosenPenguji2      = $dataTopikSkripsi->dosenPenguji2->user->email;
+        $tanggal                 = $data['date'];
+        $tanggal = Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id_ID')->isoFormat('D MMMM YYYY');
+
+        // Send Mail to Mahasiswa
+        Mail::to($emailMahasiswa)->send(new EmailJadwalUjian([
+            'status'            => 'Mahasiswa',
+            'kepada'            => $namaMahasiswa,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang'             => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen pembimbing
+        Mail::to($emailDosenPembimbing)->send(new EmailJadwalUjian([
+            'status'            => 'Dosen Pembimbing',
+            'kepada'            => $dataTopikSkripsi->dosen->user->name,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang'             => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen penguji 1
+        Mail::to($emailDosenPenguji1)->send(new EmailJadwalUjian([
+            'status'            => 'Dosen Penguji 1',
+            'kepada'            => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang'             => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen penguji 2
+        if ($data->jenis_ujian == 1) {
+            Mail::to($emailDosenPenguji2)->send(new EmailJadwalUjian([
+                'status'            => 'Dosen Penguji 2',
+                'kepada'            => $dataTopikSkripsi->dosenPenguji2->user->name,
+                'nim'               => $nimMahasiswa,
+                'tanggal'           => $tanggal,
+                'nama_mahasiswa'    => $namaMahasiswa,
+                'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+                'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+                'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+                'waktu_mulai'       => $data->waktu_mulai,
+                'waktu_selesai'     => $data->waktu_selesai,
+                'ruang'             => $data->meet_room,
+                'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+                'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+                'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+                'jenis_ujian'       => $data->jenis_ujian
+            ]));
+        }
+        return true;
     }
 }

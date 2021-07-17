@@ -139,9 +139,17 @@
                                     <div class="form-group">
                                         <label>Ruang</label>
                                         <select class="form-control" name="ruang">
-                                            <option value="1">Ruang 1</option>
-                                            <option value="2">Ruang 2</option>
-                                            <option value="3">Ruang 3</option>
+                                            <option value="" selected>--Pilih Ruang--</option>
+                                            <option value="Ruang 1">Ruang 1</option>
+                                            <option value="Ruang 2">Ruang 2</option>
+                                            <option value="Ruang 3">Ruang 3</option>
+                                            <option value="Ruang 4">Ruang 4</option>
+                                            <option value="Ruang 5">Ruang 5</option>
+                                            <option value="Ruang 6">Ruang 6</option>
+                                            <option value="Ruang 7">Ruang 7</option>
+                                            <option value="Ruang 8">Ruang 8</option>
+                                            <option value="Ruang 9">Ruang 9</option>
+                                            <option value="Ruang 10">Ruang 10</option>
                                         </select>
                                         <input type="hidden" name="jenis_ujian"  value="1" class="form-control" readonly>
                                 </div>
