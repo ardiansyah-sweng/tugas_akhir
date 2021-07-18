@@ -31,9 +31,11 @@
                                                     <div class="card-title">Jadwal Dosen</div>
                                             </div>
                                             <div class="col">
-                                                <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#addRowModal">
-                                                    <i class="fa fa-fw fa-upload"></i> Import Jadwal Dosen    
-                                                </button>                                               
+                                            @if (!count($dosenTerjadwal) >0)                     
+                                            <button type="button" class="btn btn-sm btn-info pull-right" data-toggle="modal" data-target="#addRowModal">
+                                                <i class="fa fa-fw fa-download"></i> Import Jadwal Dosen    
+                                            </button>                                               
+                                            @endif
                                             @if (count($dosenTerjadwal) > 0)    
                                                 <a href="{{route('tambahJadwalDosen')}}" class="btn mr-2 btn-sm btn-primary pull-right">
                                                     <i class="fa fa-fw fa-plus"></i> Tambah Jadwal Dosen

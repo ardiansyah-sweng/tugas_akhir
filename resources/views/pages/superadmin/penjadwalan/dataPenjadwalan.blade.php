@@ -78,7 +78,7 @@
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $item->date)->locale('id_ID')->isoFormat('D MMMM YYYY') }}</td>
                                                     <td>{{$item->waktu_mulai}}</td>
-                                                    <td>{{'Ruang ' .$item->meet_room}}</td>
+                                                    <td>{{$item->meet_room}}</td>
                                                     <td>
                                                         @if ($item->jenis_ujian == 0)
                                                             <strong class="badge badge-warning">Seminar Proposal</strong>
