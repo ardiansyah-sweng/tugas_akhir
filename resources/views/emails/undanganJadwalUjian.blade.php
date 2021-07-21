@@ -52,7 +52,6 @@
         width: auto !important;
       }
     }
-
     /* -------------------------------------
         PRESERVE THESE STYLES IN THE HEAD
     ------------------------------------- */
@@ -113,7 +112,8 @@
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px; color: #000000">Kepada <b>{{ $kepada }}</b></p>
-                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px; color: #000000">Kami memberitahukan bahwa akan dilaksanakan <?php 
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px; color: #000000">Assalamualaikum Warahmatullahi Wabarakatuh.<br>Yang terhormat bapak dan ibu dosen, serta mahasiswa program studi teknik informatika Universitas Ahmad Dahlan.
+                         Dengan ini kami menginfromasikan bahwa akan di adakan <?php 
                           if($jenis_ujian == 0){
                              echo ' <strong>Ujian Seminar Proposal</strong> ';
                           }elseif($jenis_ujian == 1){
@@ -178,11 +178,6 @@
                             <th style="color: #000000; text-align: left">{{ $waktu_mulai . ' - ' . $waktu_selesai}} WIB</th>
                           </tr> 
                           <tr>
-                            <td style="color: #000000; text-align: left; padding: .3rem 0" width="150px">Ruang Ujian</td>
-                            <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px">:</th>
-                            <th style="color: #000000; text-align: left">{{ $ruang }}</th>
-                          </tr>
-                          <tr>
                             <td style="color: #000000; text-align: left; padding: .3rem 0" width="150px">Status</td>
                             <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px">:</th>
                             <th style="color: #000000; text-align: left">{{ $status }}</th>
@@ -193,22 +188,17 @@
                           <tr>
                             <td style="color: #000000; text-align: left; padding: .6rem 0 .3rem">Platform</td>
                             <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px">:</th>
-                            {{-- <th style="color: #000000; text-align: left; padding: .3rem 0">{{ is_null($meeting) ? '-' : $meeting['platform'] }}</th> --}}
+                            <th style="color: #000000; text-align: left; padding: .3rem 0">Google Meet</th>
                           </tr>
                           <tr>
-                            <td style="color: #000000; text-align: left; padding: .3rem 0">Meeting ID</td>
+                            <td style="color: #000000; text-align: left; padding: .3rem 0">Ruang Ujian</td>
                             <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px">:</th>
-                            {{-- <th style="color: #000000; text-align: left; padding: .3rem 0">{{ is_null($meeting) ? '-' : $meeting['id'] }}</th> --}}
+                            <th style="color: #000000; text-align: left; padding: .3rem 0">Room Google Meet {{ $ruang_pertemuan }}</th>
                           </tr>
                           <tr>
-                            <td style="color: #000000; text-align: left; padding: .3rem 0">Link</td>
+                            <td style="color: #000000; text-align: left; padding: .3rem 0">Link Google Meet</td>
                             <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px">:</th>
-                            {{-- <th style="text-align: left"><a href="{{ is_null($meeting) ? '-' : $meeting['link'] }}">{{ is_null($meeting) ? '-' : $meeting['link'] }}</a></th> --}}
-                          </tr>
-                          <tr>
-                            <td style="color: #000000; text-align: left; padding: .3rem 0">Password</td>
-                            <th style="color: #000000; text-align: left; padding-left: 5px; padding-right: 10px"">:</th>
-                            {{-- <th style="color: #000000; text-align: left; padding: .3rem 0">{{ is_null($meeting) ? '-' : $meeting['password'] }}</th> --}}
+                            <th style="text-align: left"><a href="{{ $link_meet }}">{{ $link_meet }}</a></th>
                           </tr>
                         </table>
                         <br /><br />
@@ -219,15 +209,12 @@
                   </table>
                 </td>
               </tr>
-
             <!-- END MAIN CONTENT AREA -->
             </table>
-
             <!-- START FOOTER -->
             <div style="color: #888; font-size: 13px; font-family: sans-serif; margin-top: 30px; text-align: center; width: 100%">Program Studi Teknik Informatika</div>
             <div style="color: #888; font-size: 13px; font-family: sans-serif; margin-top: 5px; text-align: center; width: 100%">Powered by SIMTAKHIR Universitas Ahmad Dahlan</div>
             <!-- END FOOTER -->
-
           <!-- END CENTERED WHITE CONTAINER -->
           </div>
         </td>

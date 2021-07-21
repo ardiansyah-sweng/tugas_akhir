@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setup;
+use App\Models\GoogleMeet;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportDataMahasiswa;
 
@@ -17,9 +18,9 @@ class SetupController extends Controller
      */
     public function index()
     {
-        $hari= Setup::all()->first();
+        $hari = Setup::all()->first();
         // dd($hari);
-        return view('pages.superadmin.setup.index',compact('hari'));
+        return view('pages.superadmin.setup.index', compact('hari'));
     }
 
     /**
@@ -78,9 +79,9 @@ class SetupController extends Controller
         $item = Setup::findOrFail($id);
         $item->update($data);
 
-        $hari= Setup::all()->first();
-     
-        return redirect('/setup')->with('alert-success','Data Berhasil di ubah');
+        $hari = Setup::all()->first();
+
+        return redirect('/setup')->with('alert-success', 'Data Berhasil di ubah');
     }
 
     /**
@@ -99,11 +100,44 @@ class SetupController extends Controller
         return view('pages.superadmin.setup.importDataMahasiswa');
     }
 
-    public function importDataMahasiswa(Request $request){
+    public function importDataMahasiswa(Request $request)
+    {
         $file = $request->file('file');
         $namaFile = $file->getClientOriginalName();
         $file->move('DataMahasiswa', $namaFile);
         Excel::import(new ImportDataMahasiswa, public_path('/DataMahasiswa/' . $namaFile));
         // return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
+    }
+
+    public function getlinkGoogleMeet()
+    {
+        $data   = GoogleMeet::all();
+        $id     = GoogleMeet::select('title_room')->orderBy('title_room', 'desc')->take(1)->first();
+        if ($id == null) {
+            $nextTitleGoogleMeet = 1;
+        } else {
+            $nextTitleGoogleMeet = $id['title_room'] + 1;
+        }
+        return view('pages.superadmin.setup.linkGoogleMeet', ['page' => 'Setup Google Meet'], compact('data', 'nextTitleGoogleMeet'));
+    }
+
+    public function storeGoogleMeet(Request $request)
+    {
+        $this->validate($request, [
+            'title_room'        => 'required',
+            'link_google_meet'  => 'required',
+        ]);
+
+        $link = new GoogleMeet;
+        $link->title_room = $request->title_room;
+        $link->link_google_meet = $request->link_google_meet;
+        $link->save();
+        return redirect('linkGoogleMeet')->with('alert-success', 'Link Google Meet Berhasil Ditambahkan');
+    }
+
+    public function deleteLinkGoogleMeet($id)
+    {
+        GoogleMeet::destroy($id);
+        return redirect('linkGoogleMeet')->with('alert-success', 'Link Google Meet Berhasil Dihapus');
     }
 }

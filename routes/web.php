@@ -80,11 +80,17 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::post('storePenjadwalan/{any}', [Superadmin\PenjadwalanController::class, 'storeJadwalSempropDanPendadaran'])->name('store.penjadwalan');
         Route::get('dataPenjadwalan', [Superadmin\PenjadwalanController::class, 'dataPenjadwalan'])->name('dataPenjadwalan');
         Route::get('detailPenjadwalanById/{id}', [Superadmin\PenjadwalanController::class, 'detailDataPenjadwalan'])->name('detail.penjadwalan');
-        Route::get('delete{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
+        Route::get('deleteJadwal{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
 
         Route::get('updateJadwalUjian-semprop/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalSemprop'])->name('update.semprop');
         Route::get('updateJadwalUjian-pendadaran/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalPendadaran'])->name('update.pendadaran');
         Route::put('simpanJadwalTerupdate/{id}', [Superadmin\PenjadwalanController::class, 'simpanJadwalTerupdate']);
+        Route::get('tesEmail', [Superadmin\PenjadwalanController::class, 'tesEmail']);
+
+        // Route setup link google meet
+        Route::get('linkGoogleMeet', [Superadmin\SetupController::class, 'getlinkGoogleMeet'])->name('linkgooglemeet');
+        Route::post('storeLink', [Superadmin\SetupController::class, 'storeGoogleMeet'])->name('simpanLinkGoogleMeet');
+        Route::get('delete{id}', [Superadmin\SetupController::class, 'deleteLinkGoogleMeet'])->name('hapus.link');
 });
 
 Route::get('/google/auth', function () {

@@ -50,7 +50,7 @@
                                                 <th>Mahasiswa</th>
                                                 <th>Tanggal Ujian</th>
                                                 <th>Waktu</th>
-                                                <th>Ruang</th>
+                                                <th style="width: 100px">Meet Room</th>
                                                 <th>Ujian</th>
                                                 <th>Action</th>
                                             </tr>
@@ -78,7 +78,7 @@
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $item->date)->locale('id_ID')->isoFormat('D MMMM YYYY') }}</td>
                                                     <td>{{$item->waktu_mulai}}</td>
-                                                    <td>{{$item->meet_room}}</td>
+                                                    <td>Google Meet {{$item->meet_room}}</td>
                                                     <td>
                                                         @if ($item->jenis_ujian == 0)
                                                             <strong class="badge badge-warning">Seminar Proposal</strong>

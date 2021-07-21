@@ -139,18 +139,11 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Ruang</label>
-                                        <select class="form-control" name="ruang">
-                                            <option value="{{ $data['meet_room'] }}" selected>{{ $data['meet_room'] }}</option>
-                                            <option value="Ruang 1">Ruang 1</option>
-                                            <option value="Ruang 2">Ruang 2</option>
-                                            <option value="Ruang 3">Ruang 3</option>
-                                            <option value="Ruang 4">Ruang 4</option>
-                                            <option value="Ruang 5">Ruang 5</option>
-                                            <option value="Ruang 6">Ruang 6</option>
-                                            <option value="Ruang 7">Ruang 7</option>
-                                            <option value="Ruang 8">Ruang 8</option>
-                                            <option value="Ruang 9">Ruang 9</option>
-                                            <option value="Ruang 10">Ruang 10</option>
+                                        <select class="form-control" name="link">
+                                            <option value="{{ $data->linkGoogleMeet->title_room }}" selected>Link Google Meet {{ $data->linkGoogleMeet->title_room }}</option>
+                                            @foreach ($linkGoogleMeet as $link)
+                                            <option value="{{ $link->title_room }}">Link Google Meet {{ $link->title_room }}</option> 
+                                            @endforeach
                                         </select>
                                         <input type="hidden" name="jenis_ujian"  value="1" class="form-control" readonly>
                                 </div>
