@@ -24,7 +24,6 @@ class CreatePenjadwalan extends Migration
             $table->string('meet_room')->nullable();
             $table->unsignedBigInteger('topik_skripsi_id')->index();
             $table->timestamps();
-
             $table->foreign('topik_skripsi_id')->references('id')->on('topik_skripsi');
         });
     }

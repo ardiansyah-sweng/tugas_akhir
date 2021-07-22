@@ -112,9 +112,16 @@
                                         </div>
 
                                         <div class="row mt-3">
-                                            <div class="col-2">Ruang Ujian</div>
+                                            <div class="col-2">Room Meet</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div> {{ $data->meet_room}}</div>
+                                            <div>Google Meet {{ $data->meet_room}}</div>
+                                            
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-2">Link Google Meet</div>
+                                            <div class="col-1"><span class="float-right">:</span></div>
+                                            <div><a href="{{ $data->linkGoogleMeet->link_google_meet}}" target="_blank">{{ $data->linkGoogleMeet->link_google_meet}}</a></div>
                                         </div>
 
                                         <div class="row mt-3">

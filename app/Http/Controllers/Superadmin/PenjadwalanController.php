@@ -6,21 +6,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\Calendar;
 use Illuminate\Http\Request;
-use App\Models\TopikBidang;
 use App\Models\Topikskripsi;
-use App\Models\Dosen;
-use App\Models\Periode;
 use App\Models\Mahasiswa;
 use App\Models\JadwalDosen;
 use App\Models\DosenTerjadwal;
 use App\Models\Penjadwalan;
-use App\Models\MahasiswaRegisterTopikDosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\Types\Null_;
 use Carbon\Carbon;
-// use Mail;
 use App\Mail\EmailJadwalUjian;
+use App\Models\GoogleMeet;
 use Illuminate\Support\Facades\Mail as FacadesMail;
 
 class PenjadwalanController extends Controller
@@ -55,14 +51,16 @@ class PenjadwalanController extends Controller
     public function jadwalSempropById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data', 'linkGoogleMeet'));
     }
 
     // Function untuk menampilkan kalendar penjadwalan pendadaran
     public function jadwalPendadaranById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data', 'linkGoogleMeet'));
     }
 
     // Function untuk mengkonversi hari dari format kalendar ke format yang di buat dalam database
@@ -423,7 +421,7 @@ class PenjadwalanController extends Controller
         $data->waktu_mulai      = $waktuMulai;
         $data->waktu_selesai    = $waktuSelesai;
         $data->jenis_ujian      = $jenisUjian;
-        $data->meet_room        = $request->ruang;
+        $data->meet_room        = $request->link;
         $data->save();
 
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
@@ -516,14 +514,16 @@ class PenjadwalanController extends Controller
     public function updateJadwalSemprop($id)
     {
         $data = Penjadwalan::find($id);
-        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data', 'linkGoogleMeet'));
     }
 
     #Function untuk menampilkan jadwal ujian pendadaran yang akan di ubah by ID
     public function updateJadwalPendadaran($id)
     {
         $data = Penjadwalan::find($id);
-        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data', 'linkGoogleMeet'));
     }
 
     #Function untuk menyimpan jadwal seminar proposal & Pendadaran saat dilakukanya update
@@ -628,7 +628,7 @@ class PenjadwalanController extends Controller
             'waktu_selesai'     => $waktuSelesai,
             'kode_jam_mulai'    => $request->waktu_mulai,
             'kode_jam_selesai'  => $selesai,
-            'meet_room'         => $request->ruang,
+            'meet_room'         => $request->link,
             'jenis_ujian'       => $jenisUjian
         ]);
 
@@ -669,7 +669,7 @@ class PenjadwalanController extends Controller
         }
 
         $dataSemprop = [
-            'location' => $data->meet_room,
+            'location' => $data->linkGoogleMeet->link_google_meet,
             'times' => [
                 'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
                 'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
@@ -683,7 +683,7 @@ class PenjadwalanController extends Controller
         ];
 
         $dataPendadaran = [
-            'location' => $data->meet_room,
+            'location' => $data->linkGoogleMeet->link_google_meet,
             'times' => [
                 'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
                 'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
@@ -735,6 +735,7 @@ class PenjadwalanController extends Controller
         $emailDosenPembimbing    = $dataTopikSkripsi->dosen->user->email;
         $emailDosenPenguji1      = $dataTopikSkripsi->dosenPenguji1->user->email;
         $emailDosenPenguji2      = $dataTopikSkripsi->dosenPenguji2->user->email;
+        // dd($emailDosenPembimbing, $emailDosenPenguji1, $emailDosenPenguji2);
         $tanggal                 = $data['date'];
         $tanggal = Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id_ID')->isoFormat('D MMMM YYYY');
 
@@ -750,10 +751,11 @@ class PenjadwalanController extends Controller
             'periode'           => $dataTopikSkripsi->periode->tahun_periode,
             'waktu_mulai'       => $data->waktu_mulai,
             'waktu_selesai'     => $data->waktu_selesai,
-            'ruang'             => $data->meet_room,
+            'ruang_pertemuan'   => $data->meet_room,
             'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
             'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
             'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
             'jenis_ujian'       => $data->jenis_ujian
         ]));
 
@@ -769,10 +771,11 @@ class PenjadwalanController extends Controller
             'periode'           => $dataTopikSkripsi->periode->tahun_periode,
             'waktu_mulai'       => $data->waktu_mulai,
             'waktu_selesai'     => $data->waktu_selesai,
-            'ruang'             => $data->meet_room,
+            'ruang_pertemuan'   => $data->meet_room,
             'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
             'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
             'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
             'jenis_ujian'       => $data->jenis_ujian
         ]));
 
@@ -788,10 +791,11 @@ class PenjadwalanController extends Controller
             'periode'           => $dataTopikSkripsi->periode->tahun_periode,
             'waktu_mulai'       => $data->waktu_mulai,
             'waktu_selesai'     => $data->waktu_selesai,
-            'ruang'             => $data->meet_room,
+            'ruang_pertemuan'   => $data->meet_room,
             'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
             'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
             'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
             'jenis_ujian'       => $data->jenis_ujian
         ]));
 
@@ -808,13 +812,19 @@ class PenjadwalanController extends Controller
                 'periode'           => $dataTopikSkripsi->periode->tahun_periode,
                 'waktu_mulai'       => $data->waktu_mulai,
                 'waktu_selesai'     => $data->waktu_selesai,
-                'ruang'             => $data->meet_room,
+                'ruang_pertemuan'   => $data->meet_room,
                 'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
                 'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
                 'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+                'link_meet'         => $data->linkGoogleMeet->link_google_meet,
                 'jenis_ujian'       => $data->jenis_ujian
             ]));
         }
         return true;
+    }
+
+    public function tesEmail()
+    {
+        return view('emails.tesEmail1');
     }
 }

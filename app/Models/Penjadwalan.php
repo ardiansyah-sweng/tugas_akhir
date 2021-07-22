@@ -19,18 +19,8 @@ class Penjadwalan extends Model
         return $this->belongsTo(TopikSkripsi::class, 'topik_skripsi_id');
     }
 
-    public function mahasiswaSubmit()
+    public function linkGoogleMeet()
     {
-        return $this->belongsTo(Mahasiswa::class, 'nim_submit', 'nim');
-    }
-
-    public function mahasiswaTerpilih()
-    {
-        return $this->belongsTo(Mahasiswa::class, 'nim_terpilih', 'nim');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(GoogleMeet::class, 'meet_room', 'title_room');
     }
 }
