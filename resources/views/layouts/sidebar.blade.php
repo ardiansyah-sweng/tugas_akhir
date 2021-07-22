@@ -231,8 +231,11 @@
                                 <a href="{{ url('/data-mahasiswa') }}">
                                     <span class="sub-item">Data Mahasiswa</span>
                                 </a>
-                                <a href="{{ url('/jadwalDosen') }}">
+                                <a href="{{ route('jadwalDosen') }}">
                                     <span class="sub-item">Jadwal Dosen</span>
+                                </a>
+                                <a href="{{ route('linkgooglemeet') }}">
+                                    <span class="sub-item">Link Google Meet</span>
                                 </a>
                             </li>
                         </ul>
@@ -253,7 +256,7 @@
                                 <a href="{{ route('dataPenjadwalan') }}">
                                     <span class="sub-item">Data Jadwal Ujian</span>
                                 </a>
-                                <a href="{{ url('/dataMahasiswa') }}">
+                                <a href="{{ route('dataMahasiswa') }}">
                                     <span class="sub-item">Penjadwalan</span>
                                 </a>
                             </li>
