@@ -25,7 +25,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title">Detail Mahasiswa, <strong>
+                                                    <div class="card-title">Detail Mahasiswa : <strong>
                                                         @if ($data->mahasiswaTerpilih->user->name)
                                                         {{ $data->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->mahasiswaSubmit->user->name)
