@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('dosen', Superadmin\DosenController::class);
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
+        Route::resource('semprop-register', Superadmin\SempropRegisterController::class);
 
         Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
         Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
