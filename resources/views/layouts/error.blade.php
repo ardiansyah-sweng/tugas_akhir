@@ -12,7 +12,19 @@
         });
 
     </script>
-    
+@endif
+
+@if (Session::has('alert-failed'))
+    <script>
+        swal("Tidak Dapat Menjadwalkan","{!! Session::get('alert-gagal') !!}",{
+            icon : "warning",
+            buttons:{        			
+				confirm: {
+			        className : 'btn btn-info'
+				}
+			},
+        });
+    </script>
 @endif
 
 

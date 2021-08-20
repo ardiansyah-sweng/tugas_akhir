@@ -172,6 +172,29 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#ujian">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Daftar Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="ujian">
+                        <ul class="nav nav-collapse">
+                            
+                            <li>
+                                <a href="{{ url('/daftar-semprop/create') }}">
+                                    <span class="sub-item">Seminar Proposal</span>
+                                </a>
+                            </li>
+                            {{-- <li>
+                                <a href="{{ url('/logbook/create') }}">
+                                    <span class="sub-item">Tambah Logbook</span>
+                                </a>
+                            </li> --}}
+                            
+                        </ul>
+                    </div>
+                </li>
                 @endif
 
                 
@@ -205,6 +228,15 @@
                                 <a href="{{ url('/setup') }}">
                                     <span class="sub-item">Setting</span>
                                 </a>
+                                <a href="{{ url('/data-mahasiswa') }}">
+                                    <span class="sub-item">Data Mahasiswa</span>
+                                </a>
+                                <a href="{{ route('jadwalDosen') }}">
+                                    <span class="sub-item">Jadwal Dosen</span>
+                                </a>
+                                <a href="{{ route('linkgooglemeet') }}">
+                                    <span class="sub-item">Link Google Meet</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -220,6 +252,12 @@
                             <li>
                                 <a href="{{ url('/skripsi') }}">
                                     <span class="sub-item">Skripsi Mahasiswa</span>
+                                </a>
+                                <a href="{{ route('dataPenjadwalan') }}">
+                                    <span class="sub-item">Data Jadwal Ujian</span>
+                                </a>
+                                <a href="{{ route('dataMahasiswa') }}">
+                                    <span class="sub-item">Penjadwalan</span>
                                 </a>
                             </li>
                         </ul>

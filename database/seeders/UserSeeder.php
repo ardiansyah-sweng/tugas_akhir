@@ -31,14 +31,6 @@ class UserSeeder extends Seeder
 
         $dosen->assignRole('dosen');
 
-        $dosen = User::create([
-            'name' => 'Sri Handayaningsih, S.T., M.Cs.',
-            'email' => 'sriningsih@tif.uad.ac.id',
-            'password' => bcrypt('12345678')
-        ]);
-
-        $dosen->assignRole('dosen');
-
         $mahasiswa = User::create([
             'name' => 'Muhammad Nashir Allatif',
             'email' => 'muhammad1700018117@webmail.uad.ac.id',
