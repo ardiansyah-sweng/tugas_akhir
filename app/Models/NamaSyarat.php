@@ -17,5 +17,9 @@ class NamaSyarat extends Model
     public function syarat(){
         return $this->hasMany(Syarat::class,'id_NamaSyarat', 'id');
     }
+
+    public function toTopikSkripsi(){
+          return $this->belongsTo(Topikskripsi::class,'id_Skripsimahasiswa','id');
+    }
     
 }

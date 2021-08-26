@@ -263,6 +263,22 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#daftar">
+                        <i class="fas fa-laptop"></i>
+                        <p>Pendaftaran Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="daftar">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/semprop-register') }}">
+                                    <span class="sub-item">Seminar proposal</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 
                 {{-- <li class="nav-item">
