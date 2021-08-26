@@ -28,13 +28,15 @@ class PenjadwalanController extends Controller
             '0' => 'On Progres Metopen',
             '1' => 'Ready to Schedule Semprop',
             '2' => 'On Progres Skripsi',
-            '3' => 'Ready to Schedule Skripsi'
+            '3' => 'Ready to Schedule Pendadaran'
         ];
         $topikSkripsi = Topikskripsi::orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
 
         if (strlen($filter) > 0) {
-            if (strlen($filter) > 0) $topikSkripsi->where('status_mahasiswa', $filter)->where('status', 'Accept');
+            if (strlen($filter) > 0) $topikSkripsi
+                ->where('status_mahasiswa', $filter)
+                ->where('status', 'Accept');
         }
         $data = $topikSkripsi->get();
         return view('pages.superadmin.penjadwalan.dataMahasiswa', ['page' => 'Data Mahasiswa Metopen & Skripsi'], compact('data', 'filter', 'statusMahasiswa'));
@@ -51,16 +53,40 @@ class PenjadwalanController extends Controller
     public function jadwalSempropById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        $linkGoogleMeet = GoogleMeet::all();
-        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data', 'linkGoogleMeet'));
+        $linkGoogleMeetTerpakai = Penjadwalan::select('meet_room')
+            ->where('date', '>=', date('Y-m-d'))
+            ->get();
+        $dataLink = [];
+        foreach ($linkGoogleMeetTerpakai as $item) {
+            $dataLink[] = $item->meet_room;
+        }
+
+        if (count($linkGoogleMeetTerpakai) > 0) {
+            $linkGoogleMeetTersedia = GoogleMeet::whereNotIn('title_room', $dataLink)->get();
+        } else {
+            $linkGoogleMeetTersedia = GoogleMeet::all();
+        }
+        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data', 'linkGoogleMeetTersedia'));
     }
 
     // Function untuk menampilkan kalendar penjadwalan pendadaran
     public function jadwalPendadaranById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        $linkGoogleMeet = GoogleMeet::all();
-        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data', 'linkGoogleMeet'));
+        $linkGoogleMeetTerpakai = Penjadwalan::select('meet_room')
+            ->where('date', '>=', date('Y-m-d'))
+            ->get();
+        $dataLink = [];
+        foreach ($linkGoogleMeetTerpakai as $item) {
+            $dataLink[] = $item->meet_room;
+        }
+
+        if (count($linkGoogleMeetTerpakai) > 0) {
+            $linkGoogleMeetTersedia = GoogleMeet::whereNotIn('title_room', $dataLink)->get();
+        } else {
+            $linkGoogleMeetTersedia = GoogleMeet::all();
+        }
+        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data', 'linkGoogleMeetTersedia'));
     }
 
     // Function untuk mengkonversi hari dari format kalendar ke format yang di buat dalam database
@@ -427,7 +453,7 @@ class PenjadwalanController extends Controller
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
 
         // $this->sendCalendarEvent($data);
-        $this->sendMailNotificationSchedule($data);
+        // $this->sendMailNotificationSchedule($data);
 
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Ditetapkan');
     }
@@ -514,16 +540,40 @@ class PenjadwalanController extends Controller
     public function updateJadwalSemprop($id)
     {
         $data = Penjadwalan::find($id);
-        $linkGoogleMeet = GoogleMeet::all();
-        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data', 'linkGoogleMeet'));
+        $linkGoogleMeetTerpakai = Penjadwalan::select('meet_room')
+            ->where('date', '>=', date('Y-m-d'))
+            ->get();
+        $dataLink = [];
+        foreach ($linkGoogleMeetTerpakai as $item) {
+            $dataLink[] = $item->meet_room;
+        }
+
+        if (count($linkGoogleMeetTerpakai) > 0) {
+            $linkGoogleMeetTersedia = GoogleMeet::whereNotIn('title_room', $dataLink)->get();
+        } else {
+            $linkGoogleMeetTersedia = GoogleMeet::all();
+        }
+        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data', 'linkGoogleMeetTersedia'));
     }
 
     #Function untuk menampilkan jadwal ujian pendadaran yang akan di ubah by ID
     public function updateJadwalPendadaran($id)
     {
         $data = Penjadwalan::find($id);
-        $linkGoogleMeet = GoogleMeet::all();
-        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data', 'linkGoogleMeet'));
+        $linkGoogleMeetTerpakai = Penjadwalan::select('meet_room')
+            ->where('date', '>=', date('Y-m-d'))
+            ->get();
+        $dataLink = [];
+        foreach ($linkGoogleMeetTerpakai as $item) {
+            $dataLink[] = $item->meet_room;
+        }
+
+        if (count($linkGoogleMeetTerpakai) > 0) {
+            $linkGoogleMeetTersedia = GoogleMeet::whereNotIn('title_room', $dataLink)->get();
+        } else {
+            $linkGoogleMeetTersedia = GoogleMeet::all();
+        }
+        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data', 'linkGoogleMeetTersedia'));
     }
 
     #Function untuk menyimpan jadwal seminar proposal & Pendadaran saat dilakukanya update
@@ -674,12 +724,27 @@ class PenjadwalanController extends Controller
                 'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
                 'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
             ],
-            'attendees' => [
-                ['email' => $dataTopikSkripsi->dosen->user->email],
-                ['email' => $dataTopikSkripsi->dosenPenguji1->user->email],
-                ['email' => $emailMahasiswa],
-            ],
-            'description' => 'Nama Mahasiswa: ' . $namaMahasiswa
+            'description' => '<div><strong>Assalamualaikum Warahmatullahi Wabarakatuh</strong><br>' . "\n" .
+                'Berikut terlampir data Seminar Proposal. Semprop dilaksanakan secara online dengan host utama Penguji.' . "\n" .
+                'Mahasiswa dan Pembimbing dapat bergabung ke room Google Meet pada undangan ini secara bergantian sesuai dengan waktu yang tertera.' . "\n" .
+                '</div>
+                        <table border="0">
+                            <tr>
+                                <td><strong>Pembimbing</strong></td>
+                                <td> : ' . $dataTopikSkripsi->dosen->user->name . '</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Penguji</strong></td>
+                                <td> : ' . $dataTopikSkripsi->dosenPenguji1->user->name . '</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mahasiswa</strong></td>
+                                <td> : ' . $namaMahasiswa . '</td>
+                            </tr>
+                        </table>' . "\n" .
+                '<div>Segala bentuk perubahan waktu pelaksanaan dan teknis menjadi tanggung jawab Pembimbing, Penguji dan Mahasiswa untuk mengatur jadwal yang disepakati bersama.<br>' . "\n" .
+                'Demikian udangan ini disampaikan, agar dapat dilaksanakan sesuai ketentuan.<br>' . "\n" .
+                'Wassalamualaikum Warahmatullahi Wabarakatuh</div>'
         ];
 
         $dataPendadaran = [
@@ -694,7 +759,31 @@ class PenjadwalanController extends Controller
                 ['email' => $dataTopikSkripsi->dosenPenguji2->user->email],
                 ['email' => $emailMahasiswa],
             ],
-            'description' => 'Nama Mahasiswa: ' . $namaMahasiswa
+            'description' => '<div><strong>Assalamualaikum Warahmatullahi Wabarakatuh</strong><br>' . "\n" .
+                'Berikut terlampir data Ujian Pendadaran Tugas Akhir. Pendadaran dilaksanakan secara online dengan host utama Penguji.' . "\n" .
+                'Mahasiswa dan Pembimbing dapat bergabung ke room Google Meet pada undangan ini secara bergantian sesuai dengan waktu yang tertera.' . "\n" .
+                '</div>
+                        <table border="0">
+                            <tr>
+                                <td><strong>Pembimbing</strong></td>
+                                <td> : ' . $dataTopikSkripsi->dosen->user->name . '</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Penguji 1</strong></td>
+                                <td> : ' . $dataTopikSkripsi->dosenPenguji1->user->name . '</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Penguji 2</strong></td>
+                                <td> : ' . $dataTopikSkripsi->dosenPenguji2->user->name . '</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mahasiswa</strong></td>
+                                <td> : ' . $namaMahasiswa . '</td>
+                            </tr>
+                        </table>' . "\n" .
+                '<div>Segala bentuk perubahan waktu pelaksanaan dan teknis menjadi tanggung jawab Pembimbing, Penguji dan Mahasiswa untuk mengatur jadwal yang disepakati bersama.<br>' . "\n" .
+                'Demikian udangan ini disampaikan, agar dapat dilaksanakan sesuai ketentuan.<br>' . "\n" .
+                'Wassalamualaikum Warahmatullahi Wabarakatuh</div>'
         ];
 
         $calendar = new Calendar;

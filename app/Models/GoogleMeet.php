@@ -13,4 +13,9 @@ class GoogleMeet extends Model
     protected $fillable = [
         'id', 'title_room', 'link_google_meet'
     ];
+
+    public function PenjadwalanMeet()
+    {
+        return $this->hasMany(Penjadwalan::class, 'meet_room', 'title_room');
+    }
 }

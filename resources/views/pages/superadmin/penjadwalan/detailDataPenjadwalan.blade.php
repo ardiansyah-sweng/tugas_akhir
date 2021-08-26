@@ -25,7 +25,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title">Detail Jadwal Ujian, <strong>
+                                                    <div class="card-title">Detail Jadwal Ujian : <strong>
                                                         @if ($data->topikSkripsi->mahasiswaTerpilih)
                                                         {{ $data->topikSkripsi->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->topikSkripsi->mahasiswaSubmit)
@@ -121,7 +121,7 @@
                                         <div class="row mt-3">
                                             <div class="col-2">Link Google Meet</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div><a href="{{ $data->linkGoogleMeet->link_google_meet}}" target="_blank">{{ $data->linkGoogleMeet->link_google_meet}}</a></div>
+                                            <div><a href="{{ is_null($data->linkGoogleMeet) ? '-' : $data->linkGoogleMeet->link_google_meet }}" target="_blank">{{ is_null($data->linkGoogleMeet) ? 'Link Tidak Tersedia' : $data->linkGoogleMeet->link_google_meet }}</a></div>
                                         </div>
 
                                         <div class="row mt-3">
