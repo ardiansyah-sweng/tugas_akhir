@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('dosen', Superadmin\DosenController::class);
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
+        Route::resource('semprop-register', Superadmin\SempropRegisterController::class);
 
         Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
         Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
@@ -91,6 +92,9 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('linkGoogleMeet', [Superadmin\SetupController::class, 'getlinkGoogleMeet'])->name('linkgooglemeet');
         Route::post('storeLink', [Superadmin\SetupController::class, 'storeGoogleMeet'])->name('simpanLinkGoogleMeet');
         Route::get('delete{id}', [Superadmin\SetupController::class, 'deleteLinkGoogleMeet'])->name('hapus.link');
+
+        //Route untuk Testing
+        Route::get('tesFungsi', [Superadmin\PenjadwalanController::class, 'jadwalPendadaranById']);
 });
 
 Route::get('/google/auth', function () {
