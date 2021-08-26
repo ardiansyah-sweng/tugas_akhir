@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('holidays', [LiburNasionalController::class, 'liburNasional']);
+#Tambahin link url hostingan 
 
 Route::get('calendarPendadaran', [Superadmin\PenjadwalanController::class, 'eventUjianPendadaran']);
 Route::get('calendarSemprop', [Superadmin\PenjadwalanController::class, 'eventUjianSemprop']);

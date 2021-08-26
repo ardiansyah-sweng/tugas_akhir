@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('dosen', Superadmin\DosenController::class);
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
+        Route::resource('semprop-register', Superadmin\SempropRegisterController::class);
 
         Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
         Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
@@ -72,13 +73,27 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         // Route Fitur Penjadwalan Semprop & Pendadaran
         Route::get('dataMahasiswa', [Superadmin\PenjadwalanController::class, 'dataMahasiswa'])->name('dataMahasiswa');
         Route::get('detailMahasiswa/{id}', [Superadmin\PenjadwalanController::class, 'detailMahasiswa'])->name('detailMahasiswa');
-        Route::get('jadwalSempropByid/{id}', [Superadmin\PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwalSempropByid');
-        Route::get('jadwalPendadaranByid/{id}', [Superadmin\PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwalPendadaranByid');
+        Route::get('jadwal-Semprop/{id}', [Superadmin\PenjadwalanController::class, 'jadwalSempropByid'])->name('jadwal.SempropByid');
+        Route::get('jadwal-Pendadaran/{id}', [Superadmin\PenjadwalanController::class, 'jadwalPendadaranById'])->name('jadwal.PendadaranByid');
 
         Route::get('jadwal-kosong-pendadaran', [Superadmin\PenjadwalanController::class, 'generateJadwalPendadaran']);
         Route::get('jadwal-kosong-semprop', [Superadmin\PenjadwalanController::class, 'generateJadwalSemprop']);
-        Route::post('storePenjadwalan/{any}', [Superadmin\PenjadwalanController::class, 'storeJadwalPendadaran'])->name('store.penjadwalan');
+        Route::post('storePenjadwalan/{any}', [Superadmin\PenjadwalanController::class, 'storeJadwalSempropDanPendadaran'])->name('store.penjadwalan');
         Route::get('dataPenjadwalan', [Superadmin\PenjadwalanController::class, 'dataPenjadwalan'])->name('dataPenjadwalan');
         Route::get('detailPenjadwalanById/{id}', [Superadmin\PenjadwalanController::class, 'detailDataPenjadwalan'])->name('detail.penjadwalan');
-        Route::get('delete{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
+        Route::get('deleteJadwal{id}', [Superadmin\PenjadwalanController::class, 'deleteJadwal'])->name('hapus.jadwal');
+
+        Route::get('updateJadwalUjian-semprop/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalSemprop'])->name('update.semprop');
+        Route::get('updateJadwalUjian-pendadaran/{id}', [Superadmin\PenjadwalanController::class, 'updateJadwalPendadaran'])->name('update.pendadaran');
+        Route::put('simpanJadwalTerupdate/{id}', [Superadmin\PenjadwalanController::class, 'simpanJadwalTerupdate']);
+        Route::get('tesEmail', [Superadmin\PenjadwalanController::class, 'tesEmail']);
+
+        // Route setup link google meet
+        Route::get('linkGoogleMeet', [Superadmin\SetupController::class, 'getlinkGoogleMeet'])->name('linkgooglemeet');
+        Route::post('storeLink', [Superadmin\SetupController::class, 'storeGoogleMeet'])->name('simpanLinkGoogleMeet');
+        Route::get('delete{id}', [Superadmin\SetupController::class, 'deleteLinkGoogleMeet'])->name('hapus.link');
+});
+
+Route::get('/google/auth', function () {
+        return view('auth.google');
 });

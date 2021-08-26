@@ -159,8 +159,8 @@ class DosenController extends Controller
                 return back()->with('alert-gagal', 'Jadwal Dosen Telah Ada');
             }
         }
-        $num = count($request->jam_ke);
-        for ($x = 0; $x < $num; $x++) {
+        $countJamDalamSehari = count($request->jam_ke);
+        for ($x = 0; $x < $countJamDalamSehari; $x++) {
             $condition == 'create' ? $data = new JadwalDosen : $data = JadwalDosen::findOrFail($request->id[$x]);
             $data->nipy = $request->nipy;
             $data->senin    = $request->senin[$x];
@@ -170,8 +170,9 @@ class DosenController extends Controller
             $data->jumat    = $request->jumat[$x];
             $data->sabtu    = $request->sabtu[$x];
             $data->jam_ke   = $request->jam_ke[$x];
-            $data->save();
+            // $data->save();
         }
+        dd($countJamDalamSehari);
         if ($condition == 'create') {
             return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Dosen Berhasil Ditambahkan');
         } else {

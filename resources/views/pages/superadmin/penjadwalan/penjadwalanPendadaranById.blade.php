@@ -23,7 +23,7 @@
                             <i class="flaticon-right-arrow"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">Jadwal Seminar Proposal</a>
+                            <a href="#">Jadwal Ujian Pendadaran</a>
                         </li>
                     </ul>
                 </div>
@@ -130,7 +130,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Jam Mulai</label>
-                                        <select class="form-control" name="start" id="mulai">
+                                        <select class="form-control" name="waktu_mulai" id="mulai">
                                             <option value="">Pilih Jam Mulai</option>
                                         </select>
                                     </div>
@@ -138,10 +138,11 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label>Ruang</label>
-                                        <select class="form-control" name="ruang">
-                                            <option value="1">Ruang 1</option>
-                                            <option value="2">Ruang 2</option>
-                                            <option value="3">Ruang 3</option>
+                                        <select class="form-control" name="link">
+                                            <option value="" selected>--Pilih Link Google Meet--</option>
+                                            @foreach ($linkGoogleMeet as $link)
+                                            <option value="{{ $link->title_room }}">Link Google Meet {{ $link->title_room }}</option> 
+                                            @endforeach
                                         </select>
                                         <input type="hidden" name="jenis_ujian"  value="1" class="form-control" readonly>
                                 </div>

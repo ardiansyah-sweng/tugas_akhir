@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Superadmin;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Helpers\Calendar;
 use Illuminate\Http\Request;
-use App\Models\TopikBidang;
 use App\Models\Topikskripsi;
-use App\Models\Dosen;
-use App\Models\Periode;
 use App\Models\Mahasiswa;
 use App\Models\JadwalDosen;
 use App\Models\DosenTerjadwal;
 use App\Models\Penjadwalan;
-use App\Models\MahasiswaRegisterTopikDosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use phpDocumentor\Reflection\Types\Null_;
+use Carbon\Carbon;
+use App\Mail\EmailJadwalUjian;
+use App\Models\GoogleMeet;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 class PenjadwalanController extends Controller
 {
@@ -47,14 +51,16 @@ class PenjadwalanController extends Controller
     public function jadwalSempropById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.penjadwalanSempropById', ['page' => 'Tetapkan jadwal seminar proposal untuk'], compact('data', 'linkGoogleMeet'));
     }
 
     // Function untuk menampilkan kalendar penjadwalan pendadaran
     public function jadwalPendadaranById($id)
     {
         $data = Topikskripsi::findOrFail($id);
-        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data'));
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.penjadwalanPendadaranById', ['page' => 'Tetapkan jadwal pendadaran untuk'], compact('data', 'linkGoogleMeet'));
     }
 
     // Function untuk mengkonversi hari dari format kalendar ke format yang di buat dalam database
@@ -81,7 +87,7 @@ class PenjadwalanController extends Controller
     // Function untuk menampung array jam ujian
     public function arrayTime(Request $request)
     {
-        $time = array(
+        $waktuMulai = array(
             '1'    => '07:00 - 07:50',
             '2'    => '07:50 - 08:40',
             '3'    => '08:45 - 09:35',
@@ -93,7 +99,7 @@ class PenjadwalanController extends Controller
             '9'    => '14:15 - 15:05',
             '10'    => '15:15 - 16:05',
         );
-        return $time;
+        return $waktuMulai;
     }
 
     // Function generate jadwal untuk mencari rekomendasi jadwal pendadaran yang dapat di gunakan
@@ -106,7 +112,7 @@ class PenjadwalanController extends Controller
 
         $data = TopikSkripsi::findOrFail($request->id);
         $hari = $this->GetHari($request);
-        $time = $this->arrayTime($request);
+        $waktuMulai = $this->arrayTime($request);
 
         // Ambil ID Dosen pembimbing yang akan di jadwalkan, relasi dari jadwal dosen dan topik skripsi
         $jadwalDosenPembimbing      = JadwalDosen::where('nipy', $data['nipy'])->get();
@@ -195,16 +201,16 @@ class PenjadwalanController extends Controller
             }
         }
 
-        $loop_array = array_diff_key($time, $waktuTersedia);
-        $tampungArr = [];
-        foreach ($loop_array as $key => $value) {
-            if (isset($loop_array[$key + 1]) && isset($loop_array[$key + 2])) {
-                $tampungArr[$key] = $value;
+        $jadwalTersedia = array_diff_key($waktuMulai, $waktuTersedia);
+        $tampungArray = [];
+        foreach ($jadwalTersedia as $key => $value) {
+            if (isset($jadwalTersedia[$key + 1]) && isset($jadwalTersedia[$key + 2])) {
+                $tampungArray[$key] = $value;
             }
         }
 
         $option   = '<option value="">--Pilih Jam--</option>';
-        foreach ($tampungArr as $key => $value) {
+        foreach ($tampungArray as $key => $value) {
             $option .= '<option value="' . $key . '"> ' . substr($value, 0, 5)  . '</option>';
         }
         echo $option;
@@ -220,7 +226,7 @@ class PenjadwalanController extends Controller
 
         $data = TopikSkripsi::findOrFail($request->id);
         $hari = $this->GetHari($request);
-        $time = $this->arrayTime($request);
+        $waktuMulai = $this->arrayTime($request);
 
         // Ambil ID Dosen pembimbing yang akan di jadwalkan, relasi dari jadwal dosen dan topik skripsi
         $jadwalDosenPembimbing      = JadwalDosen::where('nipy', $data['nipy'])->get();
@@ -293,36 +299,34 @@ class PenjadwalanController extends Controller
             }
         }
 
-        $loop_array = array_diff_key($time, $waktuTersedia);
-        $tampungArr = [];
-        foreach ($loop_array as $key => $value) {
-            if (isset($loop_array[$key + 1]) && isset($loop_array[$key + 2])) {
-                $tampungArr[$key] = $value;
+        $jadwalTersedia = array_diff_key($waktuMulai, $waktuTersedia);
+        $tampungArray = [];
+        foreach ($jadwalTersedia as $key => $value) {
+            if (isset($jadwalTersedia[$key + 1]) && isset($jadwalTersedia[$key + 2])) {
+                $tampungArray[$key] = $value;
             }
         }
 
         $option   = '<option value="">--Pilih Jam--</option>';
-        foreach ($tampungArr as $key => $value) {
+        foreach ($tampungArray as $key => $value) {
             $option .= '<option value="' . $key . '"> ' . substr($value, 0, 5)  . '</option>';
         }
         echo $option;
     }
 
     #Function untuk menyimpan jadwal pendadaran 
-    public function storeJadwalPendadaran(Request $request, $condition)
+    public function storeJadwalSempropDanPendadaran(Request $request, $condition)
     {
         $this->validate($request, [
             'date'              => 'required',
             'topik_skripsi_id'  => 'required',
-            'start'             => 'required',
+            'waktu_mulai'       => 'required',
         ]);
 
-
-        $hari = $this->GetHari($request);
-        $nipyDosenPembimbing = $request->nipyDosenPembimbing;
-        $nipyDosenPenguji1 = $request->nipyDosenPenguji1;
-        $nipyDosenPenguji2 = $request->nipyDosenPenguji2;
-        $jenisUjian = $request->jenis_ujian;
+        $nipyDosenPembimbing    = $request->nipyDosenPembimbing;
+        $nipyDosenPenguji1      = $request->nipyDosenPenguji1;
+        $nipyDosenPenguji2      = $request->nipyDosenPenguji2;
+        $jenisUjian             = $request->jenis_ujian;
 
         $jadwalsekarang = Penjadwalan::where('topik_skripsi_id', $request->topik_skripsi_id)->first();
         if ($jadwalsekarang != null) {
@@ -334,95 +338,98 @@ class PenjadwalanController extends Controller
             return back()->with('alert-gagal', 'Maaf, Jadwal Ujian pada hari tersebut telah terisi penuh');
         }
 
-
         // Set jam mulai berdasarkan inputan di calender
-        if ($request->start == 1) {
-            $waktu_start    = '07:00';
-        } elseif ($request->start == 2) {
-            $waktu_start    = '07:50';
-        } elseif ($request->start == 3) {
-            $waktu_start    = '08:45';
-        } elseif ($request->start == 4) {
-            $waktu_start    = '09:35';
-        } elseif ($request->start == 5) {
-            $waktu_start    = '10:30';
-        } elseif ($request->start == 6) {
-            $waktu_start    = '11:20';
-        } elseif ($request->start == 7) {
-            $waktu_start    = '12:30';
-        } elseif ($request->start == 8) {
-            $waktu_start    = '13:20';
-        } elseif ($request->start == 9) {
-            $waktu_start    = '14:15';
-        } elseif ($request->start == 10) {
-            $waktu_start    = '15:15';
+        if ($request->waktu_mulai == 1) {
+            $waktuMulai    = '07:00';
+        } elseif ($request->waktu_mulai == 2) {
+            $waktuMulai    = '07:50';
+        } elseif ($request->waktu_mulai == 3) {
+            $waktuMulai    = '08:45';
+        } elseif ($request->waktu_mulai == 4) {
+            $waktuMulai    = '09:35';
+        } elseif ($request->waktu_mulai == 5) {
+            $waktuMulai    = '10:30';
+        } elseif ($request->waktu_mulai == 6) {
+            $waktuMulai    = '11:20';
+        } elseif ($request->waktu_mulai == 7) {
+            $waktuMulai    = '12:30';
+        } elseif ($request->waktu_mulai == 8) {
+            $waktuMulai   = '13:20';
+        } elseif ($request->waktu_mulai == 9) {
+            $waktuMulai    = '14:15';
+        } elseif ($request->waktu_mulai == 10) {
+            $waktuMulai    = '15:15';
         }
 
         // Set 3 jam untuk satu kali penjadwalan
-        if ($request->start == 1) {
+        if ($request->waktu_mulai == 1) {
             $selesai   = 3;
-            $waktu_end    = '09:35';
+            $waktuSelesai    = '09:35';
         }
 
-        if ($request->start == 2) {
+        if ($request->waktu_mulai == 2) {
             $selesai   = 4;
-            $waktu_end    = '10:25';
+            $waktuSelesai    = '10:25';
         }
 
-        if ($request->start == 3) {
+        if ($request->waktu_mulai == 3) {
             $selesai   = 5;
-            $waktu_end    = '11:20';
+            $waktuSelesai    = '11:20';
         }
 
-        if ($request->start == 4) {
+        if ($request->waktu_mulai == 4) {
             $selesai   = 6;
-            $waktu_end    = '12:10';
+            $waktuSelesai    = '12:10';
         }
 
-        if ($request->start == 5) {
+        if ($request->waktu_mulai == 5) {
             $selesai   = 7;
-            $waktu_end    = '13:20';
+            $waktuSelesai    = '13:20';
         }
 
-        if ($request->start == 6) {
+        if ($request->waktu_mulai == 6) {
             $selesai   = 8;
-            $waktu_end    = '14:10';
+            $waktuSelesai    = '14:10';
         }
 
-        if ($request->start == 7) {
+        if ($request->waktu_mulai == 7) {
             $selesai   = 9;
-            $waktu_end    = '15:05';
+            $waktuSelesai    = '15:05';
         }
 
-        if ($request->start == 8) {
+        if ($request->waktu_mulai == 8) {
             $selesai   = 10;
-            $waktu_end    = '16:05';
+            $waktuSelesai    = '16:05';
         }
 
-        if ($request->start == 9) {
+        if ($request->waktu_mulai == 9) {
             $selesai   = 11;
-            $waktu_end    = '17:00';
+            $waktuSelesai    = '17:00';
         }
 
-        if ($request->start == 10) {
+        if ($request->waktu_mulai == 10) {
             $selesai   = 12;
-            $waktu_end    = '17:50';
+            $waktuSelesai    = '17:50';
         }
 
 
         $condition == 'create' ? $data = new Penjadwalan : $data = Penjadwalan::findOrFail($request->id);
         $data->topik_skripsi_id = $request->topik_skripsi_id;
         $data->date             = $request->date;
-        $data->kode_jam_mulai   = $request->start;
+        $data->kode_jam_mulai   = $request->waktu_mulai;
         $data->kode_jam_selesai = $selesai;
-        $data->waktu_mulai      = $waktu_start;
-        $data->waktu_selesai    = $waktu_end;
+        $data->waktu_mulai      = $waktuMulai;
+        $data->waktu_selesai    = $waktuSelesai;
         $data->jenis_ujian      = $jenisUjian;
-        $data->meet_room        = $request->ruang;
+        $data->meet_room        = $request->link;
         $data->save();
 
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
-        return redirect('/dataPenjadwalan/')->with('alert-success', 'Jadwal Berhasil Ditetapkan');
+
+        // $this->sendCalendarEvent($data);
+        $this->sendMailNotificationSchedule($data);
+
+        return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Ditetapkan');
     }
 
     #Function untuk menyimpan jadwal dosen yang telah terdaftr sebagai tim penguji semprop/pendadaran
@@ -430,13 +437,13 @@ class PenjadwalanController extends Controller
     {
         $insertData = [
             ['nipy' => $nipyDosenPembimbing, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
-            ['nipy' => $nipyDosenPenguji1, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
+            ['nipy' => $nipyDosenPenguji1,  'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
             ['nipy' => $nipyDosenPenguji2, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai]
         ];
         DosenTerjadwal::insert($insertData);
     }
 
-    #Function untuk menampilkan data ujian di calendar penjadwalan pendadaran
+    #Function untuk menampilkan data ujian di calendar penjadwalan seminar proposal
     public function eventUjianSemprop()
     {
         $data = Penjadwalan::where('jenis_ujian', 0)->get();
@@ -477,7 +484,7 @@ class PenjadwalanController extends Controller
     {
         $status_ujian = [
             '0' => 'Ujian Seminar Proposal',
-            '1' => 'Ujian Pendadaran'
+            '1' => 'Ujian Pendadaran Tugas Akhir'
         ];
         $dataPenjadwalan = Penjadwalan::orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
@@ -501,5 +508,323 @@ class PenjadwalanController extends Controller
     {
         Penjadwalan::destroy($id);
         return redirect('/dataPenjadwalan/')->with('alert-success', 'Jadwal Berhasil Dihapus');
+    }
+
+    #Function untuk menampilkan jadwal seminar proposal yang akan di ubah by ID
+    public function updateJadwalSemprop($id)
+    {
+        $data = Penjadwalan::find($id);
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.updateJadwalSemprop', ['page' => 'Update jadwal ujian seminar proposal'], compact('data', 'linkGoogleMeet'));
+    }
+
+    #Function untuk menampilkan jadwal ujian pendadaran yang akan di ubah by ID
+    public function updateJadwalPendadaran($id)
+    {
+        $data = Penjadwalan::find($id);
+        $linkGoogleMeet = GoogleMeet::all();
+        return view('pages.superadmin.penjadwalan.updateJadwalPendadaran', ['page' => 'Update jadwal ujian Pendadaran'], compact('data', 'linkGoogleMeet'));
+    }
+
+    #Function untuk menyimpan jadwal seminar proposal & Pendadaran saat dilakukanya update
+    public function simpanJadwalTerupdate(Request $request, $id)
+    {
+        $this->validate($request, [
+            'date'              => 'required',
+            'topik_skripsi_id'  => 'required',
+            'waktu_mulai'       => 'required',
+        ]);
+
+        $nipyDosenPembimbing    = $request->nipyDosenPembimbing;
+        $nipyDosenPenguji1      = $request->nipyDosenPenguji1;
+        $nipyDosenPenguji2      = $request->nipyDosenPenguji2;
+        $jenisUjian             = $request->jenis_ujian;
+
+        $jadwalDay  = Penjadwalan::where('date', $request->date)->get();
+        if (count($jadwalDay) >= 4) {
+            return back()->with('alert-gagal', 'Maaf, Jadwal Ujian pada hari tersebut telah terisi penuh');
+        }
+
+        // Set jam mulai berdasarkan inputan di calender
+        if ($request->waktu_mulai == 1) {
+            $waktuMulai    = '07:00';
+        } elseif ($request->waktu_mulai == 2) {
+            $waktuMulai    = '07:50';
+        } elseif ($request->waktu_mulai == 3) {
+            $waktuMulai    = '08:45';
+        } elseif ($request->waktu_mulai == 4) {
+            $waktuMulai    = '09:35';
+        } elseif ($request->waktu_mulai == 5) {
+            $waktuMulai    = '10:30';
+        } elseif ($request->waktu_mulai == 6) {
+            $waktuMulai    = '11:20';
+        } elseif ($request->waktu_mulai == 7) {
+            $waktuMulai    = '12:30';
+        } elseif ($request->waktu_mulai == 8) {
+            $waktuMulai   = '13:20';
+        } elseif ($request->waktu_mulai == 9) {
+            $waktuMulai    = '14:15';
+        } elseif ($request->waktu_mulai == 10) {
+            $waktuMulai    = '15:15';
+        }
+
+        // Set 3 jam untuk satu kali penjadwalan
+        if ($request->waktu_mulai == 1) {
+            $selesai   = 3;
+            $waktuSelesai    = '09:35';
+        }
+
+        if ($request->waktu_mulai == 2) {
+            $selesai   = 4;
+            $waktuSelesai    = '10:25';
+        }
+
+        if ($request->waktu_mulai == 3) {
+            $selesai   = 5;
+            $waktuSelesai    = '11:20';
+        }
+
+        if ($request->waktu_mulai == 4) {
+            $selesai   = 6;
+            $waktuSelesai    = '12:10';
+        }
+
+        if ($request->waktu_mulai == 5) {
+            $selesai   = 7;
+            $waktuSelesai    = '13:20';
+        }
+
+        if ($request->waktu_mulai == 6) {
+            $selesai   = 8;
+            $waktuSelesai    = '14:10';
+        }
+
+        if ($request->waktu_mulai == 7) {
+            $selesai   = 9;
+            $waktuSelesai    = '15:05';
+        }
+
+        if ($request->waktu_mulai == 8) {
+            $selesai   = 10;
+            $waktuSelesai    = '16:05';
+        }
+
+        if ($request->waktu_mulai == 9) {
+            $selesai   = 11;
+            $waktuSelesai    = '17:00';
+        }
+
+        if ($request->waktu_mulai == 10) {
+            $selesai   = 12;
+            $waktuSelesai    = '17:50';
+        }
+
+        $topikSkripsi   = Topikskripsi::find($request->topik_skripsi_id);
+        $data           = $topikSkripsi->penjadwalan;
+
+        $data->update([
+            'date'              => $request->date,
+            'waktu_mulai'       => $waktuMulai,
+            'waktu_selesai'     => $waktuSelesai,
+            'kode_jam_mulai'    => $request->waktu_mulai,
+            'kode_jam_selesai'  => $selesai,
+            'meet_room'         => $request->link,
+            'jenis_ujian'       => $jenisUjian
+        ]);
+
+        DosenTerjadwal::where('penjadwalan_id', $data->id)->delete();
+
+        $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
+
+        // $this->sendCalendarEvent($data);
+
+        $this->sendMailNotificationSchedule($data);
+
+        return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Diubah');
+    }
+
+
+    #Function untuk mengirim event ujian seminar proposal atau pendadaran ke google calendar
+    private function sendCalendarEvent($data)
+    {
+        $tanggal        = $data['date'];
+        $waktuMulai     = $data['waktu_mulai'];
+        $waktuSelesai   = $data['waktu_selesai'];
+
+        $dataTopikSkripsi = TopikSkripsi::find($data->topik_skripsi_id);
+        if (!$dataTopikSkripsi) {
+            return false;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->email;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->email;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->name;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->name;
+        }
+
+        $dataSemprop = [
+            'location' => $data->linkGoogleMeet->link_google_meet,
+            'times' => [
+                'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
+                'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
+            ],
+            'attendees' => [
+                ['email' => $dataTopikSkripsi->dosen->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji1->user->email],
+                ['email' => $emailMahasiswa],
+            ],
+            'description' => 'Nama Mahasiswa: ' . $namaMahasiswa
+        ];
+
+        $dataPendadaran = [
+            'location' => $data->linkGoogleMeet->link_google_meet,
+            'times' => [
+                'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
+                'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
+            ],
+            'attendees' => [
+                ['email' => $dataTopikSkripsi->dosen->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji1->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji2->user->email],
+                ['email' => $emailMahasiswa],
+            ],
+            'description' => 'Nama Mahasiswa: ' . $namaMahasiswa
+        ];
+
+        $calendar = new Calendar;
+
+        if ($data->jenis_ujian == 0) {
+            $calendar->sendEvent("Ujian Seminar Proposal", $dataSemprop);
+        } elseif ($data->jenis_ujian == 1) {
+            $calendar->sendEvent("Ujian Pendadaran Tugas Akhir", $dataPendadaran);
+        }
+    }
+
+    // Function untuk mengirim email undangan notifikasi ujian seminar proposal dan ujian pendadaran
+    private function sendMailNotificationSchedule($data)
+    {
+        $dataTopikSkripsi = Topikskripsi::find($data->topik_skripsi_id);
+        if (!$dataTopikSkripsi) {
+            return false;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->email;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $emailMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->email;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaSubmit->user->name;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $namaMahasiswa = $dataTopikSkripsi->mahasiswaTerpilih->user->name;
+        }
+
+        if ($dataTopikSkripsi->mahasiswaSubmit) {
+            $nimMahasiswa = $dataTopikSkripsi->nim_submit;
+        } elseif ($dataTopikSkripsi->mahasiswaTerpilih) {
+            $nimMahasiswa = $dataTopikSkripsi->nim_terpilih;
+        }
+
+        $emailDosenPembimbing    = $dataTopikSkripsi->dosen->user->email;
+        $emailDosenPenguji1      = $dataTopikSkripsi->dosenPenguji1->user->email;
+        $emailDosenPenguji2      = $dataTopikSkripsi->dosenPenguji2->user->email;
+        // dd($emailDosenPembimbing, $emailDosenPenguji1, $emailDosenPenguji2);
+        $tanggal                 = $data['date'];
+        $tanggal = Carbon::createFromFormat('Y-m-d', $tanggal)->locale('id_ID')->isoFormat('D MMMM YYYY');
+
+        // Send Mail to Mahasiswa
+        Mail::to($emailMahasiswa)->send(new EmailJadwalUjian([
+            'status'            => 'Mahasiswa',
+            'kepada'            => $namaMahasiswa,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang_pertemuan'   => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen pembimbing
+        Mail::to($emailDosenPembimbing)->send(new EmailJadwalUjian([
+            'status'            => 'Dosen Pembimbing',
+            'kepada'            => $dataTopikSkripsi->dosen->user->name,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang_pertemuan'   => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen penguji 1
+        Mail::to($emailDosenPenguji1)->send(new EmailJadwalUjian([
+            'status'            => 'Dosen Penguji 1',
+            'kepada'            => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'nim'               => $nimMahasiswa,
+            'tanggal'           => $tanggal,
+            'nama_mahasiswa'    => $namaMahasiswa,
+            'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+            'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+            'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+            'waktu_mulai'       => $data->waktu_mulai,
+            'waktu_selesai'     => $data->waktu_selesai,
+            'ruang_pertemuan'   => $data->meet_room,
+            'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+            'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+            'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+            'link_meet'         => $data->linkGoogleMeet->link_google_meet,
+            'jenis_ujian'       => $data->jenis_ujian
+        ]));
+
+        // Send Mail to dosen penguji 2
+        if ($data->jenis_ujian == 1) {
+            Mail::to($emailDosenPenguji2)->send(new EmailJadwalUjian([
+                'status'            => 'Dosen Penguji 2',
+                'kepada'            => $dataTopikSkripsi->dosenPenguji2->user->name,
+                'nim'               => $nimMahasiswa,
+                'tanggal'           => $tanggal,
+                'nama_mahasiswa'    => $namaMahasiswa,
+                'judul_skripsi'     => $dataTopikSkripsi->judul_topik,
+                'topik_skripsi'     => $dataTopikSkripsi->topik->nama_topik,
+                'periode'           => $dataTopikSkripsi->periode->tahun_periode,
+                'waktu_mulai'       => $data->waktu_mulai,
+                'waktu_selesai'     => $data->waktu_selesai,
+                'ruang_pertemuan'   => $data->meet_room,
+                'dosen_pembimbing'  => $dataTopikSkripsi->dosen->user->name,
+                'dosen_penguji_1'   => $dataTopikSkripsi->dosenPenguji1->user->name,
+                'dosen_penguji_2'   => $dataTopikSkripsi->dosenPenguji2->user->name,
+                'link_meet'         => $data->linkGoogleMeet->link_google_meet,
+                'jenis_ujian'       => $data->jenis_ujian
+            ]));
+        }
+        return true;
+    }
+
+    public function tesEmail()
+    {
+        return view('emails.tesEmail1');
     }
 }

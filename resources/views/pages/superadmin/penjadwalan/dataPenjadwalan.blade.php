@@ -50,7 +50,7 @@
                                                 <th>Mahasiswa</th>
                                                 <th>Tanggal Ujian</th>
                                                 <th>Waktu</th>
-                                                <th>Ruang</th>
+                                                <th style="width: 100px">Meet Room</th>
                                                 <th>Ujian</th>
                                                 <th>Action</th>
                                             </tr>
@@ -76,9 +76,9 @@
                                                             {{$item->topikSkripsi->mahasiswaTerpilih->user->name}}      
                                                         @endif
                                                     </td>
-                                                    <td>{{date('d F Y',strtotime($item->date))}}</td>
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $item->date)->locale('id_ID')->isoFormat('D MMMM YYYY') }}</td>
                                                     <td>{{$item->waktu_mulai}}</td>
-                                                    <td>{{'Ruang ' .$item->meet_room}}</td>
+                                                    <td>Google Meet {{$item->meet_room}}</td>
                                                     <td>
                                                         @if ($item->jenis_ujian == 0)
                                                             <strong class="badge badge-warning">Seminar Proposal</strong>
@@ -90,10 +90,17 @@
                                                         <div class="form-button-action">
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Jadwal" href="{{Route('detail.penjadwalan',$item->id)}}">
                                                                 <i class="fa fa-eye"></i>
-                                                            </a>                                                                             
-                                                            <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="#">
-                                                                <i class="fa fa-edit"></i>
-                                                            </a>                                                                             
+                                                            </a>    
+                                                            @if ($item->jenis_ujian == 0)                                
+                                                                <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="{{ Route('update.semprop',$item->id) }}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </a>
+                                                            @elseif ($item->jenis_ujian == 1)
+                                                                <a data-toggle="tooltip" title="" class="btn btn-link btn-info" data-original-title="Ubah Jadwal" href="{{ Route('update.pendadaran',$item->id) }}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </a>
+                                                            @endif
+
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-danger tombolhapus" data-original-title="Hapus Jadwal" href="{{Route('hapus.jadwal',$item->id)}}">
                                                                 <i class="fa fa-trash"></i>
                                                             </a>                                                                             

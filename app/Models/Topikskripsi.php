@@ -75,7 +75,13 @@ class Topikskripsi extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function syaratujian(){
-         return $this->hasOne(SyaratUjian::class,'id_Skripsimahasiswa','id');
+    public function syaratujian()
+    {
+        return $this->hasOne(SyaratUjian::class, 'id_Skripsimahasiswa', 'id');
+    }
+
+    public function penjadwalan()
+    {
+        return $this->hasOne(Penjadwalan::class, 'topik_skripsi_id');
     }
 }

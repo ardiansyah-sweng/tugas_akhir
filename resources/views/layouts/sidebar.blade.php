@@ -231,8 +231,11 @@
                                 <a href="{{ url('/data-mahasiswa') }}">
                                     <span class="sub-item">Data Mahasiswa</span>
                                 </a>
-                                <a href="{{ url('/jadwalDosen') }}">
-                                    <span class="sub-item">Jadwal dosen</span>
+                                <a href="{{ route('jadwalDosen') }}">
+                                    <span class="sub-item">Jadwal Dosen</span>
+                                </a>
+                                <a href="{{ route('linkgooglemeet') }}">
+                                    <span class="sub-item">Link Google Meet</span>
                                 </a>
                             </li>
                         </ul>
@@ -253,8 +256,24 @@
                                 <a href="{{ route('dataPenjadwalan') }}">
                                     <span class="sub-item">Data Jadwal Ujian</span>
                                 </a>
-                                <a href="{{ url('/dataMahasiswa') }}">
+                                <a href="{{ route('dataMahasiswa') }}">
                                     <span class="sub-item">Penjadwalan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#daftar">
+                        <i class="fas fa-laptop"></i>
+                        <p>Pendaftaran Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="daftar">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/semprop-register') }}">
+                                    <span class="sub-item">Seminar proposal</span>
                                 </a>
                             </li>
                         </ul>
