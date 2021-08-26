@@ -8,6 +8,7 @@ use App\Models\Setup;
 use App\Models\GoogleMeet;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportDataMahasiswa;
+use App\Models\Penjadwalan;
 
 class SetupController extends Controller
 {
@@ -118,6 +119,8 @@ class SetupController extends Controller
         } else {
             $nextTitleGoogleMeet = $id['title_room'] + 1;
         }
+
+
         return view('pages.superadmin.setup.linkGoogleMeet', ['page' => 'Setup Google Meet'], compact('data', 'nextTitleGoogleMeet'));
     }
 

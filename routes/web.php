@@ -91,6 +91,9 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('linkGoogleMeet', [Superadmin\SetupController::class, 'getlinkGoogleMeet'])->name('linkgooglemeet');
         Route::post('storeLink', [Superadmin\SetupController::class, 'storeGoogleMeet'])->name('simpanLinkGoogleMeet');
         Route::get('delete{id}', [Superadmin\SetupController::class, 'deleteLinkGoogleMeet'])->name('hapus.link');
+
+        //Route untuk Testing
+        Route::get('tesFungsi', [Superadmin\PenjadwalanController::class, 'jadwalPendadaranById']);
 });
 
 Route::get('/google/auth', function () {

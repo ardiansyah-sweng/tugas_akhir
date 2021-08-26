@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label>Jam Mulai</label>
+                                        <label>Jam Mulai (<font style="color:red">Waktu Semula : {{ $data->waktu_mulai }}</font>)</label>
                                         <select class="form-control" name="waktu_mulai" id="mulai">
                                             <option value="">Pilih Jam Mulai</option>
                                         </select>
@@ -133,12 +133,12 @@
                                         <label>Ruang</label>
                                         <select class="form-control" name="link">
                                             <option value="{{ $data->linkGoogleMeet->title_room }}" selected>Link Google Meet {{ $data->linkGoogleMeet->title_room }}</option>
-                                            @foreach ($linkGoogleMeet as $link)
+                                            @foreach ($linkGoogleMeetTersedia as $link)
                                             <option value="{{ $link->title_room }}">Link Google Meet {{ $link->title_room }}</option> 
                                             @endforeach
                                         </select>
                                         <input type="hidden" name="jenis_ujian"  value="1" class="form-control" readonly>
-                                </div>
+                                    </div>
                                 </div>
                                 <div class="col">
                                 </div>

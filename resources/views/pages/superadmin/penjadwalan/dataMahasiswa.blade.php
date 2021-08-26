@@ -90,11 +90,11 @@
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Data" href="{{ route('detailMahasiswa', $item->id)  }}">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                                @if ($item->status_mahasiswa == 1)
+                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept')
                                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.SempropByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
-                                                                @elseif ($item->status_mahasiswa == 3)
+                                                                @elseif ($item->status_mahasiswa == 3 && $item->status=='Accept')
                                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.PendadaranByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>

@@ -3,7 +3,6 @@
     <link href='{{ url('js/plugins/calendar/main.css') }}' rel='stylesheet' />
     <script src='{{ url('js/plugins/calendar/main.js') }}'></script>
     <script src='{{ url('js/plugins/calendar/calendarPendadaran.js') }}'></script>
-    {{-- <script src='{{ url('js/plugins/calendar/calendar.js') }}'></script> --}}
 @endsection
 
 @section('content')
@@ -130,7 +129,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label>Jam Mulai</label>
+                                        <label>Jam Mulai (<font style="color:red">Waktu Semula : {{ $data->waktu_mulai }}</font>)</label>
                                         <select class="form-control" name="waktu_mulai" id="mulai">
                                             <option value="">Pilih Jam Mulai</option>
                                         </select>
@@ -141,7 +140,7 @@
                                         <label>Ruang</label>
                                         <select class="form-control" name="link">
                                             <option value="{{ $data->linkGoogleMeet->title_room }}" selected>Link Google Meet {{ $data->linkGoogleMeet->title_room }}</option>
-                                            @foreach ($linkGoogleMeet as $link)
+                                            @foreach ($linkGoogleMeetTersedia as $link)
                                             <option value="{{ $link->title_room }}">Link Google Meet {{ $link->title_room }}</option> 
                                             @endforeach
                                         </select>
