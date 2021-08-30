@@ -56,7 +56,16 @@ class SempropRegisterController extends Controller
     {
         $file = Syarat::where('id_SyaratUjian',$id)
         ->get();
-        dd($file);
+        $prasyarat = SyaratUjian::where('id',$id)
+        ->get();
+     
+        return view('pages.superadmin.semprop-register.detail-upload',compact('file','prasyarat'));
+    }
+
+    public function detail_file($id){
+        $data=Syarat::find($id);
+        // dd($data);      
+        return view('pages.superadmin.semprop-register.detail-file',compact('data'));
     }
 
     /**
@@ -79,7 +88,34 @@ class SempropRegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id_syaratUjian = Syarat::where('id',$id)
+        ->pluck("id_SyaratUjian");
+        
+        $request->validate([
+            'status' => 'required',       
+        ]);
+        if($request->status == 2){
+            //accept
+            $data = $request->all();
+            $updateStatus = Syarat::findOrFail($id);
+            $updateStatus->update($data);
+            return back()->with('alert-success','Data Berhasil di ubah');
+
+        }elseif($request->status == 3){
+            //reject
+            $data['keterangan'] = $request->keterangan;
+            $data = $request->all();
+            $updateStatus = Syarat::findOrFail($id);
+            $updateStatus->update($data);
+            
+            return back()->with('alert-success','Data Berhasil di ubah');
+            
+        }else{
+           
+            return back()->with('alert-failed','Data gagal di ubah');
+        }
+        
+
     }
 
     /**
