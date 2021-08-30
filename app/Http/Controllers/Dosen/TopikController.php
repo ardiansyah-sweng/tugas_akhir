@@ -159,7 +159,7 @@ class TopikController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage (test)
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
