@@ -1,7 +1,5 @@
-{{-- disini kodingan adi full --}}
-
 <?php
-    $url = file_get_contents('http://127.0.0.1:5002/api');
+    $url = file_get_contents('http://localhost:5002/api');
     $data = json_decode($url);
 
     foreach ($data as $value) {
@@ -29,7 +27,6 @@
     );}
 ?>
 
-
 <!doctype html>
 <html lang="en">
 
@@ -45,22 +42,22 @@
     <title>SIMTAKHIR</title>
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="{{ asset('start/assets/images/logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="assets/images/logo.png" type="image/png">
 
     <!--====== Bootstrap css ======-->
-    <link rel="stylesheet" href="{{ asset('start/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
     <!--====== Line Icons css ======-->
-    <link rel="stylesheet" href="{{ asset(('start/assets/css/LineIcons.css')) }}">
+    <link rel="stylesheet" href="assets/css/LineIcons.css">
 
     <!--====== Magnific Popup css ======-->
-    <link rel="stylesheet" href="{{ asset('start/assets/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
 
     <!--====== Default css ======-->
-    <link rel="stylesheet" href="{{ asset('start/assets/css/default.css') }}">
+    <link rel="stylesheet" href="assets/css/default.css">
 
     <!--====== Style css ======-->
-    <link rel="stylesheet" href="{{ asset('start/assets/css/style.css') }}">
+    <link rel="stylesheet" href="assets/css/style.css">
     
     <!--====== buat trand topik ======-->
     <script>
@@ -98,7 +95,7 @@
                     <div class="col-lg-12">
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="#">
-                                <img src="{{ asset('start/assets/images/logo.png') }}" alt="Logo" width="80px" hight="80px">
+                                <img src="assets/images/logo.png" alt="Logo" width="80px" hight="80px">
                             </a>
 
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarOne"
@@ -137,7 +134,7 @@
             </div> <!-- container -->
         </div> <!-- navgition -->
 
-        <div id="home" class="header-hero bg_cover" style="background-image: url({{ asset('start/assets/images/bg.jpg') }})">
+        <div id="home" class="header-hero bg_cover" style="background-image: url(assets/images/bg.jpg)">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-8 col-lg-10">
@@ -147,15 +144,16 @@
                                 hasil penelitian suatu masalah yang dilakukan secara seksama dengan bimbingan dosen
                                 pembimbing</p>
                             <ul class="header-btn">
-                                <li><a class="main-btn btn-one" href="{{ route('login') }}">{{ __('M A S U K') }}</a></li>
-                                
+                                <li><a class="main-btn btn-one" href="coba2.php">l O G I N</a></li>
+                                <li><a class="main-btn btn-two video-popup"
+                                        href="https://www.youtube.com/watch?v=r44RKWyfcFw">Login with OTP</a></li>
                             </ul>
                         </div> <!-- header content -->
                     </div>
                 </div> <!-- row -->
             </div> <!-- container -->
             <div class="header-shape">
-                <img src="{{ asset('start/assets/images/header-shape.svg') }}" alt="shape">
+                <img src="assets/images/header-shape.svg" alt="shape">
             </div>
         </div> <!-- header content -->
     </header>
@@ -283,22 +281,22 @@
 
 
     <!--====== jquery js ======-->
-    <script src="{{ asset('start/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('start/assets/js/vendor/jquery-1.12.4.min.js') }}"></script>
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
 
     <!--====== Bootstrap js ======-->
-    <script src="{{ asset('start/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('start/assets/js/popper.min.js') }}"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
 
     <!--====== Scrolling Nav js ======-->
-    <script src="{{ asset('start/assets/js/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('start/assets/js/scrolling-nav.js') }}"></script>
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/scrolling-nav.js"></script>
 
     <!--====== Magnific Popup js ======-->
-    <script src="{{ asset('start/assets/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
 
     <!--====== Main js ======-->
-    <script src="{{ asset('start/assets/js/main.js') }}"></script>
+    <script src="assets/js/main.js"></script>
 
 </body>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
@@ -382,5 +380,3 @@
     </script>
 
 </html>
-
-{{-- batas kodingan adi --}}

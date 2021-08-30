@@ -26,7 +26,7 @@ class TopikController extends Controller
 
         //query nim dari relasi tabel dosen dan user
         $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
-
+        
         //query untuk mengetahui kalau mahasiswa sudah memiliki topik dari topik mahasiswa
         $getAcceptTopikMahasiswa = Topikskripsi::where('nim_submit', $data_mahasiswa->nim)->where('status','Accept')->first();
 
@@ -44,9 +44,10 @@ class TopikController extends Controller
         return view('pages.mahasiswa.addTopik',compact('topik','dosen','periode','getMahasiswaMengajukan','getAcceptTopikMahasiswa','menungguAcc','sudahDapatJudulDariDosen'));
     }
 
+    
+
     public function store(Request $request)
     {
-        
         $request->validate([
             'judul_topik' => 'required',
             'deskripsi' => 'required|min:10',
@@ -55,6 +56,42 @@ class TopikController extends Controller
             'id_periode' => 'required',
             ]);
         $data = $request->all();
+
+        # kodingan adi
+        $a = $request->judul_topik;
+        $b = $request->id_topikbidang;
+        
+
+        function postdata($url, $a,$b){
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\n\t\"nambahjudulexcel\":\"$a\",\n\t\"nambahtopikexcel\":\"$b\"\n}",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json"
+            ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return $response;
+        }
+    
+        
+
+        $data2 = postdata("http://127.0.0.1:5002/api2",$a,$b);
+                $target = \public_path('/start/databersih.xlsx');
+                if(file_exists($target)){
+                    unlink($target);
+                }
+
+        #batas kodingan adi
+        
+
+
+
         
         //memanggil id dari tabel user
         $id=Auth::Id();

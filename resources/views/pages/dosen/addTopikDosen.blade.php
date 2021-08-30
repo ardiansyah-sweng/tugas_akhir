@@ -1,6 +1,17 @@
 @extends('layouts.master')
 
 @section('content')
+{{-- kodingan adi --}}
+<style>
+    html,body{
+        height: 100%;
+    }
+    .loader{
+        display: none;
+    }
+
+</style>
+{{-- batas kodingan adi --}}
     <div class="main-panel">
         <div class="content">
             <div class="page-inner">
@@ -38,7 +49,9 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="judul">Judul Topik</label>
-                                            <input type="text" name="judul_topik" class="form-control @error('judul_topik') is-invalid @enderror" placeholder="Masukkan judul">
+                                            {{-- kodungan adi (saya tambahkan onkeyup sama id disini) --}}
+                                            <input type="text" name="judul_topik" onkeyup="isi_otomatis()" id="judul_topik" class="form-control @error('judul_topik') is-invalid @enderror" placeholder="Masukkan judul">
+                                            {{-- batas kodingan adi --}}
                                             @error('judul_topik')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -57,8 +70,16 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Pilih Topik</label>
-                                            <select class="form-control @error('id_topikbidang') is-invalid @enderror" id="exampleFormControlSelect1" name="id_topikbidang">
+                                            {{-- kodingan adi (tambahkan loader) --}}
+                                            <div class="d-flex align-items-center">
+                                                <label for="exampleFormControlSelect1">Pilih Topik</label>
+                                                <div class="loader loader-sm ml-auto" role="status" aria-hidden="true"></div>
+                                            </div>
+                                            {{-- batas kodingan adi --}}
+
+                                            {{-- kodingan adi (id di topik ini sy ubah id='id_topikbidang') --}}
+                                            <select class="form-control @error('id_topikbidang') is-invalid @enderror" id="id_topikbidang" name="id_topikbidang">
+                                            {{-- batas kodingan adi --}}
                                                 <option value="" selected="selected">---- Pilih Topik ----</option>
                                                 @foreach ($topik as $item)                             
                                                     <option value="{{ $item->id}}" {{ (old("id_topikbidang") == $item->id ? "selected":" ") }}>{{ $item->nama_topik}}</option>
@@ -92,6 +113,28 @@
                             </div>
                         </div>
                         </form>
+                        {{-- kodingan adi --}}
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+                        <script type="text/javascript">
+                            function isi_otomatis(){
+                                var judul_topik = $("#judul_topik").val();
+                                $.ajax({
+                                    url: '{{ asset("start/ajax1.php") }}',
+                                    data:"judul_topik="+judul_topik ,
+                                    beforeSend: function(){
+                                        $('.loader').show();
+                                        
+                                    },
+                                    success : function(data1){
+                                        var json = data1,
+                                        obj = JSON.parse(json);
+                                        $("#id_topikbidang").val(obj.Topik);
+                                        $('.loader').hide();
+                                    }
+                                });
+                            }
+                        </script>
+                        {{-- batas kodingan adi --}}
                     </div>
                 </div>
             </div>
