@@ -33,7 +33,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title"><h3>{{$page}}, <strong>
+                                                    <div class="card-title"><h3>{{$page}} : <strong>
                                                         @if ($data->nim_terpilih)
                                                             {{ $data->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->nim_submit)
@@ -140,7 +140,7 @@
                                         <label>Ruang</label>
                                         <select class="form-control" name="link">
                                             <option value="" selected>--Pilih Link Google Meet--</option>
-                                            @foreach ($linkGoogleMeet as $link)
+                                            @foreach ($linkGoogleMeetTersedia as $link)
                                             <option value="{{ $link->title_room }}">Link Google Meet {{ $link->title_room }}</option> 
                                             @endforeach
                                         </select>

@@ -252,6 +252,7 @@ class DaftarSempropController extends Controller
             return redirect('/daftar-semprop/create')->with('alert-failed','Gagal merubah file');
             die;
         }
+        $data['status'] = '1';
         Syarat::whereid($id)
             ->update($data);
         return redirect('/daftar-semprop/create')->with('alert-success','File Berhasil di ubah');
