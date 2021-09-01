@@ -32,7 +32,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title"><h3>{{$page}}, <strong>
+                                                    <div class="card-title"><h3>{{$page}} : <strong  style="color: green">
                                                         @if ($data->topikSkripsi->nim_terpilih)
                                                             {{ $data->topikSkripsi->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->topikSkripsi->nim_submit)
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
-                            <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
+                            <button type="submit" class="btn btn-primary" id="fire">Simpan Jadwal</button>
                         </div>
                     </form>
                 </div>

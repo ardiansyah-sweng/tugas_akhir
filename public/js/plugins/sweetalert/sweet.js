@@ -1,4 +1,4 @@
-
+// Alert Konfrimasi hapus data
 $(".tombolhapus").on("click", function(e) {
     e.preventDefault();
     const href = $(this).attr("href");
@@ -19,29 +19,21 @@ $(".tombolhapus").on("click", function(e) {
 });
 
 
-
-$(".proses").on("click", function(e) {
-    e.preventDefault();
-    var href = $(".proses").attr("href");
-    let timerInterval;
+// Script Loading penjadwalan 
+const showLoading = function() {
     Swal.fire({
-        title: "Proses Keluar",
-        html: "Anda akan keluar dalam beberapa saat.",
-        timer: 2000,
-        timerProgressBar: true,
-        onBeforeOpen: () => {
-            Swal.showLoading();
-            timerInterval = setInterval(() => {
-                const content = Swal.getContent();
-                if (content) {
-                    const b = content.querySelector("b");
-                    if (b) {
-                        b.textContent = Swal.getTimerLeft();
-                    }
-                }
-            }, 100);
-        }
-    }).then(result => {
-        window.location.href = href;
+    title: 'Mohon Tunggu Sebentar',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    timer: false,
+    onOpen: () => {
+        Swal.showLoading();
+        },
+    text: "Sistem sedang menyimpan data..!",
+    })
+  };
+
+  document.getElementById("fire")
+    .addEventListener('click', (event) => {
+      showLoading();
     });
-});
