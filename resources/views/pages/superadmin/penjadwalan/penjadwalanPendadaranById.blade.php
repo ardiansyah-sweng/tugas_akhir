@@ -7,8 +7,13 @@
 @endsection
 
 @section('content')
-<div class="main-panel">
-    <div class="content">
+
+<div class="main-panel" >
+    {{-- <div class="content" onload="hide_loading();">
+        <div class="loading1 overlay" style="display: block">
+            <div class="lds-dual-ring" style=""></div>
+            <h4 class="overlayket">Mohon Menunggu, Sistem Sedang Menjadwalkan..!</h4>
+        </div> --}}
         <div class="page-inner">
             <input type="hidden" id="idTopik" value="{{ $data->id }}">
                 @include('layouts/error')
@@ -33,7 +38,7 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col">
-                                                    <div class="card-title"><h3>{{$page}} : <strong>
+                                                    <div class="card-title"><h3>{{$page}} : <strong  style="color: green">
                                                         @if ($data->nim_terpilih)
                                                             {{ $data->mahasiswaTerpilih->user->name}}
                                                         @elseif ($data->nim_submit)
@@ -150,15 +155,14 @@
                             </div>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
-                            <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
+                            <button type="submit" class="btn btn-primary" id="fire">Simpan Jadwal</button>
                         </div>
                     </form>
                 </div>
             </div>       
-{{-- @section('script') --}}
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-{{-- @endsection --}}
 @endsection
 
-    
+  

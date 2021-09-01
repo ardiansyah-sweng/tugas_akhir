@@ -110,6 +110,7 @@ class SetupController extends Controller
         // return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 
+    // Function untuk mengambil semua data link google meet
     public function getlinkGoogleMeet()
     {
         $data   = GoogleMeet::all();
@@ -120,10 +121,10 @@ class SetupController extends Controller
             $nextTitleGoogleMeet = $id['title_room'] + 1;
         }
 
-
         return view('pages.superadmin.setup.linkGoogleMeet', ['page' => 'Setup Google Meet'], compact('data', 'nextTitleGoogleMeet'));
     }
 
+    // function untuk menyimpan link google meet yang di input oleh admin
     public function storeGoogleMeet(Request $request)
     {
         $this->validate($request, [
@@ -138,6 +139,7 @@ class SetupController extends Controller
         return redirect('linkGoogleMeet')->with('alert-success', 'Link Google Meet Berhasil Ditambahkan');
     }
 
+    // Function untuk menghapus link google meet
     public function deleteLinkGoogleMeet($id)
     {
         GoogleMeet::destroy($id);
