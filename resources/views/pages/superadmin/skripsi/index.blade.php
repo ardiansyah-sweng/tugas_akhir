@@ -26,6 +26,7 @@
                                             <th width="35%">Nim</th>
                                             <th width="20%">Judul</th>
                                             <th width="20%">Topik</th>
+                                            <th width="20%">status dosen penguji</th>                                           
                                             <th width="20%">Action</th>
 
                                         </tr>
@@ -50,6 +51,14 @@
                                             </td>
                                             <td>{{ $item->judul_topik}}</td>
                                             <td>{{ $item->topik->nama_topik}}</td>
+                                            <td>
+                                                @if ($item->dosen_penguji_1 && $item->dosen_penguji_2)
+                                                    <span class="badge badge-success">Dosen penguji sudah diinputkan</span>
+                                                @else
+                                                    <span class="badge badge-danger">Dosen penguji belum diinputkan</span>
+                                                @endif
+                                           
+                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-primary btn-border btn-round"
                                                     data-toggle="modal" data-target="#addRowModal{{$item->id}}">

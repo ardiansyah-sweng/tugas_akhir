@@ -251,7 +251,7 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ url('/skripsi') }}">
-                                    <span class="sub-item">Skripsi Mahasiswa</span>
+                                    <span class="sub-item">Judul Tugas akhir Mahasiswa</span>
                                 </a>
                                 <a href="{{ route('dataPenjadwalan') }}">
                                     <span class="sub-item">Data Jadwal Ujian</span>
