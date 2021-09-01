@@ -16,7 +16,7 @@
 
 @if (Session::has('alert-failed'))
     <script>
-        swal("Tidak Dapat Menjadwalkan","{!! Session::get('alert-gagal') !!}",{
+        swal("Tidak Dapat Menjadwalkan","{!! Session::get('alert-failed') !!}",{
             icon : "warning",
             buttons:{        			
 				confirm: {

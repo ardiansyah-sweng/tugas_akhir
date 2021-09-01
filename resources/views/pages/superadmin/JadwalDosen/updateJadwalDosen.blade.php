@@ -32,7 +32,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-10">
-                                <h4 class="card-title">{{ $page }}  <strong>{{$dataDosen->user->name}}</strong></h4>
+                                <h4 class="card-title">{{ $page }}  : <strong style="color: green">{{$dataDosen->user->name}}</strong></h4>
                                 <small>Catatan : <i>Isi Form Menggunakan kode <b>0</b>, Sebagai tanda tidak mengajar, &
                                 <b>1</b>, Sebagai Tanda mengajar di hari dan jam tersebut</i></small>
                             </div>

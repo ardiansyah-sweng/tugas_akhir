@@ -27,6 +27,8 @@
 	<!-- CSS Files -->
 	<link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css')}}">
 	<link rel="stylesheet" href="{{ url('assets/css/atlantis.min.css')}}">
+	<link rel="stylesheet" href="{{ url('assets/css/loader.css')}}">
+
 
 	
 	<!-- CSS Just for demo purpose, don't include it in your project -->
