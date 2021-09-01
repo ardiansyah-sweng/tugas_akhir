@@ -109,8 +109,11 @@ class DosenController extends Controller
     // Function list Dosen yang sudah memiliki jadwal 
     public function jadwalDosen()
     {
+        $dosenTerjadwal = JadwalDosen::select('nipy')
+            ->groupBy('nipy')->get();
+
         $data = Dosen::orderBy('nipy', 'desc')->get();
-        return view('pages.superadmin.JadwalDosen.listJadwalDosen', compact('data'));
+        return view('pages.superadmin.JadwalDosen.listJadwalDosen', compact('data', 'dosenTerjadwal'));
     }
 
     // Function import jadwal dosen dari file excel ke database program simtakhir
@@ -120,7 +123,7 @@ class DosenController extends Controller
         $namaFile = $file->getClientOriginalName();
         $file->move('DataJadwalDosen', $namaFile);
         Excel::import(new ImpotrJadwalDosen, public_path('/DataJadwalDosen/' . $namaFile));
-        return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Berhasil DIimport');
+        return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 
     // Function add jadwal dosen secara satu persatu where not dosen terjadwal
@@ -140,7 +143,7 @@ class DosenController extends Controller
     public function storeJadwalDosen(Request $request, $condition)
     {
         $this->validate($request, [
-            'nipy'      => 'required',
+            'nipy'          => 'required',
             'senin'         => 'required',
             'selasa'        => 'required',
             'rabu'          => 'required',
@@ -156,19 +159,20 @@ class DosenController extends Controller
                 return back()->with('alert-gagal', 'Jadwal Dosen Telah Ada');
             }
         }
-        $num = count($request->jam_ke);
-        for ($x = 0; $x < $num; $x++) {
-            $condition == 'create' ? $data = new JadwalDosen : $data = JadwalDosen::findOrFail($request->id[$x]);
+        $countJamDalamSehari = count($request->jam_ke);
+        for ($jam = 0; $jam < $countJamDalamSehari; $jam++) {
+            $condition == 'create' ? $data = new JadwalDosen : $data = JadwalDosen::findOrFail($request->id[$jam]);
             $data->nipy = $request->nipy;
-            $data->senin    = $request->senin[$x];
-            $data->selasa   = $request->selasa[$x];
-            $data->rabu     = $request->rabu[$x];
-            $data->kamis    = $request->kamis[$x];
-            $data->jumat    = $request->jumat[$x];
-            $data->sabtu    = $request->sabtu[$x];
-            $data->jam_ke   = $request->jam_ke[$x];
+            $data->senin    = $request->senin[$jam];
+            $data->selasa   = $request->selasa[$jam];
+            $data->rabu     = $request->rabu[$jam];
+            $data->kamis    = $request->kamis[$jam];
+            $data->jumat    = $request->jumat[$jam];
+            $data->sabtu    = $request->sabtu[$jam];
+            $data->jam_ke   = $request->jam_ke[$jam];
             $data->save();
         }
+        // dd($countJamDalamSehari);
         if ($condition == 'create') {
             return redirect('/jadwalDosen')->with('alert-success', 'Jadwal Dosen Berhasil Ditambahkan');
         } else {

@@ -172,6 +172,29 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#ujian">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Daftar Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="ujian">
+                        <ul class="nav nav-collapse">
+                            
+                            <li>
+                                <a href="{{ url('/daftar-semprop/create') }}">
+                                    <span class="sub-item">Seminar Proposal</span>
+                                </a>
+                            </li>
+                            {{-- <li>
+                                <a href="{{ url('/logbook/create') }}">
+                                    <span class="sub-item">Tambah Logbook</span>
+                                </a>
+                            </li> --}}
+                            
+                        </ul>
+                    </div>
+                </li>
                 @endif
 
                 
@@ -188,11 +211,6 @@
                             <li>
                                 <a href="{{ url('/dosen') }}">
                                     <span class="sub-item">Daftar dosen</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ url('/jadwalDosen') }}">
-                                    <span class="sub-item">Jadwal dosen</span>
                                 </a>
                             </li>
                         </ul>
@@ -213,6 +231,12 @@
                                 <a href="{{ url('/data-mahasiswa') }}">
                                     <span class="sub-item">Data Mahasiswa</span>
                                 </a>
+                                <a href="{{ route('jadwalDosen') }}">
+                                    <span class="sub-item">Jadwal Dosen</span>
+                                </a>
+                                <a href="{{ route('linkgooglemeet') }}">
+                                    <span class="sub-item">Link Google Meet</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -227,7 +251,29 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ url('/skripsi') }}">
-                                    <span class="sub-item">Skripsi Mahasiswa</span>
+                                    <span class="sub-item">Judul Tugas akhir Mahasiswa</span>
+                                </a>
+                                <a href="{{ route('dataPenjadwalan') }}">
+                                    <span class="sub-item">Data Jadwal Ujian</span>
+                                </a>
+                                <a href="{{ route('dataMahasiswa') }}">
+                                    <span class="sub-item">Penjadwalan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#daftar">
+                        <i class="fas fa-laptop"></i>
+                        <p>Pendaftaran Ujian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="daftar">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/semprop-register') }}">
+                                    <span class="sub-item">Seminar proposal</span>
                                 </a>
                             </li>
                         </ul>

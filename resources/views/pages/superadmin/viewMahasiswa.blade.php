@@ -12,7 +12,10 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Daftar mahasiswa {{ $dosen->user->name}}</div>
+                                <div class="card-title">Daftar mahasiswa</div>
+                                <small class="text-primary">
+                                    {{ $dosen->user->name}}
+                                </small>
                             </div>
                             <div class="card-body">
                                
