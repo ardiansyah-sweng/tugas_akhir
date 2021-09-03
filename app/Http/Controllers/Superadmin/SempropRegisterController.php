@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Dosen;
-use Illuminate\Support\Facades\Auth;
-
+namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Topikskripsi;
+use Illuminate\Http\Request;
 use App\Models\Dosen;
-use App\Models\Logbook;
-use App\Models\Syarat;
 use App\Models\SyaratUjian;
+use App\Models\Syarat;
+use App\Models\Logbook;
 
-class BimbinganController extends Controller
+class SempropRegisterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,19 +19,11 @@ class BimbinganController extends Controller
      */
     public function index()
     {
-        //memanggil id dari tabel user
-        $id=Auth::user()->id;
-        
-        //query nipy dari relasi tabel dosen
-        $data_dosen=Dosen::whereuser_id($id)->first();
-        
-        $data=Topikskripsi::where('nipy',$data_dosen->nipy)
-        ->where('status','Accept')
+        $data=Topikskripsi::where('status','Accept')
         ->get();
-
-        // dd($data);
-
-        return view('pages.dosen.bimbingan.index', compact('data'));
+        $dosen=Dosen::get();
+        
+        return view('pages.superadmin.semprop-register.index',compact('data','dosen'));
     }
 
     /**
@@ -65,15 +55,18 @@ class BimbinganController extends Controller
      */
     public function show($id)
     {
-        $logbook=Logbook::where('id_topikskripsi',$id)
+        $file = Syarat::where('id_SyaratUjian',$id)
         ->get();
-        $data = Topikskripsi::whereid($id)->first();
-        return view('pages.dosen.bimbingan.logbook',compact('logbook','data'));
+        $prasyarat = SyaratUjian::where('id',$id)
+        ->get();
+     
+        return view('pages.superadmin.semprop-register.detail-upload',compact('file','prasyarat'));
     }
 
-    public function view($id){
-        $data=Logbook::find($id);   
-        return view('pages.dosen.bimbingan.view-logbook',compact('data'));
+    public function detail_file($id){
+        $data=Syarat::find($id);
+        // dd($data);      
+        return view('pages.superadmin.semprop-register.detail-file',compact('data'));
     }
 
     /**
@@ -96,24 +89,22 @@ class BimbinganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $status['status'] = 1;
-
-        $item=Logbook::whereid($id)
-        ->update($status);
-
-        $lg=Logbook::where('id',$id)
-        ->first();
-
-        $id_skripsi = Logbook::where('id',$id)
-        ->pluck('id_topikskripsi')
-        ->first();
+        //status
+        //1 = waiting
+        //2 = accept
+        //3 = reject
         
-        $id_syaratUjian = SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
-        ->pluck('id');
+        $id_syaratUjian = Syarat::where('id',$id)
+        ->pluck("id_SyaratUjian");
 
-        $semuaSyarat = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+
+         $semuaSyarat= Syarat::where('id_SyaratUjian',$id_syaratUjian)
         ->pluck('id_NamaSyarat');
 
+        $id_skripsi = SyaratUjian::where('id',$id_syaratUjian)
+        ->pluck('id_Skripsimahasiswa')
+        ->first();
+        
         $logbook = Logbook::where('id_topikskripsi',$id_skripsi)
         ->where('status',1)
         ->pluck('status');
@@ -126,7 +117,16 @@ class BimbinganController extends Controller
         foreach($semuaSyarat as $berkas){
             array_push($temp,$berkas);
         }
-        $status = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+           
+        $request->validate([
+            'status' => 'required',       
+        ]);
+        if($request->status == 2){
+            //accept
+            $data = $request->all();
+            $updateStatus = Syarat::findOrFail($id);
+            $updateStatus->update($data);
+            $status = Syarat::where('id_SyaratUjian',$id_syaratUjian)
             ->pluck('status');
             foreach($status as $id_status){
                 array_push($tempStatus,$id_status);
@@ -149,9 +149,24 @@ class BimbinganController extends Controller
                     }
                 }
             }
+            
+            return back()->with('alert-success','Data Berhasil di ubah');
 
-        //redirect topiksaya
-        return redirect('/bimbingan/'.$lg->id_topikskripsi)->with('alert-success','Data Berhasil di ubah');;
+        }elseif($request->status == 3){
+            //reject
+            $data['keterangan'] = $request->keterangan;
+            $data = $request->all();
+            $updateStatus = Syarat::findOrFail($id);
+            $updateStatus->update($data);
+            
+            
+            return back()->with('alert-success','Data Berhasil di ubah');
+            
+        }else{
+           
+            return back()->with('alert-failed','Data gagal di ubah');
+        }
+        
 
     }
 

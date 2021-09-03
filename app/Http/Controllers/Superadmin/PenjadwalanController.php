@@ -461,12 +461,22 @@ class PenjadwalanController extends Controller
     #Function untuk menyimpan jadwal dosen yang telah terdaftr sebagai tim penguji semprop/pendadaran
     public function simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data)
     {
-        $insertData = [
+        $dosenTerjadwalSemprop = [
+            ['nipy' => $nipyDosenPembimbing, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
+            ['nipy' => $nipyDosenPenguji1,  'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
+        ];
+
+        $dosenTerjadwalPendaadaran = [
             ['nipy' => $nipyDosenPembimbing, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
             ['nipy' => $nipyDosenPenguji1,  'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
             ['nipy' => $nipyDosenPenguji2, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai]
         ];
-        DosenTerjadwal::insert($insertData);
+
+        if ($data->jenis_ujian == 0) {
+            DosenTerjadwal::insert($dosenTerjadwalSemprop);
+        } else {
+            DosenTerjadwal::insert($dosenTerjadwalPendaadaran);
+        }
     }
 
     #Function untuk menampilkan data ujian di calendar penjadwalan seminar proposal
