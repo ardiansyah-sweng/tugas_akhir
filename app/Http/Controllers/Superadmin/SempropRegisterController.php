@@ -22,6 +22,8 @@ class SempropRegisterController extends Controller
         $data=Topikskripsi::where('status','Accept')
         ->get();
         $dosen=Dosen::get();
+
+        // dd($data);
         
         return view('pages.superadmin.semprop-register.index',compact('data','dosen'));
     }

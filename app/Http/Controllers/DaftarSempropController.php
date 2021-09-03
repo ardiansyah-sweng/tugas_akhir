@@ -94,9 +94,11 @@ class DaftarSempropController extends Controller
         ->orWhere('nim_submit',$data_mahasiswa->nim)
         ->first();
 
+
         $getIdSyarat= SyaratUjian::where('id_Skripsimahasiswa',$topik->id)
         ->pluck('id')
         ->first();
+        
 
         $data['id_SyaratUjian'] = $getIdSyarat;
         $data['status'] = 1;
@@ -154,6 +156,7 @@ class DaftarSempropController extends Controller
             return redirect('/daftar-semprop/create')->with('alert-failed','Gagal Menambahkan data');
             die;
         }
+
         Syarat::create($data);
         return redirect('/daftar-semprop/create')->with('alert-success','Berhasil menambahkan data');
     }

@@ -88,7 +88,7 @@
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Data" href="{{ route('detailMahasiswa', $item->id)  }}">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept')
+                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept' && $item->dosen_penguji_1)
                                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.SempropByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
