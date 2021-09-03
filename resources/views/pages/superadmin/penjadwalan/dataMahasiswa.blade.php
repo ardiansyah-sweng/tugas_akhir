@@ -77,10 +77,8 @@
                                                     </td>
                                                     <td>{{ $item->judul_topik }}</td>
                                                     <td>
-                                                        <img width="40px"
-                                                            src="{{ url('uploads/pengguna/' . $item->dosenPenguji1->avatar) }}">
-                                                        <img width="40px"
-                                                            src="{{ url('uploads/pengguna/' . $item->dosenPenguji2->avatar) }}">
+                                                        {{-- <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji1->user->name }}">
+                                                        <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji2->user->name }}"> --}}
                                                     </td>
                                                     <td>
                                                         <strong class="badge badge-primary">{{ $item->periode->tahun_periode }}</strong>
@@ -90,7 +88,7 @@
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Data" href="{{ route('detailMahasiswa', $item->id)  }}">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept')
+                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept' && $item->dosen_penguji_1)
                                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.SempropByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
