@@ -30,7 +30,8 @@ class PenjadwalanController extends Controller
             '2' => 'On Progres Skripsi',
             '3' => 'Ready to Schedule Pendadaran'
         ];
-        $topikSkripsi = Topikskripsi::orderBy('id', 'desc');
+        $topikSkripsi = Topikskripsi::where('status','Accept')
+        ->orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
 
         if (strlen($filter) > 0) {
@@ -46,6 +47,7 @@ class PenjadwalanController extends Controller
     public function detailMahasiswa($id)
     {
         $data = Topikskripsi::findOrFail($id);
+        // dd($data);
         return view('pages.superadmin.penjadwalan.detailMahasiswa', ['page' => 'Detail Mahasiswa Metopen & Skripsi'], compact('data'));
     }
 
