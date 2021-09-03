@@ -354,14 +354,14 @@ class PenjadwalanController extends Controller
         $nipyDosenPenguji2      = $request->nipyDosenPenguji2;
         $jenisUjian             = $request->jenis_ujian;
 
-        $jadwalsekarang = Penjadwalan::where('topik_skripsi_id', $request->topik_skripsi_id)->first();
-        if ($jadwalsekarang != null) {
-            return back()->with('alert-gagal', 'Maaf, Topik ini telah terdaftar dalam jadwal ujian');
+        $validasiTopikTerdaftar = Penjadwalan::where('topik_skripsi_id', $request->topik_skripsi_id)->first();
+        if ($validasiTopikTerdaftar != null) {
+            return back()->with('alert-failed', 'Topik ini Telah Terdaftar Ujian Pendadaran');
         }
 
-        $jadwalDay  = Penjadwalan::where('date', $request->date)->get();
-        if (count($jadwalDay) >= 4) {
-            return back()->with('alert-gagal', 'Maaf, Jadwal Ujian pada hari tersebut telah terisi penuh');
+        $validasiJamPenuh  = Penjadwalan::where('date', $request->date)->get();
+        if (count($validasiJamPenuh) >= 4) {
+            return back()->with('alert-failed', 'Jadwal Ujian pada hari tersebut telah terisi penuh');
         }
 
         // Set jam mulai berdasarkan inputan di calender
@@ -688,7 +688,7 @@ class PenjadwalanController extends Controller
 
         // $this->sendCalendarEvent($data);
 
-        $this->sendMailNotificationSchedule($data);
+        // $this->sendMailNotificationSchedule($data);
 
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Diubah');
     }
@@ -724,6 +724,11 @@ class PenjadwalanController extends Controller
                 'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
                 'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
             ],
+            'attendees' => [
+                ['email' => $dataTopikSkripsi->dosen->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji1->user->email],
+                ['email' => $emailMahasiswa],
+            ],
             'description' => '<div><strong>Assalamualaikum Warahmatullahi Wabarakatuh</strong><br>' . "\n" .
                 'Berikut terlampir data Seminar Proposal. Semprop dilaksanakan secara online dengan host utama Penguji.' . "\n" .
                 'Mahasiswa dan Pembimbing dapat bergabung ke room Google Meet pada undangan ini secara bergantian sesuai dengan waktu yang tertera.' . "\n" .
@@ -752,6 +757,12 @@ class PenjadwalanController extends Controller
             'times' => [
                 'start' => "{$tanggal}T{$waktuMulai}:00+07:00",
                 'end' => "{$tanggal}T{$waktuSelesai}:00+07:00",
+            ],
+            'attendees' => [
+                ['email' => $dataTopikSkripsi->dosen->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji1->user->email],
+                ['email' => $dataTopikSkripsi->dosenPenguji2->user->email],
+                ['email' => $emailMahasiswa],
             ],
             'attendees' => [
                 ['email' => $dataTopikSkripsi->dosen->user->email],
