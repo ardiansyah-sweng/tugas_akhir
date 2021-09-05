@@ -29,8 +29,10 @@ class PenjadwalanController extends Controller
             '2' => 'On Progres Skripsi',
             '3' => 'Ready to Schedule Pendadaran'
         ];
-        $topikSkripsi = Topikskripsi::where('status','Accept')
-        ->orderBy('id', 'desc');
+        $topikSkripsi = Topikskripsi::where('status', 'Accept')
+            ->whereNotNull('dosen_penguji_1')
+            ->whereNotNull('dosen_penguji_2')
+            ->orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
 
         if (strlen($filter) > 0) {
@@ -698,7 +700,6 @@ class PenjadwalanController extends Controller
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
 
         // $this->sendCalendarEvent($data);
-
         // $this->sendMailNotificationSchedule($data);
 
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Diubah');
