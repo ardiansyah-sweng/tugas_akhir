@@ -48,7 +48,7 @@
                                                 <th>No</th>
                                                 <th>Nim</th>
                                                 <th>Mahasiswa</th>
-                                                <th>Judul</th>
+                                                <th>Judul Tugas Akhir</th>
                                                 <th>Penguji</th>
                                                 <th>Periode</th>
                                                 <th>Action</th>
