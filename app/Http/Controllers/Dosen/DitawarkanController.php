@@ -48,8 +48,8 @@ class DitawarkanController extends Controller
 
     //topik dari dosen
     public function update(Request $request, $id){
+        // dd($request);
         $accept['status'] = 'Accept';
-        $accept['status_mahasiswa']='0';
         $reject['status'] = 'Reject';
         $mahasiswa['nim_terpilih'] = $request->nim;
         

@@ -52,7 +52,7 @@
                                                @if ( $item->syaratujian->syarat->count()==0)
                                                     <span class="badge badge-danger">belum ada</span>
                                                 @else
-                                                    <span class="badge badge-success">{{ $item->syaratujian->syarat->count()}}</span>
+                                                    <span class="badge badge-success">{{ $item->syaratujian->syarat->count()}}</span>                                                   
                                                @endif
                                            </td>
                                             <td>
