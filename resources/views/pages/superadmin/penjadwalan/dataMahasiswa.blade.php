@@ -26,6 +26,7 @@
                                         <div class="row">
                                             <div class="col">
                                                     <div class="card-title">{{$page}}</div>
+                                                    <small style="color: red">Catatan : <i>Data yang tampil merupakan data mahasiwsa/i yang telah memiliki dosen penguji 1 dan 2</i></small>
                                             </div>
                                     </div>
                                 </div>
@@ -40,6 +41,7 @@
                                                     @endforeach
                                             </select>
                                         </div>
+                                    
                                 </div>
                                 <div class="table-responsive"  id="tabel">
                                     <table id="add-row" class="display table table-striped table-hover" >
@@ -48,7 +50,7 @@
                                                 <th>No</th>
                                                 <th>Nim</th>
                                                 <th>Mahasiswa</th>
-                                                <th>Judul</th>
+                                                <th>Judul Tugas Akhir</th>
                                                 <th>Penguji</th>
                                                 <th>Periode</th>
                                                 <th>Action</th>
@@ -77,8 +79,8 @@
                                                     </td>
                                                     <td>{{ $item->judul_topik }}</td>
                                                     <td>
-                                                        {{-- <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji1->user->name }}">
-                                                        <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji2->user->name }}"> --}}
+                                                        <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji1->user->name }}">
+                                                        <img width="40px" class="m-1" src="{{ url('assets/img/jm_denis.jpg')}}" alt="Img Profile" data-toggle="tooltip" data-original-title="{{ $item->dosenPenguji2->user->name }}">
                                                     </td>
                                                     <td>
                                                         <strong class="badge badge-primary">{{ $item->periode->tahun_periode }}</strong>
@@ -88,7 +90,7 @@
                                                             <a data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Detail Data" href="{{ route('detailMahasiswa', $item->id)  }}">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept' && $item->dosen_penguji_1)
+                                                                @if ($item->status_mahasiswa == 1 && $item->status=='Accept')
                                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-info " data-original-title="Jadwalkan" href="{{ route('jadwal.SempropByid', $item->id)}}">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </a>
