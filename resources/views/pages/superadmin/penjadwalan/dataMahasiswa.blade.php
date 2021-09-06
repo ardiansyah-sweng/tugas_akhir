@@ -26,6 +26,7 @@
                                         <div class="row">
                                             <div class="col">
                                                     <div class="card-title">{{$page}}</div>
+                                                    <small style="color: red">Catatan : <i>Data yang tampil merupakan data mahasiwsa/i yang telah memiliki dosen penguji 1 dan 2</i></small>
                                             </div>
                                     </div>
                                 </div>
@@ -40,6 +41,7 @@
                                                     @endforeach
                                             </select>
                                         </div>
+                                    
                                 </div>
                                 <div class="table-responsive"  id="tabel">
                                     <table id="add-row" class="display table table-striped table-hover" >
@@ -48,7 +50,7 @@
                                                 <th>No</th>
                                                 <th>Nim</th>
                                                 <th>Mahasiswa</th>
-                                                <th>Judul</th>
+                                                <th>Judul Tugas Akhir</th>
                                                 <th>Penguji</th>
                                                 <th>Periode</th>
                                                 <th>Action</th>

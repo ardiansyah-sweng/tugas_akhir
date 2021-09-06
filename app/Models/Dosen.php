@@ -37,4 +37,12 @@ class Dosen extends Model
     public function getAvatarAttribute($value){
         return url('storage/' . $value);
     }
+
+    public function dosentoPendadaran(){
+        return $this->hasMany(NilaiPendadaran::class,'nipy', 'nipy');
+    }
+
+    public function dosentoSemprop(){
+        return $this->hasMany(NilaiSemprop::class,'nipy', 'nipy');
+    }
 }

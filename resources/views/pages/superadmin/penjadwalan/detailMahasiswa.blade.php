@@ -26,9 +26,9 @@
                                         <div class="row">
                                             <div class="col">
                                                     <div class="card-title">Detail Mahasiswa : <strong style="color: green">
-                                                        @if ($data->mahasiswaTerpilih->user->name)
+                                                        @if ($data->mahasiswaTerpilih)
                                                         {{ $data->mahasiswaTerpilih->user->name}}
-                                                        @elseif ($data->mahasiswaSubmit->user->name)
+                                                        @elseif ($data->mahasiswaSubmit)
                                                         {{$data->mahasiswaSubmit->user->name}}
                                                         @endif
                                                     </strong>
@@ -60,9 +60,9 @@
                                             <div class="col-2 font-weight-bold">Nama</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
                                             <div>
-                                                @if ($data->mahasiswaTerpilih->user->name)
+                                                @if($data->mahasiswaTerpilih)
                                                     {{ $data->mahasiswaTerpilih->user->name}}
-                                                @elseif ($data->mahasiswaSubmit->user->name)
+                                                @elseif ($data->mahasiswaSubmit)
                                                     {{$data->mahasiswaSubmit->user->name}}
                                                 @endif
                                             </div>
@@ -86,21 +86,27 @@
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Pembimbing</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div> {{ $data->dosen->user->name  }}</div>
+                                            <div>                                                           
+                                                {{$data->dosen->user->name }}                                            
+                                            </div>
                                         </div>
                                         <hr>
                 
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Penguji 1</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div> {{ $data->dosenPenguji1->user->name  }}</div>
+                                            <div>                                                                                  
+                                                {{ $data->dosenPenguji1->user->name }}                                            
+                                            </div>
                                         </div>
                                         <hr>
                 
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Penguji 2</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div> {{ $data->dosenPenguji2->user->name  }}</div>
+                                            <div>                                               
+                                                {{ $data->dosenPenguji2->user->name }}                                  
+                                            </div>
                                         </div>
                                         <hr>
 
