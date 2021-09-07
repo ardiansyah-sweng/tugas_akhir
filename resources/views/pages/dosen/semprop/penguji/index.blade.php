@@ -80,9 +80,9 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
+                                                        
                                                         @if ($item->status_mahasiswa == 1)
-                                                             <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
+                                                             <a href="{{ url('/semprop-penguji/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
                                                         @elseif($item->status_mahasiswa == 3)
                                                             
                                                         @endif
