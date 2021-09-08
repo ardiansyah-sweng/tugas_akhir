@@ -85,7 +85,7 @@
                                                         @elseif($item->status_mahasiswa == 2)
                                                                 <span class="badge badge-success">Lanjut Skripsi</span>
                                                         @elseif($item->status_mahasiswa == 0)
-                                                            @if (count($item->penjadwalan->toNilaiSemprop)==13)
+                                                            @if (count($item->penjadwalan->toNilaiSemprop)==15)
                                                                 <span class="badge badge-warning">Mengulang Metopen</span>
                                                             @else  
                                                                 <span class="badge badge-secondary">Belum Siap Semprop</span>

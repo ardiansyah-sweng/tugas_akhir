@@ -82,7 +82,7 @@
                                                         @if ($item->status_mahasiswa == 0)
                                                             <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
                                                             @if ($item->penjadwalan)
-                                                                @if (count($item->penjadwalan->toNilaiSemprop)==13)
+                                                                @if (count($item->penjadwalan->toNilaiSemprop)==15)
                                                                     <span class="badge badge-warning">Mengulang Metopen</span>
                                                                 @endif
                                                             @endif

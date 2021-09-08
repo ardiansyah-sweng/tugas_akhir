@@ -9,6 +9,8 @@ use App\Models\Penjadwalan;
 use App\Models\Topikskripsi;
 use App\Models\PertanyaanSemprop;
 use App\Models\NilaiSemprop;
+use App\Models\SyaratUjian;
+use App\Models\Syarat;
 
 class PenilaianSempropPembimbingController extends Controller
 {
