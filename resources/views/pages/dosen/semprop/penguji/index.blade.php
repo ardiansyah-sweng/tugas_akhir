@@ -12,7 +12,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Mahasiswa Saya</div>
+                                <div class="card-title">Mahasiswa Seminar Proposal</div>
+                                <small class="text-primary">PENGUJI 1</small>
                             </div>
                             <div class="card-body">
                                
@@ -31,7 +32,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($data as $item)
+                                            @forelse ($daftar_mahasiswa as $item)
                                                 <tr>
                                                     <th>{{$loop->iteration}}</th>
                                                     <td>
@@ -78,26 +79,25 @@
                                                             <span class="badge badge-success">Siap Pendadaran</span>
                                                         @endif
                                                     </td>
-                                                    <td>
-                                                        @if ($item->status_mahasiswa == 0)
-                                                            <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
-                                                            @if ($item->penjadwalan)
-                                                                @if (count($item->penjadwalan->toNilaiSemprop)==15)
-                                                                    <span class="badge badge-warning">Mengulang Metopen</span>
-                                                                @endif
-                                                            @endif
-                                                        @elseif ($item->status_mahasiswa == 1)
-                                                             <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
+                                                    <td>                                                        
+                                                        @if ($item->status_mahasiswa == 1)
+                                                             <a href="{{ url('/semprop-penguji/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
                                                         @elseif($item->status_mahasiswa == 2)
-                                                             <span class="badge badge-success">Lanjut Skripsi</span>
+                                                                <span class="badge badge-success">Lanjut Skripsi</span>
+                                                        @elseif($item->status_mahasiswa == 0)
+                                                            @if (count($item->penjadwalan->toNilaiSemprop)==15)
+                                                                <span class="badge badge-warning">Mengulang Metopen</span>
+                                                            @else  
+                                                                <span class="badge badge-secondary">Belum Siap Semprop</span>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center p-5">
-                                                        Data tidak tersedia
+                                                    <td colspan="7" class="text-center p-5">
+                                                        Anda Belum di tambahkan sebagai dosen penguji 1
                                                     </td>
                                                 </tr>
                                             @endforelse
@@ -105,61 +105,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
-
-
-                                 <!-- Modal -->
-                                 <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header no-bd">
-                                                <h5 class="modal-title">
-                                                    <span class="fw-mediumbold">
-                                                    New</span> 
-                                                    <span class="fw-light">
-                                                        Row
-                                                    </span>
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p class="small">Create a new row using this form, make sure you fill them all</p>
-                                                <form>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Name</label>
-                                                                <input id="addName" type="text" class="form-control" placeholder="fill name">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 pr-0">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Position</label>
-                                                                <input id="addPosition" type="text" class="form-control" placeholder="fill position">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Office</label>
-                                                                <input id="addOffice" type="text" class="form-control" placeholder="fill office">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer no-bd">
-                                                <button type="button" id="addRowButton" class="btn btn-primary">Add</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
                             </div>
                         </div>
                     </div>
