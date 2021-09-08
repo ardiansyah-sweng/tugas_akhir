@@ -119,6 +119,28 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#exam">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Penilaian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="exam">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/semprop-penguji') }}">
+                                    <span class="sub-item">Seminar Proposal</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Pendadaran</span>
+                                </a>
+                            </li>   
+                           
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 
                 @if (Auth::user()->hasRole('mahasiswa'))

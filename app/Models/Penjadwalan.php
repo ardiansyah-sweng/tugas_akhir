@@ -25,10 +25,10 @@ class Penjadwalan extends Model
     }
 
     public function toNilaiSemprop(){
-        return $this->hasOne(NilaiSemprop::class,'id_penjadwalan','id');
+        return $this->hasMany(NilaiSemprop::class,'id_penjadwalan','id');
     }
 
     public function toNilaiPendadaran(){
-        return $this->hasOne(NilaiPendadaran::class,'id_penjadwalan','id');
+        return $this->hasMany(NilaiPendadaran::class,'id_penjadwalan','id');
     }
 }

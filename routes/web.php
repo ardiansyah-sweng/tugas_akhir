@@ -50,6 +50,8 @@ Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
         Route::resource('penelitian', Dosen\TopikController::class);
         Route::resource('mytopik', Dosen\DitawarkanController::class);
         Route::resource('bimbingan', Dosen\BimbinganController::class);
+        Route::resource('penilaian-semprop', Dosen\PenilaianSempropPembimbingController::class);
+        Route::resource('semprop-penguji', Dosen\PenilaianSempropPengujiController::class);
         Route::get('view/{id}', [Dosen\BimbinganController::class, 'view']);
         Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
 });

@@ -86,12 +86,8 @@
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Pembimbing</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div>
-                                                @if ($data->nipy)                              
-                                                {{$data->dosen->user->name  }}
-                                                @else
-                                                <span class="badge badge-warning">Belum dosen Pembimbing</span>
-                                                @endif
+                                            <div>                                                           
+                                                {{$data->dosen->user->name }}                                            
                                             </div>
                                         </div>
                                         <hr>
@@ -99,12 +95,8 @@
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Penguji 1</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div>
-                                                @if ($data->dosen_penguji_1)                                                   
-                                                {{ $data->dosenPenguji1->user->name  }}
-                                                @else
-                                                 <span class="badge badge-warning">Belum dosen Pembimbing</span>
-                                                @endif
+                                            <div>                                                                                  
+                                                {{ $data->dosenPenguji1->user->name }}                                            
                                             </div>
                                         </div>
                                         <hr>
@@ -112,12 +104,8 @@
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Dosen Penguji 2</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
-                                            <div>
-                                                @if ($data->dosen_penguji_2)                                                   
-                                                {{ $data->dosenPenguji2->user->name  }}
-                                                @else
-                                                 <span class="badge badge-warning">Belum dosen Pembimbing</span>
-                                                @endif
+                                            <div>                                               
+                                                {{ $data->dosenPenguji2->user->name }}                                  
                                             </div>
                                         </div>
                                         <hr>
