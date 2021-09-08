@@ -11,6 +11,8 @@ use App\Models\Topikskripsi;
 use App\Models\Penjadwalan;
 use App\Models\PertanyaanSemprop;
 use App\Models\NilaiSemprop;
+use App\Models\SyaratUjian;
+use App\Models\Syarat;
 
 class PenilaianSempropPengujiController extends Controller
 {
@@ -20,8 +22,9 @@ class PenilaianSempropPengujiController extends Controller
         //query nipy dari relasi tabel dosen
         $data_dosen=Dosen::whereuser_id($id)->first();
 
-        $daftar_mahasiswa = Topikskripsi::where('status_mahasiswa','1')
-        ->where('dosen_penguji_1',$data_dosen->nipy)
+        $daftar_mahasiswa = Topikskripsi::where('dosen_penguji_1',$data_dosen->nipy)
+        // ->where('status_mahasiswa','1')
+        // ->orWhere('status_mahasiswa','0')
         ->get();
 
         return view('pages.dosen.semprop.penguji.index',compact('daftar_mahasiswa'));
@@ -82,14 +85,14 @@ class PenilaianSempropPengujiController extends Controller
         }
 
         //cek apakah pemmbimbing sudah menginputkan nilai
-        $isPembimingNilai = NilaiSemprop::where('id_penjadwalan',$id_penjadwalan)
+        $isPembimbingNilai = NilaiSemprop::where('id_penjadwalan',$id_penjadwalan)
         ->where('option','pembimbing')
         ->get();
 
-        $countArrPembimbing = count($isPembimingNilai);
+        $countArrPembimbing = count($isPembimbingNilai);
 
         if($countArrPembimbing == 0){
-            return redirect('/bimbingan')->with('alert-success','Nilai berhasil di inputkan');
+            return redirect('/semprop-penguji')->with('alert-success','Nilai berhasil di inputkan');
         }else{
 
             $nilaiPembimbing = NilaiSemprop::where('option','pembimbing')
@@ -105,22 +108,30 @@ class PenilaianSempropPengujiController extends Controller
             $valuePembimbing = $pembimbing->nilai_semprop($countNilaiPembimbing,$nilaiPembimbing);
 
             $lastValue = $valuePenguji+$valuePembimbing;
-            // echo "value penguji :". $valuePenguji;
-            // echo "<br>";
-            // echo "value Pembimbing :". $valuePembimbing;
-            // echo "<br>";
-            // echo "value total :". $lastValue;
-            // die;
 
             if ($lastValue >= 62.50) {
                 // lulus
-                //trigger ke status_mahasiswa ke skripsi
                 Topikskripsi::where('id',$id)
                 ->update(['status_mahasiswa' =>'2']);
+                return redirect('/semprop-penguji')->with('alert-success','Nilai berhasil di inputkan');
             }else{
+                //mengulang
                 Topikskripsi::where('id',$id)
                 ->update(['status_mahasiswa' =>'0']);
-                //trigger ke status_mahasiswa ke metopen lagi dan status berkas metopen dijadikan tertolak
+
+                $syarat_ID = SyaratUjian::where('id_Skripsimahasiswa', $id)
+                ->where('id_NamaUjian','1')
+                ->pluck('id')
+                ->first();
+                
+                Syarat::where('id_SyaratUjian',$syarat_ID)
+                ->update(
+                    [
+                        'status'=>'3',
+                    ]
+                    );
+                return redirect('/semprop-penguji')->with('alert-success','Nilai berhasil di inputkan');
+                
             }
 
         }

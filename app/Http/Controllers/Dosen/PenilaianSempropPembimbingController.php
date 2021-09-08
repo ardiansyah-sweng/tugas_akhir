@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Dosen;
+use App\Helpers\NilaiMahasiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -75,7 +76,44 @@ class PenilaianSempropPembimbingController extends Controller
         if($countArrPenguji == 0){
             return redirect('/bimbingan')->with('alert-success','Nilai berhasil di inputkan');
         }else{
-            //di isi jika penguji sudah menginputkan nilai
+
+            $nilaiPenguji = NilaiSemprop::where('option','penguji1')
+            ->where('id_penjadwalan',$id_penjadwalan)
+            ->pluck('nilai');
+            
+            $penguji = new NilaiMahasiswa;
+            $valuePenguji = $penguji->nilai_semprop($countArrPenguji,$nilaiPenguji);
+
+            
+            $pembimbing = new NilaiMahasiswa;
+            $valuePembimbing = $pembimbing->nilai_semprop($arrLengthValue,$request->pertanyaan);
+
+            $lastValue = $valuePenguji+$valuePembimbing;
+
+            if ($lastValue >= 62.50) {
+                // lulus
+                Topikskripsi::where('id',$id)
+                ->update(['status_mahasiswa' =>'2']);
+                return redirect('/bimbingan')->with('alert-success','Nilai berhasil di inputkan');
+            }else{
+                //mengulang
+                Topikskripsi::where('id',$id)
+                ->update(['status_mahasiswa' =>'0']);
+
+                $syarat_ID = SyaratUjian::where('id_Skripsimahasiswa', $id)
+                ->where('id_NamaUjian','1')
+                ->pluck('id')
+                ->first();
+                
+                Syarat::where('id_SyaratUjian',$syarat_ID)
+                ->update(
+                    [
+                        'status'=>'3',
+                    ]
+                    );
+                return redirect('/bimbingan')->with('alert-success','Nilai berhasil di inputkan');
+                
+            }
         }
     }
 }

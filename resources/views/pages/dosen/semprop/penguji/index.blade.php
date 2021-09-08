@@ -79,12 +79,17 @@
                                                             <span class="badge badge-success">Siap Pendadaran</span>
                                                         @endif
                                                     </td>
-                                                    <td>
-                                                        
+                                                    <td>                                                        
                                                         @if ($item->status_mahasiswa == 1)
                                                              <a href="{{ url('/semprop-penguji/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
-                                                        @elseif($item->status_mahasiswa == 3)
-                                                            
+                                                        @elseif($item->status_mahasiswa == 2)
+                                                                <span class="badge badge-success">Lanjut Skripsi</span>
+                                                        @elseif($item->status_mahasiswa == 0)
+                                                            @if (count($item->penjadwalan->toNilaiSemprop)==13)
+                                                                <span class="badge badge-warning">Mengulang Metopen</span>
+                                                            @else  
+                                                                <span class="badge badge-secondary">Belum Siap Semprop</span>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     

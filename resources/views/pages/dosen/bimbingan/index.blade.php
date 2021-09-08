@@ -79,11 +79,17 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
-                                                        @if ($item->status_mahasiswa == 1)
+                                                        @if ($item->status_mahasiswa == 0)
+                                                            <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
+                                                            @if ($item->penjadwalan)
+                                                                @if (count($item->penjadwalan->toNilaiSemprop)==13)
+                                                                    <span class="badge badge-warning">Mengulang Metopen</span>
+                                                                @endif
+                                                            @endif
+                                                        @elseif ($item->status_mahasiswa == 1)
                                                              <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
-                                                        @elseif($item->status_mahasiswa == 3)
-                                                            
+                                                        @elseif($item->status_mahasiswa == 2)
+                                                             <span class="badge badge-success">Lanjut Skripsi</span>
                                                         @endif
                                                     </td>
                                                     
