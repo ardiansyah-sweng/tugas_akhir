@@ -95,7 +95,7 @@ class DitawarkanController extends Controller
         );
 
         SyaratUjian::create([
-            'id_Skripsimahasiswa' => $id,
+            'id_Skripsimahasiswa' => $request->id_topikskripsi,
             'id_NamaUjian' => 1,
         ]);
 
