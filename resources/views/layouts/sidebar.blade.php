@@ -208,11 +208,11 @@
                                     <span class="sub-item">Seminar Proposal</span>
                                 </a>
                             </li>
-                            {{-- <li>
-                                <a href="{{ url('/logbook/create') }}">
-                                    <span class="sub-item">Tambah Logbook</span>
+                            <li>
+                                <a href="#">
+                                    <span class="sub-item">Pendadaran</span>
                                 </a>
-                            </li> --}}
+                            </li>
                             
                         </ul>
                     </div>
