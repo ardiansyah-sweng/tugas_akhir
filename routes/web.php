@@ -10,6 +10,7 @@ use App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PenjadwalanController;
 use App\Http\Controllers\DaftarSempropController;
+use App\Http\Controllers\DaftarPendadaranController;
 // use App\Http\Controllers\SempropRegisterController;
 
 /*
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::resource('logbook', LogbookController::class);
         Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
         Route::resource('daftar-semprop', DaftarSempropController::class);
+        Route::resource('daftar-pendadaran', DaftarPendadaranController::class);
         Route::get('view_file/{id}', [DaftarSempropController::class, 'view_file'])->name('view_file');
 });
 

@@ -96,6 +96,11 @@ class PenilaianSempropPembimbingController extends Controller
                 // lulus
                 Topikskripsi::where('id',$id)
                 ->update(['status_mahasiswa' =>'2']);
+
+                SyaratUjian::create([
+                    'id_Skripsimahasiswa' => $id,
+                    'id_NamaUjian' => 2,
+                ]);
                 return redirect('/bimbingan')->with('alert-success','Nilai berhasil di inputkan');
             }else{
                 //mengulang

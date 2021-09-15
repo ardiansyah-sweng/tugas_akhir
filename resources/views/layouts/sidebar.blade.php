@@ -209,7 +209,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ url('/daftar-pendadaran/create') }}">
                                     <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>
@@ -296,6 +296,11 @@
                             <li>
                                 <a href="{{ url('/semprop-register') }}">
                                     <span class="sub-item">Seminar proposal</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/semprop-register') }}">
+                                    <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>
                         </ul>
