@@ -299,7 +299,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ url('/semprop-register') }}">
+                                <a href="{{ url('/pendadaran-register') }}">
                                     <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>
