@@ -133,15 +133,87 @@
                                             <div><a href="{{ is_null($data->linkGoogleMeet) ? '-' : $data->linkGoogleMeet->link_google_meet }}" target="_blank">{{ is_null($data->linkGoogleMeet) ? 'Link Tidak Tersedia' : $data->linkGoogleMeet->link_google_meet }}</a></div>
                                         </div>
                                         <hr>
-
+                                        
                                         <div class="row mt-3">
                                             <div class="col-2 font-weight-bold">Ujian</div>
                                             <div class="col-1"><span class="float-right">:</span></div>
                                             <div> 
                                                 @if ($data->jenis_ujian == 0)
-                                                    <strong class="badge badge-warning">Ujian Seminar Proposal</strong>
-                                                    @elseif ($data->jenis_ujian == 1)
-                                                    <strong class="badge badge-success">Ujian Pendadaran Tugas Akhir</strong>                                                                                                  
+                                                <strong class="badge badge-warning">Ujian Seminar Proposal</strong>
+                                                @elseif ($data->jenis_ujian == 1)
+                                                <strong class="badge badge-success">Ujian Pendadaran Tugas Akhir</strong>                                                                                                  
+                                                @endif                                               
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mt-3">
+                                            <div class="col-2 font-weight-bold">Nilai Angka Ujian</div>
+                                            <div class="col-1"><span class="float-right">:</span></div>
+                                            <div> 
+                                                @if ($data->jenis_ujian == 0)
+                                                    @if ($totalNilaiSempro)
+                                                        {{ $totalNilaiSempro }}                                                                                                                                                
+                                                    @else
+                                                    <strong style="color: red">Belum diinput</strong>
+                                                    @endif
+                                                @elseif ($data->jenis_ujian == 1)
+                                                    @if ($totalNilaiPendadaran)
+                                                        {{ $totalNilaiPendadaran }}                                                                                                                                                
+                                                    @else
+                                                    <strong style="color: red">Belum diinput</strong>
+                                                    @endif
+                                                @endif                                               
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mt-3">
+                                            <div class="col-2 font-weight-bold">Nilai Huruf Ujian</div>
+                                            <div class="col-1"><span class="float-right">:</span></div>
+                                            <div> 
+                                                @if ($data->jenis_ujian == 0)
+                                                        @if ($totalNilaiSempro >= 80.00)
+                                                            <strong style="color: green">A</strong>
+                                                        @elseif ($totalNilaiSempro >= 76.25 && $totalNilaiSempro <= 79.99)
+                                                            <strong style="color: green">A-</strong>
+                                                        @elseif ($totalNilaiSempro >= 68.75 && $totalNilaiSempro <= 76.24)
+                                                            <strong style="color: green">B+</strong>
+                                                        @elseif ($totalNilaiSempro >= 65.00 && $totalNilaiSempro <= 68.74)
+                                                            <strong style="color: green">B</strong>
+                                                        @elseif ($totalNilaiSempro >= 62.50 && $totalNilaiSempro <= 64.99)
+                                                            <strong style="color: green">B-</strong>
+                                                        @elseif ($totalNilaiSempro >= 57.50 && $totalNilaiSempro <= 62.49)
+                                                            <strong style="color: red">C+ / Mengulang</strong>
+                                                        @elseif ($totalNilaiSempro >= 55.00 && $totalNilaiSempro <= 57.49)
+                                                            <strong style="color: red">C / Mengulang</strong>
+                                                        @elseif ($totalNilaiSempro >= 51.25 && $totalNilaiSempro <= 54.99)
+                                                            <strong style="color: red">C- / Mengulang</strong>
+                                                        @elseif ($totalNilaiSempro < 51.25 && $totalNilaiSempro >0)
+                                                            <strong style="color: red">Mengulang</strong>
+                                                        @elseif ($totalNilaiSempro <=0)
+                                                            <strong style="color: red">Belum diinput</strong>
+                                                        @endif                                                
+                                                    @elseif ($data->jenis_ujian == 1)                                            
+                                                        @if ($totalNilaiPendadaran >= 80.00)
+                                                            <strong style="color: green">A</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 76.25 && $totalNilaiPendadaran <= 79.99)
+                                                            <strong style="color: green">A-</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 68.75 && $totalNilaiPendadaran <= 76.24)
+                                                            <strong style="color: green">B+</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 65.00 && $totalNilaiPendadaran <= 68.74)
+                                                            <strong style="color: green">B</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 62.50 && $totalNilaiPendadaran <= 64.99)
+                                                            <strong style="color: green">B-</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 57.50 && $totalNilaiPendadaran <= 62.49)
+                                                            <strong style="color: red">C+ / Mengulang</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 55.00 && $totalNilaiPendadaran <= 57.49)
+                                                            <strong style="color: red">C / Mengulang</strong>
+                                                        @elseif ($totalNilaiPendadaran >= 51.25 && $totalNilaiPendadaran <= 54.99)
+                                                            <strong style="color: red">C- / Mengulang</strong>
+                                                        @elseif ($totalNilaiPendadaran < 51.25 && $totalNilaiPendadaran >0)
+                                                            <strong style="color: red">Mengulang</strong>
+                                                        @elseif ($totalNilaiPendadaran <=0)
+                                                            <strong style="color: red">Belum diinput</strong>
+                                                        @endif                                                                                                  
                                                 @endif                                               
                                             </div>
                                         </div>

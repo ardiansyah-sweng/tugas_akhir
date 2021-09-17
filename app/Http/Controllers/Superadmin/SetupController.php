@@ -114,6 +114,7 @@ class SetupController extends Controller
     public function getlinkGoogleMeet()
     {
         $data   = GoogleMeet::all();
+        // $data   = GoogleMeet::orderBy('id', 'DESC')->get();
         $id     = GoogleMeet::select('title_room')->orderBy('title_room', 'desc')->take(1)->first();
         if ($id == null) {
             $nextTitleGoogleMeet = 1;

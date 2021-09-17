@@ -87,9 +87,20 @@
                                                                 @endif
                                                             @endif
                                                         @elseif ($item->status_mahasiswa == 1)
-                                                             <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
-                                                        @elseif($item->status_mahasiswa == 2)
-                                                             <span class="badge badge-success">Lanjut Skripsi</span>
+                                                            <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
+                                                        @elseif($item->status_mahasiswa == 3)
+                                                                @if ($item->penjadwalan)
+                                                                    @if (!strtotime(date('Y-m-d')) < strtotime($item->penjadwalan->date))
+                                                                            <a href="{{ url('/penilaian-pendadaran/'.$item->id) }}"
+                                                                            class="btn btn-primary btn-sm mt-2
+                                                                            {{ in_array($item->penjadwalan->id ?? null,Auth::user()->dosen->dosentoPendadaran->pluck('id_penjadwalan')->toArray() ?? []) ? 'disabled' : ''}}">
+                                                                        <i class="fas fa-edit"></i> Penilaian Pendadaran
+                                                                    </a>
+                                                                    @else
+                                                                @endif
+                                                            @else
+                                                            <button class="btn btn-warning btn-sm mt-2" disabled>Belum Ujian Pendadaran</button>
+                                                        @endif
                                                         @endif
                                                     </td>
                                                     
