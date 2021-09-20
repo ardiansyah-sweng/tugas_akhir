@@ -24,11 +24,13 @@ class Penjadwalan extends Model
         return $this->belongsTo(GoogleMeet::class, 'meet_room', 'title_room');
     }
 
-    public function toNilaiSemprop(){
-        return $this->hasOne(NilaiSemprop::class,'id_penjadwalan','id');
+    public function toNilaiSemprop()
+    {
+        return $this->hasMany(NilaiSemprop::class, 'id_penjadwalan', 'id');
     }
 
-    public function toNilaiPendadaran(){
-        return $this->hasOne(NilaiPendadaran::class,'id_penjadwalan','id');
+    public function toNilaiPendadaran()
+    {
+        return $this->hasMany(NilaiPendadaran::class, 'id_penjadwalan', 'id');
     }
 }

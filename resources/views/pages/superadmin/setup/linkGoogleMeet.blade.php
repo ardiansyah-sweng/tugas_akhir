@@ -48,7 +48,7 @@
                                                 <th>No</th>
                                                 <th>Room Google Meet</th>
                                                 <th>Link Google Meet</th>
-                                                <th>Status</th>                                   
+                                                {{-- <th>Status</th>                                    --}}
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -61,7 +61,7 @@
                                                 <td>{{ $no++ }}</td>
                                                 <td>Link Google Meet {{ $item->title_room }}</td>
                                                 <td><a href="{{ $item->link_google_meet }}" target="_blank">{{ $item->link_google_meet }}</a></td>
-                                                <td>
+                                                {{-- <td>
                                                     @if (count($item->PenjadwalanMeet) > 0)
                                                         @foreach ($item->PenjadwalanMeet as $items)
                                                             @if ($items->date < date('Y-m-d'))
@@ -69,11 +69,13 @@
                                                             @else
                                                                 <button class="badge badge-danger">Sedang dipakai</button>
                                                             @endif
-                                                        @endforeach
-                                                    @else
-                                                        <button class="badge badge-primary">Tersedia</button>
-                                                    @endif
-                                                </td>                          
+                                                            @break
+                                                            @endforeach 
+                                                            {{ $items->date }}
+                                        
+                                                     @endif
+
+                                                </td>                           --}}
                                                 <td style="width: 10px">
                                                     <div class="form-button-action" >
                                                     <a data-toggle="tooltip" title="" class="btn btn-link btn-danger tombolhapus" data-original-title="Hapus Room"

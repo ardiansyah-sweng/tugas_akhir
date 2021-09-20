@@ -84,4 +84,6 @@ class Topikskripsi extends Model
     {
         return $this->hasOne(Penjadwalan::class, 'topik_skripsi_id');
     }
+
+    // public function
 }
