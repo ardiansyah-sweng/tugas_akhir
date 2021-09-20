@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Topikskripsi;
 use App\Models\Mahasiswa;
+use App\Models\Topikskripsi;
 use App\Models\SyaratUjian;
 use App\Models\Syarat;
-use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class DaftarSempropController extends Controller
+
+class DaftarPendadaranController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
+    public function index(){
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-         $id=Auth::Id();
+    public function create(){
+        $id=Auth::Id();
 
          //query nim dari relasi tabel dosen dan user
         $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
@@ -37,11 +26,12 @@ class DaftarSempropController extends Controller
         $data = Topikskripsi::where('nim_terpilih',$data_mahasiswa->nim)
         ->orWhere('nim_submit',$data_mahasiswa->nim)
         ->where('status','Accept')
+        ->where('status_mahasiswa','2')
         ->first();
 
         if($data){
             $syaratUjian=SyaratUjian::where('id_Skripsimahasiswa',$data->id)
-            ->where('id_NamaUjian','1')
+            ->where('id_NamaUjian','2')
             ->pluck('id')
             ->first();
             
@@ -54,8 +44,6 @@ class DaftarSempropController extends Controller
             ->where('id_NamaSyarat','3')
             ->first();
 
-            // dd($syarat_pembayaran);
-
             $syarat_naskah=Syarat::where('id_SyaratUjian',$syaratUjian)
             ->where('id_NamaSyarat','2')
             ->first();
@@ -63,48 +51,39 @@ class DaftarSempropController extends Controller
             $syarat_transkip=Syarat::where('id_SyaratUjian',$syaratUjian)
             ->where('id_NamaSyarat','5')
             ->first();
+
+            $syarat_bebas_spp = Syarat::where('id_SyaratUjian',$syaratUjian)
+            ->where('id_NamaSyarat','4')
+            ->first();
             
             
-            return view('pages.mahasiswa.semprop.add-file',compact('data','syarat_toefl','syarat_pembayaran','syarat_naskah','syarat_transkip'));
+            return view('pages.mahasiswa.pendadaran.register',compact('data','syarat_toefl','syarat_pembayaran','syarat_naskah','syarat_transkip','syarat_bebas_spp'));
             die;
         }
-        return view('pages.mahasiswa.semprop.add-file',compact('data'));
-       
         
+        return view('pages.mahasiswa.pendadaran.register',compact('data'));
     }
 
-    public function view_file($id){
-        $data=Syarat::find($id);
-        // dd($data);      
-        return view('pages.mahasiswa.semprop.view',compact('data'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $id=Auth::Id();
+    public function store(Request $request){
+         $id=Auth::Id();
 
          //query nim dari relasi tabel dosen dan user
         $data_mahasiswa=Mahasiswa::whereuser_id($id)->first();
+
         $topik = Topikskripsi::where('nim_terpilih',$data_mahasiswa->nim)
         ->orWhere('nim_submit',$data_mahasiswa->nim)
+        ->where('status','Accept')
         ->first();
 
-
         $getIdSyarat= SyaratUjian::where('id_Skripsimahasiswa',$topik->id)
-        ->where('id_NamaUjian','1')
+        ->where('id_NamaUjian','2')
         ->pluck('id')
         ->first();
         
 
         $data['id_SyaratUjian'] = $getIdSyarat;
         $data['status'] = 1;
-        // dd($getIdSyarat->id);
+
 
         if ($request->pembayaran) {
             $request->validate([
@@ -153,45 +132,28 @@ class DaftarSempropController extends Controller
             
             $data['id_NamaSyarat'] = 5;
 
+        
+        }elseif($request->bebas_spp){
+            $request->validate([
+            'bebas_spp' => 'required|mimes:docx,doc,pdf|max:2048'
+            ]);
 
-        }else{
-            return redirect('/daftar-semprop/create')->with('alert-failed','Gagal Menambahkan data');
+            $data['NamaSyaratFile']=$request->file('bebas_spp')->store(
+            'exam','public'
+            );
+            
+            $data['id_NamaSyarat'] = 4;
+        }
+        else{
+            return redirect('/daftar-pendadaran/create')->with('alert-failed','Gagal Menambahkan data');
             die;
         }
 
         Syarat::create($data);
-        return redirect('/daftar-semprop/create')->with('alert-success','Berhasil menambahkan data');
+        return redirect('/daftar-pendadaran/create')->with('alert-success','Berhasil menambahkan data');
+        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         if ($request->pembayaran) {
@@ -253,24 +215,28 @@ class DaftarSempropController extends Controller
             ->first();
            
             Storage::delete('public/'.$filepath);   
-        }else{
-            return redirect('/daftar-semprop/create')->with('alert-failed','Gagal merubah file');
+        }elseif($request->bebas_spp){
+             $request->validate([
+            'bebas_spp' => 'required|mimes:docx,doc,pdf|max:2048'
+            ]);
+
+            $data['NamaSyaratFile']=$request->file('bebas_spp')->store(
+            'exam','public'
+            );
+
+            $filepath=Syarat::whereid($id)
+            ->pluck('NamaSyaratFile')
+            ->first();
+           
+            Storage::delete('public/'.$filepath); 
+        }
+        else{
+            return redirect('/daftar-pendadaran/create')->with('alert-failed','Gagal merubah file');
             die;
         }
         $data['status'] = '1';
         Syarat::whereid($id)
             ->update($data);
-        return redirect('/daftar-semprop/create')->with('alert-success','File Berhasil di ubah');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect('/daftar-pendadaran/create')->with('alert-success','File Berhasil di ubah');
     }
 }
