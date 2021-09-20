@@ -133,7 +133,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ route('nilai-pendadaran-penguji') }}">
                                     <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>   

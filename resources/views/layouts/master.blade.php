@@ -29,6 +29,8 @@
 	<link rel="stylesheet" href="{{ url('assets/css/atlantis.min.css')}}">
 	<link rel="stylesheet" href="{{ url('assets/css/loader.css')}}">
 
+	<link rel="stylesheet" href="{{ url('css/wizard.css')}}">
+
 
 	
 	<!-- CSS Just for demo purpose, don't include it in your project -->
@@ -37,6 +39,15 @@
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+
+
+
 
 	{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"> --}}
 	@yield('style')
@@ -186,6 +197,9 @@
 
 	<!-- Atlantis JS -->
 	<script src="{{ url('assets/js/atlantis.min.js')}}"></script>
+
+	{{-- Wizard Form --}}
+	<script src="{{ url('assets/js/wizard.js')}}"></script>
 
 	<!-- Datatables -->
 	<script src="{{ url('assets/js/plugin/datatables/datatables.min.js')}}"></script>

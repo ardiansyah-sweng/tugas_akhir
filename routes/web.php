@@ -56,6 +56,13 @@ Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
         Route::resource('semprop-penguji', Dosen\PenilaianSempropPengujiController::class);
         Route::get('view/{id}', [Dosen\BimbinganController::class, 'view']);
         Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
+
+        Route::get('penilaian-pendadaran/{id}', [Dosen\PenilaianPendadaran::class, 'showPenilaianPendadaran']);
+        Route::resource('nilai-pendadaran', Dosen\PenilaianPendadaran::class);
+
+        Route::get('data-penilaian-pendadaran', [Dosen\PenilaianPendadaran::class, 'dataNilaianPenguji'])->name('nilai-pendadaran-penguji');
+        // Route::get('pendadaran-penguji', Dosen\PenilaianPendadaran::class,'dataNilaianPenguji')->name('nilai-pendadaran-penguji')
+        Route::get('nilai-pendadaran', [Dosen\PenilaianPendadaran::class, 'nilaiHasilUjian']);
 });
 
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
