@@ -83,22 +83,28 @@ class TopikController extends Controller
         $dataDosen=Dosen::wherenipy($request->nipy)->first();
         
     
-        // $details=[
-        //     'judul' =>$request->judul_topik,
-        //     'topik' =>$topikBidang->nama_topik,
-        //     'nama' =>$data_mahasiswa->user->name,
-        //     'nim' =>$data_mahasiswa->nim,
+        $details=[
+            'judul' =>$request->judul_topik,
+            'topik' =>$topikBidang->nama_topik,
+            'nama' =>$data_mahasiswa->user->name,
+            'nim' =>$data_mahasiswa->nim,
             
-        // ];
-        // // $dataDosen->user->email;
-        // Mail::to('nashirmuhammad117@gmail.com')->send(new RequestJadiPembimbingEmail($details));
-        // return "email terkirim";
-        // die;
+        ];
+        // $dataDosen->user->email;
+
+
+        try {
+            Mail::to('nashirmuhammad117@gmail.com')->send(new RequestJadiPembimbingEmail($details));
+        } catch (Exception $ex) {
+            // Debug via $ex->getMessage();
+            return "We've got errors!";
+            die;
+        }
            
         $topik=Topikskripsi::create($data);
 
-        TolakJob::dispatch($topik)
-        ->delay(now()->addseconds(40));
+        // TolakJob::dispatch($topik)
+        // ->delay(now()->addseconds(40));
         // dd($topik);
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');
 
