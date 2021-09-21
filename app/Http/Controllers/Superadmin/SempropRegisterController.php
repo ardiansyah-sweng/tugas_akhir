@@ -141,6 +141,7 @@ class SempropRegisterController extends Controller
                             if ($tempStatus == $statusBerhasil) {
                                 if($jumlahAccept >= 2){
                                     SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
+                                    ->where('id_NamaUjian','1')
                                     ->update(['status'=>1]);
 
                                     Topikskripsi::where('id',$id_skripsi)

@@ -56,7 +56,7 @@
                                                @endif
                                            </td>
                                             <td>
-                                                <a href="{{ route('pendadaran-register.show', $item->syaratujian->where('id_NamaUjian','2')->first()->id) }}" class="btn btn-primary btn-border btn-round">
+                                                <a href="{{ route('pendadaran-register.show', $item->syaratujian->where('id_NamaUjian','2')->where('id_Skripsimahasiswa',$item->id)->first()->id) }}" class="btn btn-primary btn-border btn-round">
                                                     <i class="fa fa-eye"> View</i>
                                                 </a>
                                             </td>
