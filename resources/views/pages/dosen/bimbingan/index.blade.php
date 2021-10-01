@@ -67,13 +67,16 @@
                                                             <span class="badge badge-secondary">Metopen</span>
                                                         @elseif($item->status_mahasiswa == 1)
                                                             <span class="badge badge-success">Siap Seminar Proposal 
-                                                                 @if ($item->penjadwalan->date)
+                                                                 @if ($item->penjadwalan)
                                                                 <b> {{ $item->penjadwalan->date }} </b>
-                                                            @endif
+                                                                @else
+                                                                <b> || Belum terjadwalkan</b>
+                                                                 @endif
                                                             </span>
                                                            
                                                         @elseif($item->status_mahasiswa == 2)
                                                             <span class="badge badge-secondary">Skripsi</span>
+                                                            
                                                         @elseif($item->status_mahasiswa == 3)
                                                             <span class="badge badge-success">Siap Pendadaran</span>
                                                         @endif
@@ -87,7 +90,11 @@
                                                                 @endif
                                                             @endif
                                                         @elseif ($item->status_mahasiswa == 1)
+                                                            @if ($item->penjadwalan)              
                                                             <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
+                                                            @endif
+                                                        @elseif($item->status_mahasiswa == 2)
+                                                         <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
                                                         @elseif($item->status_mahasiswa == 3)
                                                                 @if ($item->penjadwalan)
                                                                     @if (!strtotime(date('Y-m-d')) < strtotime($item->penjadwalan->date))
