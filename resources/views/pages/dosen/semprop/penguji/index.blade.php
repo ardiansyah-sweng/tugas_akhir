@@ -68,7 +68,7 @@
                                                             <span class="badge badge-secondary">Metopen</span>
                                                         @elseif($item->status_mahasiswa == 1)
                                                             <span class="badge badge-success">Siap Seminar Proposal 
-                                                                 @if ($item->penjadwalan->date)
+                                                                 @if ($item->penjadwalan)
                                                                 <b> {{ $item->penjadwalan->date }} </b>
                                                             @endif
                                                             </span>
