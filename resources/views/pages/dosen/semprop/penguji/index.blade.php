@@ -68,7 +68,7 @@
                                                             <span class="badge badge-secondary">Metopen</span>
                                                         @elseif($item->status_mahasiswa == 1)
                                                             <span class="badge badge-success">Siap Seminar Proposal 
-                                                                 @if ($item->penjadwalan->date)
+                                                                 @if ($item->penjadwalan)
                                                                 <b> {{ $item->penjadwalan->date }} </b>
                                                             @endif
                                                             </span>
@@ -85,8 +85,10 @@
                                                         @elseif($item->status_mahasiswa == 2)
                                                                 <span class="badge badge-success">Lanjut Skripsi</span>
                                                         @elseif($item->status_mahasiswa == 0)
-                                                            @if (count($item->penjadwalan->toNilaiSemprop)==15)
+                                                            @if ($item->penjadwalan)
+                                                                @if (count($item->penjadwalan->toNilaiSemprop)==15)
                                                                 <span class="badge badge-warning">Mengulang Metopen</span>
+                                                                @endif
                                                             @else  
                                                                 <span class="badge badge-secondary">Belum Siap Semprop</span>
                                                             @endif

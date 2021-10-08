@@ -559,11 +559,11 @@ class PenjadwalanController extends Controller
 
 
         $penguji = new NilaiMahasiswa;
-        $valuePenguji = $penguji->nilai_semprop($countArrPenguji, $nilaiPenguji) * 0.5;
+        $valuePenguji = $penguji->nilai_semprop($countArrPenguji, $nilaiPenguji);
 
 
         $pembimbing = new NilaiMahasiswa;
-        $valuePembimbing = $pembimbing->nilai_semprop($arrLengthValue, $nilaiPembimbing) * 0.5;
+        $valuePembimbing = $pembimbing->nilai_semprop($arrLengthValue, $nilaiPembimbing);
 
         $totalNilaiSempro = $valuePembimbing + $valuePenguji;
         // dd($totalNilaiSempro);
