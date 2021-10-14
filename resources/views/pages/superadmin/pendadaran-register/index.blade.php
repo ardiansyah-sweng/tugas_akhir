@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Daftar mahasiswa bisa daftar semprop</div>
+                            <div class="card-title">Daftar mahasiswa bisa Pendadaran</div>
                         </div>
                         <div class="card-body">
 
@@ -49,14 +49,14 @@
                                                 @endif
                                             </td>
                                            <td>
-                                               @if ( $item->syaratujian->syarat->count()==0)
+                                               @if ( $item->syaratujian->where('id_NamaUjian','2')->first()->syarat->count()==0)
                                                     <span class="badge badge-danger">belum ada</span>
                                                 @else
-                                                    <span class="badge badge-success">{{ $item->syaratujian->syarat->count()}}</span>                                                   
+                                                    <span class="badge badge-success">{{ $item->syaratujian->where('id_NamaUjian','2')->first()->syarat->count()}}</span>                                                   
                                                @endif
                                            </td>
                                             <td>
-                                                <a href="{{ route('semprop-register.show', $item->syaratujian->id) }}" class="btn btn-primary btn-border btn-round">
+                                                <a href="{{ route('pendadaran-register.show', $item->syaratujian->where('id_NamaUjian','2')->where('id_Skripsimahasiswa',$item->id)->first()->id) }}" class="btn btn-primary btn-border btn-round">
                                                     <i class="fa fa-eye"> View</i>
                                                 </a>
                                             </td>

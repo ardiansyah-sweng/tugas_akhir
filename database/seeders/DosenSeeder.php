@@ -34,7 +34,7 @@ class DosenSeeder extends Seeder
 
         //Adi prahara
         Dosen::create([
-            'nipy' => '060150841',
+            'nipy' => '60150841',
             'nidn' => '0524118801',
             'jabfung' => 'AA',
             'avatar' => '',
@@ -98,7 +98,7 @@ class DosenSeeder extends Seeder
 
         //Dewi ismi
         Dosen::create([
-            'nipy' => '060150842',
+            'nipy' => '60150842',
             'nidn' => '0521128502',
             'jabfung' => 'AA',
             'avatar' => '',

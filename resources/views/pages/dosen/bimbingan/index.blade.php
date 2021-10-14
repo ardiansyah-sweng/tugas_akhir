@@ -26,7 +26,8 @@
                                                 <th width="10%">Nim</th>
                                                 <th width="10%">Angkatan</th>
                                                 <th width= 30%>Judul</th>
-                                                <th width= 10%>Action</th>
+                                                <th width= 10%>Keterangan</th>
+                                                <th width= 30%>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,7 +63,52 @@
                                                     </td>
                                                     <td>{{ $item->judul_topik}}</td>
                                                     <td>
-                                                        <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
+                                                        @if ($item->status_mahasiswa == 0)
+                                                            <span class="badge badge-secondary">Metopen</span>
+                                                        @elseif($item->status_mahasiswa == 1)
+                                                            <span class="badge badge-success">Siap Seminar Proposal 
+                                                                 @if ($item->penjadwalan)
+                                                                <b> {{ $item->penjadwalan->date }} </b>
+                                                                @else
+                                                                <b> || Belum terjadwalkan</b>
+                                                                 @endif
+                                                            </span>
+                                                           
+                                                        @elseif($item->status_mahasiswa == 2)
+                                                            <span class="badge badge-secondary">Skripsi</span>
+                                                            
+                                                        @elseif($item->status_mahasiswa == 3)
+                                                            <span class="badge badge-success">Siap Pendadaran</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($item->status_mahasiswa == 0)
+                                                            <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
+                                                            @if ($item->penjadwalan)
+                                                                @if (count($item->penjadwalan->toNilaiSemprop)==15)
+                                                                    <span class="badge badge-warning">Mengulang Metopen</span>
+                                                                @endif
+                                                            @endif
+                                                        @elseif ($item->status_mahasiswa == 1)
+                                                            @if ($item->penjadwalan)              
+                                                            <a href="{{ url('/penilaian-semprop/'.$item->id) }}" class="btn btn-success btn-sm mt-2"> <i class="fas fa-edit"></i> Penilaian Semrop</a>
+                                                            @endif
+                                                        @elseif($item->status_mahasiswa == 2)
+                                                         <a href="{{ url('/bimbingan/'.$item->id) }}" class="btn btn-primary btn-sm"> <i class="fas fa-eye"></i> View Logbook</a>
+                                                        @elseif($item->status_mahasiswa == 3)
+                                                                @if ($item->penjadwalan)
+                                                                    @if (!strtotime(date('Y-m-d')) < strtotime($item->penjadwalan->date))
+                                                                            <a href="{{ url('/penilaian-pendadaran/'.$item->id) }}"
+                                                                            class="btn btn-primary btn-sm mt-2
+                                                                            {{ in_array($item->penjadwalan->id ?? null,Auth::user()->dosen->dosentoPendadaran->pluck('id_penjadwalan')->toArray() ?? []) ? 'disabled' : ''}}">
+                                                                        <i class="fas fa-edit"></i> Penilaian Pendadaran
+                                                                    </a>
+                                                                    @else
+                                                                @endif
+                                                            @else
+                                                            <button class="btn btn-warning btn-sm mt-2" disabled>Belum Ujian Pendadaran</button>
+                                                        @endif
+                                                        @endif
                                                     </td>
                                                     
                                                 </tr>

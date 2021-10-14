@@ -10,6 +10,7 @@ use App\Http\Controllers\Superadmin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PenjadwalanController;
 use App\Http\Controllers\DaftarSempropController;
+use App\Http\Controllers\DaftarPendadaranController;
 // use App\Http\Controllers\SempropRegisterController;
 
 /*
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
         Route::resource('logbook', LogbookController::class);
         Route::get('log/{id}', [LogbookController::class, 'log'])->name('log');
         Route::resource('daftar-semprop', DaftarSempropController::class);
+        Route::resource('daftar-pendadaran', DaftarPendadaranController::class);
         Route::get('view_file/{id}', [DaftarSempropController::class, 'view_file'])->name('view_file');
 });
 
@@ -50,14 +52,24 @@ Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
         Route::resource('penelitian', Dosen\TopikController::class);
         Route::resource('mytopik', Dosen\DitawarkanController::class);
         Route::resource('bimbingan', Dosen\BimbinganController::class);
+        Route::resource('penilaian-semprop', Dosen\PenilaianSempropPembimbingController::class);
+        Route::resource('semprop-penguji', Dosen\PenilaianSempropPengujiController::class);
         Route::get('view/{id}', [Dosen\BimbinganController::class, 'view']);
         Route::post('/mytopik/ubah', [Dosen\DitawarkanController::class, 'edit'])->name('mytopik.ubah');
+
+        Route::get('penilaian-pendadaran/{id}', [Dosen\PenilaianPendadaran::class, 'showPenilaianPendadaran']);
+        Route::resource('nilai-pendadaran', Dosen\PenilaianPendadaran::class);
+
+        Route::get('data-penilaian-pendadaran', [Dosen\PenilaianPendadaran::class, 'dataNilaianPenguji'])->name('nilai-pendadaran-penguji');
+        // Route::get('pendadaran-penguji', Dosen\PenilaianPendadaran::class,'dataNilaianPenguji')->name('nilai-pendadaran-penguji')
+        Route::get('nilai-pendadaran', [Dosen\PenilaianPendadaran::class, 'nilaiHasilUjian']);
 });
 
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('dosen', Superadmin\DosenController::class);
         Route::resource('setup', Superadmin\SetupController::class);
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
+        Route::resource('pendadaran-register', Superadmin\PendadaranRegisterController::class);
         Route::resource('semprop-register', Superadmin\SempropRegisterController::class);
         Route::get('detail_file/{id}', [Superadmin\SempropRegisterController::class, 'detail_file'])->name('detail_file');
 

@@ -83,7 +83,7 @@
                                                         @if ($item->jenis_ujian == 0)
                                                             <strong class="badge badge-warning">Seminar Proposal</strong>
                                                         @elseif ($item->jenis_ujian == 1)
-                                                            <strong class="badge badge-success">Pendadaran</strong>                                                                                                  
+                                                            <strong class="badge badge-success">Ujian Pendadaran</strong>                                                                                                  
                                                         @endif 
                                                         </td>
                                                     <td>

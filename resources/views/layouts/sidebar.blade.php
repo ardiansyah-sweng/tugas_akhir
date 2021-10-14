@@ -119,6 +119,28 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#exam">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Penilaian</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="exam">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('/semprop-penguji') }}">
+                                    <span class="sub-item">Seminar Proposal</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('nilai-pendadaran-penguji') }}">
+                                    <span class="sub-item">Pendadaran</span>
+                                </a>
+                            </li>   
+                           
+                        </ul>
+                    </div>
+                </li>
                 @endif
                 
                 @if (Auth::user()->hasRole('mahasiswa'))
@@ -186,11 +208,11 @@
                                     <span class="sub-item">Seminar Proposal</span>
                                 </a>
                             </li>
-                            {{-- <li>
-                                <a href="{{ url('/logbook/create') }}">
-                                    <span class="sub-item">Tambah Logbook</span>
+                            <li>
+                                <a href="{{ url('/daftar-pendadaran/create') }}">
+                                    <span class="sub-item">Pendadaran</span>
                                 </a>
-                            </li> --}}
+                            </li>
                             
                         </ul>
                     </div>
@@ -274,6 +296,11 @@
                             <li>
                                 <a href="{{ url('/semprop-register') }}">
                                     <span class="sub-item">Seminar proposal</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/pendadaran-register') }}">
+                                    <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>
                         </ul>

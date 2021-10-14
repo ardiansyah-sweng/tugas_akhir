@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Superadmin;
 
+use App\Helpers\NilaiMahasiswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Helpers\Calendar;
 use Illuminate\Http\Request;
 use App\Models\Topikskripsi;
 use App\Models\Mahasiswa;
+use App\Models\NilaiPendadaran;
+use App\Models\NilaiSemprop;
+use App\Models\PertanyaanPendadaran;
+use App\Models\SubPertanyaanPendadaran;
 use App\Models\JadwalDosen;
 use App\Models\DosenTerjadwal;
 use App\Models\Penjadwalan;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\Types\Null_;
 use Carbon\Carbon;
 use App\Mail\EmailJadwalUjian;
@@ -30,7 +34,10 @@ class PenjadwalanController extends Controller
             '2' => 'On Progres Skripsi',
             '3' => 'Ready to Schedule Pendadaran'
         ];
-        $topikSkripsi = Topikskripsi::orderBy('id', 'desc');
+        $topikSkripsi = Topikskripsi::where('status', 'Accept')
+            ->whereNotNull('dosen_penguji_1')
+            ->whereNotNull('dosen_penguji_2')
+            ->orderBy('id', 'desc');
         $filter = $request->get('filter' ?? '');
 
         if (strlen($filter) > 0) {
@@ -46,6 +53,7 @@ class PenjadwalanController extends Controller
     public function detailMahasiswa($id)
     {
         $data = Topikskripsi::findOrFail($id);
+        // dd($data);
         return view('pages.superadmin.penjadwalan.detailMahasiswa', ['page' => 'Detail Mahasiswa Metopen & Skripsi'], compact('data'));
     }
 
@@ -354,10 +362,12 @@ class PenjadwalanController extends Controller
         $nipyDosenPenguji2      = $request->nipyDosenPenguji2;
         $jenisUjian             = $request->jenis_ujian;
 
-        $validasiTopikTerdaftar = Penjadwalan::where('topik_skripsi_id', $request->topik_skripsi_id)->first();
-        if ($validasiTopikTerdaftar != null) {
-            return back()->with('alert-failed', 'Topik ini Telah Terdaftar Ujian Pendadaran');
+        $validasiTopikTerdaftar = Penjadwalan::orderBy('id', 'DESC')->where('topik_skripsi_id', $request->topik_skripsi_id)->first();
+        if ($validasiTopikTerdaftar != null && $validasiTopikTerdaftar->jenis_ujian == $jenisUjian) {
+            return back()->with('alert-failed', 'Topik ini Telah Terdaftar Ujian');
         }
+
+        // dd(strtotime($validasiTopikTerdaftar->date), strtotime($request->date));
 
         $validasiJamPenuh  = Penjadwalan::where('date', $request->date)->get();
         if (count($validasiJamPenuh) >= 4) {
@@ -461,12 +471,22 @@ class PenjadwalanController extends Controller
     #Function untuk menyimpan jadwal dosen yang telah terdaftr sebagai tim penguji semprop/pendadaran
     public function simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data)
     {
-        $insertData = [
+        $dosenTerjadwalSemprop = [
+            ['nipy' => $nipyDosenPembimbing, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
+            ['nipy' => $nipyDosenPenguji1,  'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
+        ];
+
+        $dosenTerjadwalPendaadaran = [
             ['nipy' => $nipyDosenPembimbing, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
             ['nipy' => $nipyDosenPenguji1,  'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai],
             ['nipy' => $nipyDosenPenguji2, 'penjadwalan_id' => $data->id, 'date' => $data->date, 'jam_ke' => $data->kode_jam_mulai]
         ];
-        DosenTerjadwal::insert($insertData);
+
+        if ($data->jenis_ujian == 0) {
+            DosenTerjadwal::insert($dosenTerjadwalSemprop);
+        } else {
+            DosenTerjadwal::insert($dosenTerjadwalPendaadaran);
+        }
     }
 
     #Function untuk menampilkan data ujian di calendar penjadwalan seminar proposal
@@ -526,7 +546,57 @@ class PenjadwalanController extends Controller
     public function detailDataPenjadwalan($id)
     {
         $data = Penjadwalan::findOrFail($id);
-        return view('pages.superadmin.penjadwalan.detailDataPenjadwalan', ['page' => 'Detail Penjadwalan'], compact('data'));
+
+        $nilaiPenguji = NilaiSemprop::where('option', 'penguji1')
+            ->where('id_penjadwalan', $id)
+            ->pluck('nilai');
+        $countArrPenguji = count($nilaiPenguji);
+
+        $nilaiPembimbing = NilaiSemprop::where('option', 'pembimbing')
+            ->where('id_penjadwalan', $id)
+            ->pluck('nilai');
+        $arrLengthValue = count($nilaiPembimbing);
+
+
+        $penguji = new NilaiMahasiswa;
+        $valuePenguji = $penguji->nilai_semprop($countArrPenguji, $nilaiPenguji);
+
+
+        $pembimbing = new NilaiMahasiswa;
+        $valuePembimbing = $pembimbing->nilai_semprop($arrLengthValue, $nilaiPembimbing);
+
+        $totalNilaiSempro = $valuePembimbing + $valuePenguji;
+        // dd($totalNilaiSempro);
+
+        // ===========================Nilai Pendadaran==============================
+
+        $bobotNilai = PertanyaanPendadaran::all()->pluck('bobot');
+
+        $nilaiPembimbingPendadaran = NilaiPendadaran::where('option', 'pembimbing')
+            ->where('id_penjadwalan', $id)
+            ->pluck('nilai');
+        $countArrPembimbing = count($nilaiPembimbingPendadaran);
+
+        $nilaiPenguji1Pendadaran = NilaiPendadaran::where('option', 'penguji1')
+            ->where('id_penjadwalan', $id)
+            ->pluck('nilai');
+        $countArrPenguji1 = count($nilaiPenguji1Pendadaran);
+
+        $nilaiPenguji2Pendadaran = NilaiPendadaran::where('option', 'penguji2')
+            ->where('id_penjadwalan', $id)
+            ->pluck('nilai');
+        $countArrPenguji2 = count($nilaiPenguji2Pendadaran);
+
+        $hitungPembimbing   = new NilaiMahasiswa;
+        $hitungPenguji1     = new NilaiMahasiswa;
+        $hitungPenguji2     = new NilaiMahasiswa;
+
+        $hasilNilaiPembimbing   = $hitungPembimbing->nilaiPendadaran($countArrPembimbing, $nilaiPembimbingPendadaran, $bobotNilai) * 0.5;
+        $hasilNilaiPenguji1     = $hitungPenguji1->nilaiPendadaran($countArrPenguji1, $nilaiPenguji1Pendadaran, $bobotNilai) * 0.25;
+        $hasilNilaiPenguji2     = $hitungPenguji2->nilaiPendadaran($countArrPenguji2, $nilaiPenguji2Pendadaran, $bobotNilai) * 0.25;
+
+        $totalNilaiPendadaran = $hasilNilaiPembimbing + $hasilNilaiPenguji1 + $hasilNilaiPenguji2;
+        return view('pages.superadmin.penjadwalan.detailDataPenjadwalan', ['page' => 'Detail Penjadwalan'], compact('data', 'totalNilaiPendadaran', 'totalNilaiSempro'));
     }
 
     #Function untuk menghapus data yang telah di jadwalkan
@@ -687,7 +757,6 @@ class PenjadwalanController extends Controller
         $this->simpanJadwalDosenTerdaftar($nipyDosenPembimbing, $nipyDosenPenguji1, $nipyDosenPenguji2, $data);
 
         // $this->sendCalendarEvent($data);
-
         // $this->sendMailNotificationSchedule($data);
 
         return redirect('dataPenjadwalan')->with('alert-success', 'Jadwal Berhasil Diubah');

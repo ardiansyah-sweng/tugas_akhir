@@ -16,11 +16,21 @@ class Penjadwalan extends Model
 
     public function topikSkripsi()
     {
-        return $this->belongsTo(TopikSkripsi::class, 'topik_skripsi_id');
+        return $this->belongsTo(Topikskripsi::class, 'topik_skripsi_id');
     }
 
     public function linkGoogleMeet()
     {
         return $this->belongsTo(GoogleMeet::class, 'meet_room', 'title_room');
+    }
+
+    public function toNilaiSemprop()
+    {
+        return $this->hasMany(NilaiSemprop::class, 'id_penjadwalan', 'id');
+    }
+
+    public function toNilaiPendadaran()
+    {
+        return $this->hasMany(NilaiPendadaran::class, 'id_penjadwalan', 'id');
     }
 }
