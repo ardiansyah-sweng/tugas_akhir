@@ -96,11 +96,11 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Email address</label>
-                    <input autofocus type="email" class="form-control" id="inputEmail" placeholder="username@uad.ac.id" required>
+                    <input autofocus type="email" class="form-control" id="inputEmail" placeholder="username@xxx.uad.ac.id" required>
                 </div>
                 <div id="formInputOTP" class="form-group" style="display:none;">
                     <label id="greetingForUser" for="exampleFormControlInput1"></label>
-                    <input id="inputOTP" autofocus type="text" class="form-control" required>
+                    <input id="inputOTP" autofocus type="text" class="form-control" required>   
                 </div>
             </div>
             <div id="alertModal"></div>

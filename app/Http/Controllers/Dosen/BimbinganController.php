@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\Topikskripsi;
 use App\Models\Dosen;
 use App\Models\Logbook;
+use App\Models\Syarat;
+use App\Models\SyaratUjian;
 
 class BimbinganController extends Controller
 {
@@ -102,10 +104,111 @@ class BimbinganController extends Controller
         $lg=Logbook::where('id',$id)
         ->first();
 
+        $id_skripsi = Logbook::where('id',$id)
+        ->pluck('id_topikskripsi')
+        ->first();
+        
+        
+        
+        $cek_status=Topikskripsi::where('id', $id_skripsi)
+        ->first();
+
+        if($cek_status->status_mahasiswa=="0"){
+            $id_syaratUjian = SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
+            ->where('id_NamaUjian','1')
+            ->pluck('id');
+
+            $semuaSyarat = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+            ->pluck('id_NamaSyarat');
+
+            $logbook = Logbook::where('id_topikskripsi',$id_skripsi)
+            ->where('status',1)
+            ->pluck('status');
+
+            $jumlahAccept= count($logbook);
+            $temp = [];
+            $tempStatus = [];
+            $statusBerhasil = [2,2,2,2];
+
+            foreach($semuaSyarat as $berkas){
+                array_push($temp,$berkas);
+            }
+            $status = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+                ->pluck('status');
+                foreach($status as $id_status){
+                    array_push($tempStatus,$id_status);
+                }
+
+            if(in_array("1",$temp)){
+                if(in_array("2",$temp)){
+                    if(in_array("3",$temp)){                   
+                        if(in_array("5",$temp)){                           
+                            if ($tempStatus == $statusBerhasil) {
+                                if($jumlahAccept >= 2){
+                                    SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
+                                    ->where('id_NamaUjian','1')
+                                    ->update(['status'=>1]);
+
+                                    Topikskripsi::where('id',$id_skripsi)
+                                    ->update(['status_mahasiswa'=>1]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }elseif($cek_status->status_mahasiswa=="2"){
+            
+            $id_syaratUjian = SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
+            ->where('id_NamaUjian','2')
+            ->pluck('id');
+
+            $semuaSyarat = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+            ->pluck('id_NamaSyarat');
+
+            $logbook = Logbook::where('id_topikskripsi',$id_skripsi)
+            ->where('status',1)
+            ->pluck('status');
+
+            $jumlahAccept= count($logbook);
+            $temp = [];
+            $tempStatus = [];
+            $statusBerhasil = [2,2,2,2,2];
+
+            foreach($semuaSyarat as $berkas){
+                array_push($temp,$berkas);
+            }
+            $status = Syarat::where('id_SyaratUjian',$id_syaratUjian)
+                ->pluck('status');
+                foreach($status as $id_status){
+                    array_push($tempStatus,$id_status);
+                }
+            if(in_array("1",$temp)){
+                if(in_array("2",$temp)){
+                    if(in_array("3",$temp)){                   
+                        if(in_array("4",$temp)){  
+                            if(in_array("5",$temp)){                           
+                                if ($tempStatus == $statusBerhasil) {
+                                                     
+                                    if($jumlahAccept >= 3){
+                                        SyaratUjian::where('id_Skripsimahasiswa',$id_skripsi)
+                                        ->where('id_NamaUjian','2')
+                                        ->update(['status'=>1]);
+
+                                        Topikskripsi::where('id',$id_skripsi)
+                                        ->update(['status_mahasiswa'=>3]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         //redirect topiksaya
         return redirect('/bimbingan/'.$lg->id_topikskripsi)->with('alert-success','Data Berhasil di ubah');;
-
 
     }
 

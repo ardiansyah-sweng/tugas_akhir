@@ -101,8 +101,8 @@ class PenawaranController extends Controller
         // dd($mhs, $mahasiswa);
 
         
-        TopikDosenJob::dispatch($mhs)
-        ->delay($mahasiswa->created_at->addseconds(6));
+        // TopikDosenJob::dispatch($mhs)
+        // ->delay($mahasiswa->created_at->addseconds(6));
         
  
         return redirect('/penawaran')->with('alert-success','Berhasil di ajukan');

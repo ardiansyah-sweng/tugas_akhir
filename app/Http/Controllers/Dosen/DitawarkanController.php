@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MahasiswaRegisterTopikDosen;
 use App\Models\Topikskripsi;
 use App\Models\Dosen;
+use App\Models\SyaratUjian;
 
 class DitawarkanController extends Controller
 {
@@ -44,11 +45,14 @@ class DitawarkanController extends Controller
         return view('pages.dosen.requestMahasiswa',compact('data'));
     }
 
+
+    //topik dari dosen
     public function update(Request $request, $id){
+        // dd($request);
         $accept['status'] = 'Accept';
         $reject['status'] = 'Reject';
         $mahasiswa['nim_terpilih'] = $request->nim;
-
+        
         
         //query where id
         $data = MahasiswaRegisterTopikDosen::whereid($id)->first();
@@ -81,29 +85,36 @@ class DitawarkanController extends Controller
         ->whereid_topikskripsi($request->id_topikskripsi)
         ->update($reject);
 
-        
-
-
         //query pindah nim tb_getTopikSkripsi -> skripsi
         $row=Topikskripsi::whereid($request->id_topikskripsi)->update(
             [
                 'nim_terpilih' => $request->nim,
-                'status' => 'Accept'
+                'status' => 'Accept',
+                'status_mahasiswa' => '0'
                 ]
         );
+
+        SyaratUjian::create([
+            'id_Skripsimahasiswa' => $request->id_topikskripsi,
+            'id_NamaUjian' => 1,
+        ]);
 
 
         //redirect topiksaya
         return redirect('/penelitian')->with('alert-success','Data Berhasil di simpan');;
 
-
     }
 
+    //accept atau reject topik punya mahasiswa
     public function edit(Request $request){
         $id = $request->id;
-
         if ($request->type=='Accept') {
             $data['status'] = 'Accept';
+            $data['status_mahasiswa']='0';
+                $ujian=SyaratUjian::create([
+                    'id_Skripsimahasiswa' => $id,
+                    'id_NamaUjian' => 1,
+                ]);
         }else{
             $data['status'] = 'Reject';
         }
@@ -126,6 +137,8 @@ class DitawarkanController extends Controller
           
         $item=Topikskripsi::where('id',$id)
         ->update($data);
+        
+       
 
         //redirect request mahasiswa
         return redirect('/mytopik')->with('alert-success','Request Berhasil di simpan');;
