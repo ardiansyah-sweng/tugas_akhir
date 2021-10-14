@@ -105,9 +105,8 @@ class TopikController extends Controller
            
         $topik=Topikskripsi::create($data);
 
-        TolakJob::dispatch($topik)
-        ->delay(now()->addseconds(70));
-        // dd($topik);
+        // TolakJob::dispatch($topik)
+        // ->delay(now()->addseconds(70));
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');
     }
 }
