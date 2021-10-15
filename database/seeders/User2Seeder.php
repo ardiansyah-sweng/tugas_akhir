@@ -43,7 +43,7 @@ class User2Seeder extends Seeder
         $dosen4->assignRole('dosen');
 
         $dosen5 = User::create([
-            'name' => 'Ir. Ardi Pujiyanta, M. T.',
+            'name' => 'Dr.Ir. Ardi Pujiyanta, M.T.',
             'email' => 'Ardipujiyanta@tif.uad.ac.id',
             'password' => bcrypt('12345678')
         ]);
@@ -171,7 +171,7 @@ class User2Seeder extends Seeder
         $dosen22->assignRole('dosen');
 
         $dosen23 = User::create([
-            'name' => 'Murinto, S.Si., M. Kom',
+            'name' => 'Dr. Murinto, S.Si., M. Kom',
             'email' => 'Murintokusno@tif.uad.ac.id',
             'password' => bcrypt('12345678')
         ]);
