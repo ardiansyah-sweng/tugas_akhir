@@ -19,7 +19,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160952',
             'nidn' => '0523068801',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/supri.jpg',
             'user_id' => '1',
         ]);
 
@@ -28,7 +28,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60030476',
             'nidn' => '0523077902',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/ardiansyah.jpg',
             'user_id' => '2',
         ]);
 
@@ -37,7 +37,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60150841',
             'nidn' => '0524118801',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/adhi.jpg',
             'user_id' => '4',
         ]);
 
@@ -46,7 +46,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160863',
             'nidn' => '0505118901',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/azhari.jpg',
             'user_id' => '5',
         ]);
 
@@ -56,7 +56,7 @@ class DosenSeeder extends Seeder
             'nipy' => '197310142005011001',
             'nidn' => '0014107301',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/ali.jpg',
             'user_id' => '6',
         ]);
 
@@ -65,7 +65,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60110647',
             'nidn' => '0522018302',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/anna.jpg',
             'user_id' => '7',
         ]);
 
@@ -74,7 +74,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60030480',
             'nidn' => '0529056601',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/ardi.jpg',
             'user_id' => '8',
         ]);
 
@@ -83,7 +83,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60030480',
             'nidn' => '0529056601',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/andripranolo.jpg',
             'user_id' => '9',
         ]);
 
@@ -92,7 +92,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60090586',
             'nidn' => '0526018502',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/arfiani.jpg',
             'user_id' => '10',
         ]);
 
@@ -101,7 +101,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60150842',
             'nidn' => '0521128502',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/ismi.jpg',
             'user_id' => '11',
         ]);
         
@@ -110,7 +110,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60040497',
             'nidn' => '0530077601',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/dewi.jpg',
             'user_id' => '12',
         ]);
 
@@ -119,7 +119,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60191223',
             'nidn' => '0514079201',
             'jabfung' => 'TP',
-            'avatar' => '',
+            'avatar' => 'dosen/dinan.jpeg',
             'user_id' => '13',
         ]);
 
@@ -128,7 +128,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160978',
             'nidn' => '0504088601',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/dwi.jpg',
             'user_id' => '14',
         ]);
 
@@ -137,7 +137,7 @@ class DosenSeeder extends Seeder
             'nipy' => '197002062005011001',
             'nidn' => '0006027001',
             'jabfung' => 'LK',
-            'avatar' => '',
+            'avatar' => 'dosen/eko.jpg',
             'user_id' => '15',
         ]);
 
@@ -146,7 +146,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60191224',
             'nidn' => '0506079301',
             'jabfung' => 'TP',
-            'avatar' => '',
+            'avatar' => 'dosen/faisal.jpeg',
             'user_id' => '16',
         ]);
 
@@ -155,7 +155,7 @@ class DosenSeeder extends Seeder
             'nipy' => '198011152005011002',
             'nidn' => '0015118001',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/fiftin.jpg',
             'user_id' => '17',
         ]);
 
@@ -164,7 +164,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60181171',
             'nidn' => '0515058802',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/fitri.jpg',
             'user_id' => '18',
         ]);
 
@@ -173,7 +173,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60181172',
             'nidn' => '0509038402',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/guntur.jpeg',
             'user_id' => '19',
         ]);
 
@@ -183,7 +183,7 @@ class DosenSeeder extends Seeder
             'nipy' => '197907202005011002',
             'nidn' => '0020077901',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/bambang.jpeg',
             'user_id' => '20',
         ]);
 
@@ -192,7 +192,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160951',
             'nidn' => '0520098702',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/ika.jpg',
             'user_id' => '21',
         ]);
 
@@ -201,7 +201,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160979',
             'nidn' => '0528058401',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/jefree.jpg',
             'user_id' => '22',
         ]);
 
@@ -210,7 +210,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60150773',
             'nidn' => '0511098401',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/lisna.jpg',
             'user_id' => '23',
         ]);
 
@@ -219,7 +219,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60191225',
             'nidn' => '0515069001',
             'jabfung' => 'TP',
-            'avatar' => '',
+            'avatar' => 'dosen/miftah.jpeg',
             'user_id' => '24',
         ]);
 
@@ -228,7 +228,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160960',
             'nidn' => '0519108901',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/murein.jpg',
             'user_id' => '25',
         ]);
 
@@ -237,7 +237,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60040496',
             'nidn' => '0510077302',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/murinto.jpg',
             'user_id' => '26',
         ]);
 
@@ -246,7 +246,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60960147',
             'nidn' => '0506016701',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/mushlihudin.jpg',
             'user_id' => '27',
         ]);
 
@@ -255,7 +255,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60160980',
             'nidn' => '0509048901',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/nuril.jpg',
             'user_id' => '28',
         ]);
 
@@ -265,7 +265,7 @@ class DosenSeeder extends Seeder
             'nipy' => '197608192005012001',
             'nidn' => '0019087601',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/budyah.jpeg',
             'user_id' => '29',
         ]);
 
@@ -274,7 +274,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60980174',
             'nidn' => '0507087202',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/rusydi.jpg',
             'user_id' => '30',
         ]);
 
@@ -283,7 +283,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60020388',
             'nidn' => '0516127501',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/wiwin.png',
             'user_id' => '31',
         ]);
 
@@ -292,7 +292,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60010314',
             'nidn' => '0521127303',
             'jabfung' => 'AA',
-            'avatar' => '',
+            'avatar' => 'dosen/taufik.jpg',
             'user_id' => '32',
         ]);
 
@@ -301,7 +301,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60030475',
             'nidn' => '0407016801',
             'jabfung' => 'L',
-            'avatar' => '',
+            'avatar' => 'dosen/tedy.jpg',
             'user_id' => '33',
         ]);
 
@@ -310,7 +310,7 @@ class DosenSeeder extends Seeder
             'nipy' => '60910095',
             'nidn' => '0504116601',
             'jabfung' => 'LK',
-            'avatar' => '',
+            'avatar' => 'dosen/wahyu.jpg',
             'user_id' => '34',
         ]);
 
