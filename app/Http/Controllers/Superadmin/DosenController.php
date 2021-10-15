@@ -25,8 +25,7 @@ class DosenController extends Controller
                 $query->where('status', 'Accept');
             }]
         )
-
-            ->get();
+        ->get();
         $jumlah_bimbingan = Topikskripsi::where('status', 'Accept');
         return view('pages.superadmin.index', compact('dosen'));
     }
