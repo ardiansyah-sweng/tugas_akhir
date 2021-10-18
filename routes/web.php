@@ -68,6 +68,12 @@ Route::middleware(['auth', 'role:dosen|super_admin'])->group(function () {
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::resource('dosen', Superadmin\DosenController::class);
         Route::resource('setup', Superadmin\SetupController::class);
+
+        Route::get('/set-semester/{inputSelectSemester}', [Superadmin\SetupController::class, 'isSemesterExistInDB']);
+        Route::get('/set-semester', [Superadmin\SetupController::class, 'setSemester']);
+
+        Route::post('add-semester', [Superadmin\SetupController::class, 'addSemester'])->name('addSemester');
+
         Route::resource('skripsi', Superadmin\SkripsiMahasiswaController::class);
         Route::resource('pendadaran-register', Superadmin\PendadaranRegisterController::class);
         Route::resource('semprop-register', Superadmin\SempropRegisterController::class);
@@ -75,7 +81,6 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
         Route::get('/data-mahasiswa', [Superadmin\SetupController::class, 'getDataMahasiswa']);
         Route::post('import-data-mahasiswa', [Superadmin\SetupController::class, 'importDataMahasiswa'])->name('importDataMahasiswa');
-
 
         // Route Fitur Jadwal Dosen
         Route::get('/jadwalDosen', [Superadmin\DosenController::class, 'jadwalDosen'])->name('jadwalDosen');
