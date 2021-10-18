@@ -77,29 +77,44 @@ class SetupController extends Controller
         }
     }
 
-    function isSemeterPeriodOverlap($start, $end)
+    function isSemesterPeriodOverlap($start, $end)
     {
         $start = strtotime($start);
         $end = strtotime($end);
         if ($end < $start){
-            return 'Akhir semester harus di atas awal semester';
+            return 1;
         }
         if ($start === $end){
-            return 'Awal dan akhir semester tidak boleh sama';
+            return 2;
         }
     }
 
     public function addSemester(Request $request)
     {
+        ## TODO validasi jika year now tidak ada semesternya
+        ## check validasi ini dilakukan setiap awal login superadmin
+        ## jika terjadi, maka diminta utk entry semester
+
         if ($this->isSemesterExistInDB($request->inputSelectSemester)){
             return redirect('/set-semester')->with('alert-warningSemesterIsExist', 'Periode semester sudah ada.');
         }
 
-        if ( $this->isSemeterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) )
+        if ( $this->isSemesterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) === 1)
         {
             return redirect('/set-semester')->with('alert-warningSemesterOverlap', 'Akhir semester harus lebih besar dari awal semester');
         }
+
+        if ($this->isSemesterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) === 2) {
+            return redirect('/set-semester')->with('alert-warningSemesterOverlap', 'Akhir dan Awal Semester tidak boleh sama');
+        }
         //dd($request);
+        ## Next: save to tabel semester
+        Semester::create([
+            'semester' => $request->inputSelectSemester,
+            'start' => $request->inputDateAwalSemester,
+            'end'   => $request->inputDateAkhirSemester
+        ]);
+
         return redirect('/set-semester')->with('alert-success', 'Periode semester Berhasil di tambah');
     }  
 
