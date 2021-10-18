@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setup;
 use App\Models\GoogleMeet;
+use App\Models\Semester;
+use App\Utils\CurrentSemester;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportDataMahasiswa;
 use App\Models\Penjadwalan;
@@ -20,51 +22,7 @@ class SetupController extends Controller
     public function index()
     {
         $hari = Setup::all()->first();
-        // dd($hari);
         return view('pages.superadmin.setup.index', compact('hari'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -80,21 +38,70 @@ class SetupController extends Controller
         $item = Setup::findOrFail($id);
         $item->update($data);
 
-        $hari = Setup::all()->first();
+        //$hari = Setup::all()->first();
 
         return redirect('/setup')->with('alert-success', 'Data Berhasil di ubah');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function getListOfYears()
     {
-        //
+        ## TODO constants minYear dan maxYear disiapkan di setting superadmin atau helper atau env dll
+        $minYear = 2000;
+        $maxYear = 2030;
+        $oddEven = ['Gasal', 'Genap'];
+        for ($year = $minYear; $year <= $maxYear; $year++) {
+            foreach ($oddEven as $period) {
+                $periods[] = $period . ' ' . $year . '-' . ($year + 1);
+            }
+        }
+        return $periods;
     }
+
+    public function setSemester()
+    {
+        $semesters = Semester::all();
+        $currentSemester = new CurrentSemester;
+        $currentSemester->semesters = $semesters;
+        $currentSemester = $currentSemester->getCurrentSemester();
+        $periods = $this->getListOfYears();
+        return view('pages.superadmin.setup.setSemester', compact('semesters', 'currentSemester', 'periods'));
+    }
+
+    function isSemesterExistInDB($inputSelectSemester)
+    {
+        $semesters = Semester::all();
+        foreach ($semesters as $semester) {
+            if ($semester->semester === $inputSelectSemester) {
+                return response()->json($inputSelectSemester);
+            }
+        }
+    }
+
+    function isSemeterPeriodOverlap($start, $end)
+    {
+        $start = strtotime($start);
+        $end = strtotime($end);
+        if ($end < $start){
+            return 'Akhir semester harus di atas awal semester';
+        }
+        if ($start === $end){
+            return 'Awal dan akhir semester tidak boleh sama';
+        }
+    }
+
+    public function addSemester(Request $request)
+    {
+        if ($this->isSemesterExistInDB($request->inputSelectSemester)){
+            return redirect('/set-semester')->with('alert-warningSemesterIsExist', 'Periode semester sudah ada.');
+        }
+
+        if ( $this->isSemeterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) )
+        {
+            return redirect('/set-semester')->with('alert-warningSemesterOverlap', 'Akhir semester harus lebih besar dari awal semester');
+        }
+        //dd($request);
+        return redirect('/set-semester')->with('alert-success', 'Periode semester Berhasil di tambah');
+    }  
 
     public function getDataMahasiswa()
     {
