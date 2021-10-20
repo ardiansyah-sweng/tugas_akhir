@@ -15,8 +15,8 @@ class ImportDataMahasiswa implements ToModel
     public function model(array $row)
     {
         return new ImportDataMahasiswaModel([
-            'nim' => $row[0],
-            'nama' => $row[1]
+            'nim' => $row[1],
+            'nama' => $row[2],
         ]);
     }
 }
