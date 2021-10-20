@@ -16,7 +16,7 @@
 @if (Session::has('alert-failed'))
 <script>
     swal("Tidak Dapat Menjadwalkan", "{!! Session::get('alert-failed') !!}", {
-        icon: "warning",
+        icon: "error",
         buttons: {
             confirm: {
                 className: 'btn btn-info'
@@ -26,24 +26,10 @@
 </script>
 @endif
 
-@if (Session::has('alert-warningSemesterIsExist'))
+@if (Session::has('alert-warningSemester'))
 <script>
-    swal("Tidak bisa menambahkan Periode Semester", "{!! Session::get('alert-warningSemesterIsExist') !!}", {
-        icon: "warning",
-        buttons: {
-            confirm: {
-                className: 'btn btn-info'
-            }
-        },
-        dangerMode: true
-    });
-</script>
-@endif
-
-@if (Session::has('alert-warningSemesterOverlap'))
-<script>
-    swal("Tidak bisa menambahkan Periode Semester", "{!! Session::get('alert-warningSemesterOverlap') !!}", {
-        icon: "warning",
+    swal("Gagal menambahkan periode semester", "{!! Session::get('alert-warningSemester') !!}", {
+        icon: "error",
         buttons: {
             confirm: {
                 className: 'btn btn-info'

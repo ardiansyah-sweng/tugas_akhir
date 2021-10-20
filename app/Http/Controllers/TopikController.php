@@ -63,8 +63,6 @@ class TopikController extends Controller
 
         //query nim dari relasi tabel dosen dan user
         $data_mahasiswa = Mahasiswa::whereuser_id($id)->first();
-
-
         $data['option_from'] = "Mahasiswa";
         $data['nim_submit'] = $data_mahasiswa->nim;
 
@@ -93,8 +91,6 @@ class TopikController extends Controller
             
         ];
         // $dataDosen->user->email;
-
-
         try {
             Mail::to('nashirmuhammad117@gmail.com')->send(new RequestJadiPembimbingEmail($details));
         } catch (Exception $ex) {
@@ -104,7 +100,6 @@ class TopikController extends Controller
         }
            
         $topik=Topikskripsi::create($data);
-
         // TolakJob::dispatch($topik)
         // ->delay(now()->addseconds(70));
         return redirect('/penawaran/topiksaya')->with('alert-success','Data Berhasil di tambah');

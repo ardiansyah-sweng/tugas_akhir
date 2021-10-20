@@ -15,12 +15,11 @@ class Dosen extends Model
     ];
 
 
-    //atribut user_id adalah kepunyaan dari tb user, dan id adalak kepunyaan dari tb dosen
+    //atribut user_id adalah kepunyaan dari tb user, dan id adalah kepunyaan dari tb dosen
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
 
     //atribut nipy adalah kepunyaan dari tabel topikSkripsi (FK)
     public function skripsi()

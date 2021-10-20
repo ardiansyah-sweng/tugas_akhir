@@ -4,7 +4,12 @@
         <div class="sidebar-content">
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
+                    @if(Auth::user()->hasRole('mahasiswa'))
+                    Mahasiswa
                     <img src="{{ url('assets/img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                    @else
+                    <img src="{{ Auth::user()->dosen->avatar }}" alt="..." class="avatar-img rounded-circle">
+                    @endif
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">

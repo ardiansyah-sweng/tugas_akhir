@@ -29,6 +29,4 @@ class Mahasiswa extends Model
     public function getSkripsi(){
         return $this->hasMany(MahasiswaRegisterTopikDosen::class,'nim');
     }
-
-    
 }

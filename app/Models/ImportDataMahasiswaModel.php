@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImportDataMahasiswaModel extends Model
 {
-    // protected $table = "jadwal_dosen";
-    // protected $primaryKey = "id";
-    // protected $fillable = [
-    //     'nipy', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'jam_ke'
-    // ];
+    protected $table = "tes_import_mhs";
+    protected $primaryKey = "id";
+    protected $fillable = [
+        'nim', 'nama'
+    ];
 }

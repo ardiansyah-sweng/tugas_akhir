@@ -41,10 +41,8 @@ class DosenController extends Controller
         $data = Topikskripsi::where('nipy', $id)
             ->where('status', 'Accept')
             ->get();
-
         $dosen = Dosen::where('nipy', $id)->first();
         // dd($dosen->user->name);
-
         return view('pages.superadmin.viewMahasiswa', compact('data', 'dosen'));
     }
 

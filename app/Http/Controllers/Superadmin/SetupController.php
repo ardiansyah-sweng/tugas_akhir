@@ -10,6 +10,7 @@ use App\Models\Semester;
 use App\Utils\CurrentSemester;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportDataMahasiswa;
+use Carbon\Carbon;
 use App\Models\Penjadwalan;
 
 class SetupController extends Controller
@@ -81,11 +82,22 @@ class SetupController extends Controller
     {
         $start = strtotime($start);
         $end = strtotime($end);
-        if ($end < $start){
+        if ($end < $start) {
             return 1;
         }
-        if ($start === $end){
+        if ($start === $end) {
             return 2;
+        }
+    }
+
+    public function isInsufficientSemesterPeriod($start, $end)
+    {
+        ## TODO dideklarasikan di bagian setup env untuk menentukan periode minimal.
+        $minSemesterPeriodInMonth = 4;
+        $to = \Carbon\Carbon::createFromFormat('Y-m-d', $start);
+        $from = \Carbon\Carbon::createFromFormat('Y-m-d', $end);
+        if ($to->diffInMonths($from) < $minSemesterPeriodInMonth){
+            return true;
         }
     }
 
@@ -95,20 +107,22 @@ class SetupController extends Controller
         ## check validasi ini dilakukan setiap awal login superadmin
         ## jika terjadi, maka diminta utk entry semester
 
-        if ($this->isSemesterExistInDB($request->inputSelectSemester)){
-            return redirect('/set-semester')->with('alert-warningSemesterIsExist', 'Periode semester sudah ada.');
+        if ($this->isSemesterExistInDB($request->inputSelectSemester)) {
+            return redirect('/set-semester')->with('alert-warningSemester', 'Periode semester sudah ada.');
         }
 
-        if ( $this->isSemesterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) === 1)
-        {
-            return redirect('/set-semester')->with('alert-warningSemesterOverlap', 'Akhir semester harus lebih besar dari awal semester');
+        if ($this->isSemesterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) === 1) {
+            return redirect('/set-semester')->with('alert-warningSemester', 'Akhir semester harus lebih besar dari awal semester');
         }
 
         if ($this->isSemesterPeriodOverlap($request->inputDateAwalSemester, $request->inputDateAkhirSemester) === 2) {
-            return redirect('/set-semester')->with('alert-warningSemesterOverlap', 'Akhir dan Awal Semester tidak boleh sama');
+            return redirect('/set-semester')->with('alert-warningSemester', 'Akhir dan Awal Semester tidak boleh sama');
         }
-        //dd($request);
-        ## Next: save to tabel semester
+
+        if ($this->isInsufficientSemesterPeriod($request->inputDateAwalSemester, $request->inputDateAkhirSemester)) {
+            return redirect('/set-semester')->with('alert-warningSemester', 'Periode wajib minimal 4 bulan');
+        }
+
         Semester::create([
             'semester' => $request->inputSelectSemester,
             'start' => $request->inputDateAwalSemester,
@@ -116,7 +130,7 @@ class SetupController extends Controller
         ]);
 
         return redirect('/set-semester')->with('alert-success', 'Periode semester Berhasil di tambah');
-    }  
+    }
 
     public function getDataMahasiswa()
     {
@@ -129,7 +143,7 @@ class SetupController extends Controller
         $namaFile = $file->getClientOriginalName();
         $file->move('DataMahasiswa', $namaFile);
         Excel::import(new ImportDataMahasiswa, public_path('/DataMahasiswa/' . $namaFile));
-        // return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
+        return redirect('/data-mahasiswa')->with('alert-success', 'Jadwal Berhasil Diimport');
     }
 
     // Function untuk mengambil semua data link google meet
