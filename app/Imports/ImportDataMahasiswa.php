@@ -12,11 +12,11 @@ class ImportDataMahasiswa implements ToModel
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function model(array $row)
+    public function model(array $column)
     {
         return new ImportDataMahasiswaModel([
-            'nim' => $row[0],
-            'nama' => $row[1]
+            'nim' => $column[0],
+            'nama' => $column[1]
         ]);
     }
 }
