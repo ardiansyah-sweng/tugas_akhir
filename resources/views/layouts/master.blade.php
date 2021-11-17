@@ -3,7 +3,7 @@
 
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>SIMTAKHIR</title>
+	<title>SkripTIF</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="{{ url('assets/img/icon.ico') }}" type="image/x-icon" />
 
@@ -32,7 +32,7 @@
 	<link rel="stylesheet" href="{{ url('css/wizard.css')}}">
 
 
-	
+
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link rel="stylesheet" href="{{ url('assets/css/demo.css')}}">
 
@@ -208,7 +208,7 @@
 	{{-- <script src="{{ url('assets/js/setting-demo.js')}}"></script>
 	<script src="{{ url('assets/js/demo.js')}}"></script> --}}
 
-	   {{-- SWEET ALERT --}}
+	{{-- SWEET ALERT --}}
 	<script src="{{ url('js/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
 	<script src="{{ url('js/plugins/sweetalert/sweet.js') }}"></script>
 	@yield('script')
@@ -309,9 +309,6 @@
 
 	<script>
 		$(document).ready(function() {
-
-
-
 			// Add Row
 			$('#add-row').DataTable({
 				"pageLength": 5,
