@@ -167,7 +167,6 @@
                         $("#buttonRequestAnOTP").hide();
                     },
                     success: function(response) {
-
                         //TODO fixed loading progress when email valid uad.ac.id but not exist.
                         if (response.length === 0) {
                             $("#alertModal").html("<div class='alert alert-danger' role='alert'>" +

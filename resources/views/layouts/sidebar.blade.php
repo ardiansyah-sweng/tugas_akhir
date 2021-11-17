@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<div class="sidebar sidebar-style-2">			
+<div class="sidebar sidebar-style-2">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <div class="user">
@@ -9,16 +9,16 @@
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            {{ Auth::user()->name }} 
+                            {{ Auth::user()->name }}
                             <span class="user-level">
                                 @if (Auth::user()->hasRole('super_admin'))
-                                    Super Admin
+                                Super Admin
                                 @elseif(Auth::user()->hasRole('dosen'))
-                                    Dosen
+                                Dosen
                                 @elseif(Auth::user()->hasRole('mahasiswa'))
-                                    Mahasiswa    
+                                Mahasiswa
                                 @endif
-                                
+
                             </span>
                             <span class="caret"></span>
                         </span>
@@ -98,7 +98,7 @@
                                     <span class="sub-item">Request Mahasiswa</span>
                                 </a>
                             </li>
-                           
+
                         </ul>
                     </div>
                 </li>
@@ -115,7 +115,7 @@
                                     <span class="sub-item">Bimbingan saya</span>
                                 </a>
                             </li>
-                           
+
                         </ul>
                     </div>
                 </li>
@@ -136,13 +136,13 @@
                                 <a href="{{ route('nilai-pendadaran-penguji') }}">
                                     <span class="sub-item">Pendadaran</span>
                                 </a>
-                            </li>   
-                           
+                            </li>
+
                         </ul>
                     </div>
                 </li>
                 @endif
-                
+
                 @if (Auth::user()->hasRole('mahasiswa'))
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#base">
@@ -167,7 +167,7 @@
                                     <span class="sub-item">Lihat Penawaran</span>
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>
@@ -179,7 +179,7 @@
                     </a>
                     <div class="collapse" id="log">
                         <ul class="nav nav-collapse">
-                            
+
                             <li>
                                 <a href="{{ url('/logbook') }}">
                                     <span class="sub-item">Lihat Logbook</span>
@@ -190,7 +190,7 @@
                                     <span class="sub-item">Tambah Logbook</span>
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>
@@ -202,7 +202,7 @@
                     </a>
                     <div class="collapse" id="ujian">
                         <ul class="nav nav-collapse">
-                            
+
                             <li>
                                 <a href="{{ url('/daftar-semprop/create') }}">
                                     <span class="sub-item">Seminar Proposal</span>
@@ -213,14 +213,14 @@
                                     <span class="sub-item">Pendadaran</span>
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>
                 @endif
 
-                
-                
+
+
                 @if (Auth::user()->hasRole('super_admin'))
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#forms">
@@ -247,6 +247,9 @@
                     <div class="collapse" id="setting">
                         <ul class="nav nav-collapse">
                             <li>
+                                <a href="{{ url('/set-semester') }}">
+                                    <span class="sub-item">Set Semester</span>
+                                </a>
                                 <a href="{{ url('/setup') }}">
                                     <span class="sub-item">Setting</span>
                                 </a>
@@ -307,7 +310,7 @@
                     </div>
                 </li>
                 @endif
-                
+
                 {{-- <li class="nav-item">
                     <a data-toggle="collapse" href="#tables">
                         <i class="fas fa-table"></i>
